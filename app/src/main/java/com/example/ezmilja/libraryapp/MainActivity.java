@@ -6,11 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,11 +36,27 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
 
-                                // Write a message to the database
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference("Greeting");
+                                DatabaseReference myRef = database.getReference("ONE");
+                                myRef.getParent().push();
 
-                                myRef.setValue("edfedd");
+                                myRef.child("Book A").push().setValue(1);
+                                myRef.child("Book A").push().setValue(53);
+                                myRef.child("Book A").push().setValue(42);
+
+
+                                myRef.child("Book B").push().setValue("Harry plopper the beginning of biscuits ");
+                                myRef.child("Book B").push().setValue("Harry plopper and the swag stone");
+                                myRef.child("Book B").push().setValue("Harry plopper and the boys from uganda");
+
+                                myRef.child("Book C").push().setValue("a");
+                                myRef.child("Book C").push().setValue("z");
+                                myRef.child("Book C").push().setValue("c");
+
+                               // myRef.setValue("Hello, World!");
+
+
+
 
                                 Intent intent = new Intent(MainActivity.this, ContentsActivity.class);
                                 finish();
