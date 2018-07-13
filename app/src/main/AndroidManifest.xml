@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.ezmilja.libraryapp"
+    android:screenOrientation="portrait">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Ericsson Library"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        android:screenOrientation="portrait"
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action
+                    android:name="android.intent.action.MAIN"
+                    android:screenOrientation="portrait" />
+
+                <category
+                    android:name="android.intent.category.LAUNCHER"
+                    android:screenOrientation="portrait" />
+            </intent-filter>
+        </activity>
+        <activity
+
+            android:name=".ListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ContentsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BookInfoActivity"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".BookInfoActivity" />
+
+        <activity
+            android:name=".RequestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CheckoutActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".LeaderboardList"></activity>
+    </application>
+
+</manifest>
