@@ -37,22 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference BookRef = database.getReference("Books");
-                                BookRef.getParent().push();
 
-//                                myRef.child("Book A").push().setValue(1);
-//                                myRef.child("Book A").push().setValue(53);
-//                                myRef.child("Book A").push().setValue(42);
-//
-//                                myRef.child("Book B").push().setValue("Harry plopper the beginning of biscuits ");
-//                                myRef.child("Book B").push().setValue("Harry plopper and the swag stone");
-                                BookRef.child("Wizard").push().setValue("id","Harry plopper and the boys from uganda");
-
-
-
-                                BookRef.child("Book C").push().setValue("a");
-                                BookRef.child("Book C").push().setValue("z");
-                                BookRef.child("Book C").push().setValue("c");
-
+                                BookRef.child("Book1").child("name").setValue("Paul");
+                                BookRef.child("Book2").child("name").setValue("Sean");
+                                BookRef.child("Book1").child("what").setValue("do you mean");
+                                BookRef.child("Book2").child("what").setValue("are you doing");
+                                BookRef.child("Book1").child("James").setValue("are you going");
+                                BookRef.child("Book2").child("James").setValue("are you done");
 
 
 //                                BookRef.addValueEventListener(new ValueEventListener() {

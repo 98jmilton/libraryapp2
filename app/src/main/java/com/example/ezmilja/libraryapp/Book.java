@@ -1,8 +1,5 @@
 package com.example.ezmilja.libraryapp;
 
-/**
- * Created by emirmun on 13/07/2017.
- */
 
 public class Book {
 
@@ -79,15 +76,4 @@ public class Book {
         return other.bookName.equals(this.bookName);
     }
 
-    @Override
-    public int hashCode() {
-        int result = isbn != null ? isbn.hashCode() : 0;
-        result = 31 * result + (bookName != null ? bookName.hashCode() : 0);
-        result = 31 * result + imageId;
-        result = 31 * result + (author != null ? author.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (page != null ? page.hashCode() : 0);
-        result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
-        return result;
-    }
 }

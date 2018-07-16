@@ -20,7 +20,6 @@ public class BookInfoActivity extends AppCompatActivity {
     private Button btn_check;
     private AutoCompleteTextView descriptionTxt, txt_details;
     private Typeface myTypeFace1;
-    private BookDbHelper bookDbHelper;
     private Book book;
     private String id;
     private DecimalFormat df;
@@ -36,7 +35,6 @@ public class BookInfoActivity extends AppCompatActivity {
 
 
         id = intent.getStringExtra("id");
-        updateBookInfo();
         if (book == null){
             Toast.makeText(BookInfoActivity.this, "Errror: book info not found", Toast.LENGTH_SHORT).show();
         }
@@ -47,10 +45,6 @@ public class BookInfoActivity extends AppCompatActivity {
         createButtons(book);
     }
 
-    private void updateBookInfo(){
-        bookDbHelper = new BookDbHelper(BookInfoActivity.this);
-        book = bookDbHelper.getBook(Integer.parseInt(id));
-    }
 
     private void createTextViews(Book book){
 
