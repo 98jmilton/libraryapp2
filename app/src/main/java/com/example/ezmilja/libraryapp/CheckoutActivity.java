@@ -26,7 +26,6 @@ import java.util.List;
 public class CheckoutActivity extends AppCompatActivity {
 
 
-    private BookDbHelper bookDbHelper;
     private List<Book> bookList;
     private ImageButton btn_info;
     private static RadioButton radioButton;
@@ -46,8 +45,6 @@ public class CheckoutActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        bookDbHelper = new BookDbHelper(CheckoutActivity.this);
-        bookList = bookDbHelper.getAllBooks();
 
         acTextView = (AutoCompleteTextView) findViewById(R.id.dropDownTextView);
         txt_name= (TextView)findViewById(R.id.txt_name);
@@ -135,7 +132,6 @@ public class CheckoutActivity extends AppCompatActivity {
                                 else {
                                     Toast.makeText(CheckoutActivity.this, "Book Checked OUT", Toast.LENGTH_SHORT).show();
                                     tempBook.addToNumberOfCopys(-1);
-                                    bookDbHelper.updateData(tempBook);
                                     finish();
                                 }
                             }
@@ -250,7 +246,6 @@ public class CheckoutActivity extends AppCompatActivity {
                 dialog.dismiss();
                 if (selectedBook.getNumberOfCopys() < selectedBook.getMAX_COPYS()) {
                     selectedBook.addToNumberOfCopys(1);
-                    bookDbHelper.updateData(selectedBook);
                     Toast.makeText(CheckoutActivity.this, "Book Checked IN", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -269,7 +264,6 @@ public class CheckoutActivity extends AppCompatActivity {
                     Toast.makeText(CheckoutActivity.this, "Rating submitted", Toast.LENGTH_SHORT).show();
                     RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
                     selectedBook.addRating(ratingBar.getRating());
-                    bookDbHelper.updateData(selectedBook);
                 }
                 else {
                     Toast.makeText(CheckoutActivity.this, "You have already rated this book", Toast.LENGTH_SHORT).show();

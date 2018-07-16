@@ -38,30 +38,12 @@ public class MainActivity extends AppCompatActivity {
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference BookRef = database.getReference("Books");
 
-                                BookRef.child("Book1").child("name").setValue("Paul");
-                                BookRef.child("Book2").child("name").setValue("Sean");
-                                BookRef.child("Book1").child("what").setValue("do you mean");
-                                BookRef.child("Book2").child("what").setValue("are you doing");
-                                BookRef.child("Book1").child("James").setValue("are you going");
-                                BookRef.child("Book2").child("James").setValue("are you done");
-
-
-//                                BookRef.addValueEventListener(new ValueEventListener() {
-//                                    @Override
-//                                    public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                                        for (DataSnapshot chidSnap : dataSnapshot.getChildren()) {
-//                                            Log.v("tmz",""+ chidSnap.getKey()); //displays the key for the node
-//                                          // Log.v("tmz",""+ chidSnap.child("Book A").getValue());   //gives the value for given keyname
-//                                        }
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onCancelled(DatabaseError databaseError) {
-//
-//                                    }
-//                                });
+                                BookRef.child("Book1").child("Title").setValue("Paul");
+                                BookRef.child("Book1").child("Author").setValue("do you mean");
+                                BookRef.child("Book1").child("ISBN").setValue("are you going");
+                                BookRef.child("Book2").child("Title").setValue("Sean");
+                                BookRef.child("Book2").child("Author").setValue("are you doing");
+                                BookRef.child("Book2").child("ISBN").setValue("are you done");
 
 
                                 Intent intent = new Intent(MainActivity.this, ContentsActivity.class);

@@ -22,7 +22,6 @@ import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
 
-    private BookDbHelper bookDbHelper;
     private Cursor cursor;
     private List<Book> originalList;
     private SearchView searchView;
@@ -35,8 +34,6 @@ public class ListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        bookDbHelper = new BookDbHelper(ListActivity.this);
-        originalList = bookDbHelper.getAllBooks();
         sortlist(originalList);
 
         searchView = (SearchView) findViewById(R.id.searchbar);
