@@ -1,6 +1,7 @@
 package com.example.ezmilja.libraryapp;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -30,6 +31,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private ImageButton btn_info;
     private static RadioButton radioButton;
     private static Button button;
+    private static Button scanButton;
     private static RadioGroup radioGroup;
     private boolean on;
     TextView txt_name, txt_author;
@@ -58,6 +60,7 @@ public class CheckoutActivity extends AppCompatActivity {
         createButton();
         dropDownList();
         autoFill();
+        barcodeButton();
     }
 
     private void dropDownList(){
@@ -272,8 +275,20 @@ public class CheckoutActivity extends AppCompatActivity {
         });
     }
 
+    private void barcodeButton() {
+        Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(), "yourfont.ttf");
+        scanButton = (Button) findViewById(R.id.scan_button);
+        scanButton.setTypeface(myTypeFace1);
+        scanButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
+                            Intent intent = new Intent(CheckoutActivity.this, ScanActivity.class);
+                            startActivity(intent);
 
-
-
+                    }
+                }
+        );
+    }
 }

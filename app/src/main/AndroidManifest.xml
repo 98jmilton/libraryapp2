@@ -3,6 +3,8 @@
     package="com.example.ezmilja.libraryapp"
     android:screenOrientation="portrait">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,8 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -26,7 +28,6 @@
             </intent-filter>
         </activity>
         <activity
-
             android:name=".ListActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -46,7 +47,9 @@
         <activity
             android:name=".CheckoutActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".LeaderboardList"></activity>
+        <activity android:name=".LeaderboardList" />
+        <activity android:name=".ScanActivity" />
+        <activity android:name=".Constants" />
     </application>
 
 </manifest>
