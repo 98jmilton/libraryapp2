@@ -1,4 +1,3 @@
 <resources>
-    <string name="app_name">LibraryApp</string>
-    <string name="title_activity_request">RequestActivity</string>
+    <string name="app_name">Libraryapp</string>
 </resources>
