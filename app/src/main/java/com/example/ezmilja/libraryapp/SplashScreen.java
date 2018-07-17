@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +28,7 @@ import java.util.TimerTask;
 public class SplashScreen extends AppCompatActivity {
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
-
+    public Book book[]=new Book[0];
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
@@ -34,19 +36,42 @@ public class SplashScreen extends AppCompatActivity {
         TextView TextView1 = (TextView) findViewById(R.id.TextView1);
         TextView1.setTypeface(myTypeFace1);
 
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference BookRef = database.getReference("Books");
 
-        BookRef.child("Book1").child("Title").setValue("Paul");
-        BookRef.child("Book1").child("Author").setValue("do you mean");
-        BookRef.child("Book1").child("ISBN").setValue("are you going");
-        BookRef.child("Book2").child("Title").setValue("Sean");
-        BookRef.child("Book2").child("Author").setValue("are you doing");
-        BookRef.child("Book2").child("ISBN").setValue("are you done");
+
+        BookRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int i = 0;
+                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
 
 
+                    book[i].isbn =          (int) messageSnapshot.child("ISBN").getValue();
+                    book[i].bookName =      (String) messageSnapshot.child("Author").getValue();
+                    book[i].author =        (String) messageSnapshot.child("Description").getValue();
+                    book[i].description =   (String) messageSnapshot.child("MaxCopys").getValue();
+                    book[i].page =          (String) messageSnapshot.child("Name").getValue();
+                    book[i].publisher =     (String) messageSnapshot.child("NumCopys").getValue();
+                    book[i].rating =        (int) messageSnapshot.child("Page").getValue();
+                    book[i].MAX_COPYS =     (int) messageSnapshot.child("Publisher").getValue();
+                    book[i].num_rating =    (int) messageSnapshot.child("Rating").getValue();
+                    book[i].numberOfCopys = (int) messageSnapshot.child("rating").getValue();
+
+                    i++;
+
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         requestPermission();
+
 
 
     }

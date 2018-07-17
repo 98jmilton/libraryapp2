@@ -27,8 +27,8 @@ public class ContentsActivity extends AppCompatActivity {
     private void createButton(){
 
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
-        btn31list = (Button) findViewById(R.id.btn31list);
-        btn31list.setTypeface(myTypeFace1);
+        btn_list = (Button) findViewById(R.id.btn_list);
+        btn_list.setTypeface(myTypeFace1);
 
 
         btn_rqst = (Button) findViewById(R.id.btn_rqst);
@@ -49,20 +49,20 @@ public class ContentsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btn_rqst.setOnClickListener(new View.OnClickListener() {
+        /*btn_rqst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ContentsActivity.this, LeaderboardList.class);
-                startActivity(intent);
+              //  Intent intent = new Intent(ContentsActivity.this, LeaderboardList.class);
+              //  startActivity(intent);
             }
 
         });
         btn_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ContentsActivity.this, CheckoutActivity.class);
-                startActivity(intent);
+              //  Intent intent = new Intent(ContentsActivity.this, CheckoutActivity.class);
+              //  startActivity(intent);
             }
-        });
+        });*/
     };
 }
