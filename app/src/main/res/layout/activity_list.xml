@@ -16,11 +16,9 @@
         android:layout_height="50dp" />
 
     <ListView
-        android:id="@+id/listView"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:layout_below="@+id/searchFilter"
-        android:layout_weight="0.97"></ListView>
+        android:id="@+id/listView1"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent" />
 
     <ImageView
         android:id="@+id/imageView8"
