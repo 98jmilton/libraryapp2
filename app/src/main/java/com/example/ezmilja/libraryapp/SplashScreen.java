@@ -23,12 +23,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 
 public class SplashScreen extends AppCompatActivity {
+
+    Book[] book;
+
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,41 +42,7 @@ public class SplashScreen extends AppCompatActivity {
         TextView1.setTypeface(myTypeFace1);
 
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference BookRef = database.getReference("Books");
 
-
-        BookRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int i = 0;
-                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-
-                    int isbn = (int) messageSnapshot.child("ISBN").getValue();
-                    String author = (String) messageSnapshot.child("Author").getValue();
-                    URL imageaddress = (URL) messageSnapshot.child("img").getValue();
-                    String Description = (String) messageSnapshot.child("Description").getValue();
-                    String name= (String) messageSnapshot.child("Name").getValue();
-                    String publisher= (String) messageSnapshot.child("Publisher").getValue();
-                    int maxCopys= (int) messageSnapshot.child("MaxCopys").getValue();
-                    int numCopys= (int) messageSnapshot.child("NumCopys").getValue();
-                    int page= (int) messageSnapshot.child("Page").getValue();
-                    int totrating= (int) messageSnapshot.child("Rating").getValue();
-                    int numrating= (int) messageSnapshot.child("rating").getValue();
-
-
-                    Book[] book = {
-                            new Book(isbn, name, imageaddress, author, Description, page, publisher, totrating, numCopys, maxCopys, numrating),
-                    };
-                    i++;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         requestPermission();
 
 
