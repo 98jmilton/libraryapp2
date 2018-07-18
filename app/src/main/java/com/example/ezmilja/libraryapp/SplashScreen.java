@@ -29,7 +29,14 @@ import java.util.TimerTask;
 
 
 public class SplashScreen extends AppCompatActivity {
+
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+
+    Object  user1 = "";
+
+    String XXX = "";
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
@@ -39,41 +46,84 @@ public class SplashScreen extends AppCompatActivity {
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference BookRef = database.getReference("Books");
+        DatabaseReference BookRef = database.getReference("/ Books/");
+
+
+
 
 
         BookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int i = 0;
-                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+
+
+                for (DataSnapshot BookSnapshot: dataSnapshot.getChildren()) {
+
+                    user1 =  BookSnapshot.getValue();
+                    XXX += user1;
+
+
+                }
+
+               System.out.println( "xxxxxxxxxxx \n xxxxxxxxxxx\n xxxxxxxxxxx\n xxxxxxxxxxx\n xxxxxxxxxxxxxxxxxxxxxxxxxxxxx" + "\n" +  /*dataSnapshot.getValue() */ XXX + "\n" + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX \n XXXXXXXXXXXXXXXXXXXX");
+
+
+                /*
+
+               int i = 0;
+
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
 
                     int isbn = (int) messageSnapshot.child("ISBN").getValue();
                     String author = (String) messageSnapshot.child("Author").getValue();
                     URL imageaddress = (URL) messageSnapshot.child("img").getValue();
                     String Description = (String) messageSnapshot.child("Description").getValue();
-                    String name= (String) messageSnapshot.child("Name").getValue();
-                    String publisher= (String) messageSnapshot.child("Publisher").getValue();
-                    int maxCopys= (int) messageSnapshot.child("MaxCopys").getValue();
-                    int numCopys= (int) messageSnapshot.child("NumCopys").getValue();
-                    int page= (int) messageSnapshot.child("Page").getValue();
-                    int totrating= (int) messageSnapshot.child("Rating").getValue();
-                    int numrating= (int) messageSnapshot.child("rating").getValue();
+                    String name = (String) messageSnapshot.child("Name").getValue();
+                    String publisher = (String) messageSnapshot.child("Publisher").getValue();
+                    int maxCopys = (int) messageSnapshot.child("MaxCopys").getValue();
+                    int numCopys = (int) messageSnapshot.child("NumCopys").getValue();
+                    int page = (int) messageSnapshot.child("Page").getValue();
+                    int totrating = (int) messageSnapshot.child("Rating").getValue();
+                    int numrating = (int) messageSnapshot.child("rating").getValue();
 
 
-                    Book[] book = {
-                            new Book(isbn, name, imageaddress, author, Description, page, publisher, totrating, numCopys, maxCopys, numrating),
-                    };
+                    System.out.println("xxxxxxxxxxxxxxxxxxxxxxx \n xxxxxxxxxxxxxxxxxx  \n xxxxxxxxxxxxxxxxx \n xxxxxxxxxxxxx" + isbn + " " + author + "" + imageaddress + " " + Description + "" + name + "" + publisher + "" + maxCopys + ""
+                            + "" + numCopys + "" + page + "" + totrating + "" + numrating);
+
+
+                    // Book[] book = {
+                    //         new Book(isbn, name, imageaddress, author, Description, page, publisher, totrating, numCopys, maxCopys, numrating),
+
+                };
+
+
+
+
                     i++;
-                }
+               // }
+
+
+*/
+
+
+
+
             }
+
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
+
+
+
         requestPermission();
+
 
 
 
@@ -81,18 +131,17 @@ public class SplashScreen extends AppCompatActivity {
 
     private void requestPermission() {
 
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat
                     .requestPermissions(SplashScreen.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
-        }
-        else{
+        } else {
 
             Thread myThread = new Thread() {
                 @Override
                 public void run() {
                     try {
                         sleep(2000);
-                        Intent intent = new Intent(getApplicationContext(),ContentsActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), ContentsActivity.class);
                         startActivity(intent);
                         finish();
                     } catch (InterruptedException e) {
@@ -105,13 +154,11 @@ public class SplashScreen extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CODE_ASK_PERMISSIONS:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
                     Toast.makeText(SplashScreen.this, "Permission Granted", Toast.LENGTH_SHORT)
                             .show();
@@ -132,10 +179,7 @@ public class SplashScreen extends AppCompatActivity {
                     };
                     myThread.start();
 
-                }
-
-                else
-                {
+                } else {
                     // Permission Denied
                     Toast.makeText(SplashScreen.this, "Permission Denied", Toast.LENGTH_SHORT)
                             .show();
@@ -145,7 +189,7 @@ public class SplashScreen extends AppCompatActivity {
                         public void run() {
                             try {
                                 sleep(2000);
-                                Intent intent = new Intent(getApplicationContext(),ContentsActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), ContentsActivity.class);
                                 startActivity(intent);
                                 finish();
                             } catch (InterruptedException e) {
@@ -159,8 +203,17 @@ public class SplashScreen extends AppCompatActivity {
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
         }
+
+
     }
+
+
 }
+
+
+
 
 

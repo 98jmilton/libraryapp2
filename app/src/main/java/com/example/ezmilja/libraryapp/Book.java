@@ -30,7 +30,9 @@ public class Book {
         this.max_copys = max_copys;
         this.num_rating = num_rating;
         this.numberOfCopys = numberOfCopys;
+
     }
+
     public int getIsbn() {return isbn;}
 
     public String getBookName(){return bookName;}
@@ -56,5 +58,11 @@ public class Book {
 
     public void addToNumberOfCopys(int added){
         numberOfCopys = numberOfCopys + added;
+    }
+
+    public void setBookInfo(int isbn, String bookName, URL imageAddress, String author, String description,
+                            int page, String publisher, double rating, int numberOfCopys, int max_copys, int num_rating){
+
+
     }
 }

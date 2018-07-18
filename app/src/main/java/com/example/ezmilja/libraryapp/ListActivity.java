@@ -14,6 +14,9 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
 
+        /*
+
+
         ListView listView1 = (ListView) findViewById(R.id.listView1);
 
         Product[] items = {
@@ -23,6 +26,8 @@ public class ListActivity extends AppCompatActivity {
                 new Product(4, "Toothpaste", 7.99),
                 new Product(5, "Ice Cream", 10.00),
         };
+
+        */
 
        // ArrayAdapter<Book> adapter = new ArrayAdapter<Book>(this,
         //        android.R.layout.simple_list_item_1, book);

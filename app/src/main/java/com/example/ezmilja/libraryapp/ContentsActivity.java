@@ -49,6 +49,7 @@ public class ContentsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         /*btn_rqst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
