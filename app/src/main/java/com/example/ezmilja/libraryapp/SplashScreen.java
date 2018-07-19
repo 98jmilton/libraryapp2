@@ -24,17 +24,19 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.InputStream;
 
+import static com.example.ezmilja.libraryapp.BooksArray.books;
 import static java.lang.Math.toIntExact;
 
 
 public class SplashScreen extends AppCompatActivity {
+
+    public static long j=0;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     Object  dataString = "";
 
     String XXXbentenison = "";
-    Book[] books = new Book[100];
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,13 +48,15 @@ public class SplashScreen extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference BookRef = database.getReference("/ Books/");
 
+
         BookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                j= dataSnapshot.getChildrenCount();
                 int i = 0;
 
-                for (DataSnapshot BookSnapshot: dataSnapshot.getChildren()) {
+
+                for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
                     String isbn = (String) BookSnapshot.child("ISBN").getValue();
                     String author = (String) BookSnapshot.child("Author").getValue();
                     String imageaddress = (String) BookSnapshot.child("img").getValue();
@@ -61,70 +65,21 @@ public class SplashScreen extends AppCompatActivity {
                     String publisher = (String) BookSnapshot.child("Publisher").getValue();
                     String maxCopys = (String) BookSnapshot.child("MaxCopys").getValue();
                     String numCopys = (String) BookSnapshot.child("NumCopys").getValue();
-                    String page =     (String) BookSnapshot.child("Page").getValue();
-                    String totrating =(String) BookSnapshot.child("Rating").getValue();
-                    String numrating =(String) BookSnapshot.child("rating").getValue();
+                    String page = (String) BookSnapshot.child("Page").getValue();
+                    String totrating = (String) BookSnapshot.child("Rating").getValue();
+                    String numrating = (String) BookSnapshot.child("rating").getValue();
+
 
                     books[i] = new Book(isbn, name, imageaddress, author, Description, page, publisher, totrating, numCopys, maxCopys, numrating);
-                i++;
+                    i++;
+
                 }
-                String imageaddress= (books[0].imageAddress);
+
+                String imageaddress = (books[0].imageAddress);
                 new DownloadImageTask((ImageView) findViewById(R.id.imageView6)).execute(imageaddress);
-                System.out.println(books[0].isbn);
-                System.out.println(books[0].author);
-                System.out.println(books[0].imageAddress);
-                System.out.println(books[0].description);
-                System.out.println(books[0].bookName);
-                System.out.println(books[0].publisher);
-                System.out.println(books[0].max_copys);
-                System.out.println(books[0].numberOfCopys);
-                System.out.println(books[0].page);
-                System.out.println(books[0].rating);
-                System.out.println(books[0].num_rating);
-                System.out.println(books[1].isbn);
-                System.out.println(books[1].author);
-                System.out.println(books[1].imageAddress);
-                System.out.println(books[1].description);
-                System.out.println(books[1].bookName);
-                System.out.println(books[1].publisher);
-                System.out.println(books[1].max_copys);
-                System.out.println(books[1].numberOfCopys);
-                System.out.println(books[1].page);
-                System.out.println(books[1].rating);
-                System.out.println(books[1].num_rating);
-                System.out.println(books[2].isbn);
-                System.out.println(books[2].author);
-                System.out.println(books[2].imageAddress);
-                System.out.println(books[2].description);
-                System.out.println(books[2].bookName);
-                System.out.println(books[2].publisher);
-                System.out.println(books[2].max_copys);
-                System.out.println(books[2].numberOfCopys);
-                System.out.println(books[2].page);
-                System.out.println(books[2].rating);
-                System.out.println(books[2].num_rating);
-                System.out.println(books[3].isbn);
-                System.out.println(books[3].author);
-                System.out.println(books[3].imageAddress);
-                System.out.println(books[3].description);
-                System.out.println(books[3].bookName);
-                System.out.println(books[3].publisher);
-                System.out.println(books[3].max_copys);
-                System.out.println(books[3].numberOfCopys);
-                System.out.println(books[3].page);
-                System.out.println(books[3].rating);
-                System.out.println(books[3].num_rating);
-                System.out.println(books[4].isbn);
-                System.out.println(books[4].author);
-                System.out.println(books[4].imageAddress);
-                System.out.println(books[4].description);
-                System.out.println(books[4].bookName);
-                System.out.println(books[4].publisher);
-                System.out.println(books[4].max_copys);
-                System.out.println(books[4].numberOfCopys);
-                System.out.println(books[4].page);
-                System.out.println(books[4].rating);
-                System.out.println(books[4].num_rating);
+
+
+
             }
 
             @Override
@@ -190,6 +145,7 @@ public class SplashScreen extends AppCompatActivity {
                     // Permission Denied
                     Toast.makeText(SplashScreen.this, "Permission Denied", Toast.LENGTH_SHORT)
                             .show();
+
                     Thread myThread = new Thread() {
                         @Override
                         public void run() {
@@ -204,6 +160,7 @@ public class SplashScreen extends AppCompatActivity {
                         }
                     };
                     myThread.start();
+
                 }
                 break;
             default:

@@ -9,13 +9,6 @@
     android:background="@android:color/background_light"
     android:orientation="vertical"
     android:weightSum="1">
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:showAsAction="always"
-        app:srcCompat="@mipmap/ic_launcher"
-        />
     <SearchView
         android:id="@+id/searchbar"
         android:layout_width="match_parent"
