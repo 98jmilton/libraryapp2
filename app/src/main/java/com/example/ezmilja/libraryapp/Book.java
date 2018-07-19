@@ -1,23 +1,26 @@
 package com.example.ezmilja.libraryapp;
 
+import android.provider.Settings;
+
 import java.net.URL;
 
 public class Book {
-    public  int isbn;
-    public  String bookName;
-    URL  imageAddress;
-    public  String author;
-    public  String description;
-    public  int page;
-    public  String publisher;
-    public double rating;
-    public int num_rating;
-    public int numberOfCopys;
-    public int max_copys;
+    public String isbn;
+    public String bookName;
+    public String  imageAddress;
+    public String author;
+    public String description;
+    public String page;
+    public String publisher;
+    public String rating;
+    public String num_rating;
+    public String numberOfCopys;
+    public String max_copys;
 
 
-    public Book(int isbn, String bookName, URL imageAddress, String author, String description,
-                int page, String publisher, double rating, int numberOfCopys, int max_copys, int num_rating){
+
+    public Book(String isbn, String bookName, String imageAddress, String author, String description,
+                String page, String publisher, String rating, String numberOfCopys, String max_copys, String num_rating){
 
         this.isbn = isbn;
         this.bookName =bookName;
@@ -33,36 +36,37 @@ public class Book {
 
     }
 
-    public int getIsbn() {return isbn;}
+    public String getIsbn() {return isbn;}
 
     public String getBookName(){return bookName;}
 
     public String getAuthor(){return author;}
 
-    public URL getImageId(){return imageAddress;}
+    public String getImageId(){return imageAddress;}
 
     public String getDescription(){return  description;}
 
-    public int getPage(){return  page;}
+    public String getPage(){return  page;}
 
     public String getPublisher(){return  publisher;}
 
-    public  double getRating() {return rating;}
+    public String getRating() {return rating;}
 
+    public String getNumberOfCopys(){return numberOfCopys;}
 
-    public int getNumberOfCopys(){return numberOfCopys;}
+    public String getMax_copys(){return max_copys;}
 
-    public int getMax_copys(){return max_copys;}
-
-    public int getNum_rating(){return num_rating;}
+    public String getNum_rating(){return num_rating;}
 
     public void addToNumberOfCopys(int added){
         numberOfCopys = numberOfCopys + added;
     }
 
-    public void setBookInfo(int isbn, String bookName, URL imageAddress, String author, String description,
-                            int page, String publisher, double rating, int numberOfCopys, int max_copys, int num_rating){
+    public void setBookInfo(String isbn, String bookName, String imageAddress, String author, String description,
+                            String page, String publisher, String rating, String numberOfCopys, String max_copys, String num_rating){
 
 
     }
+
+
 }

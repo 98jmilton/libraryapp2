@@ -9,32 +9,26 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
+import static java.lang.Math.toIntExact;
 
 
 public class SplashScreen extends AppCompatActivity {
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
-    Object  user1 = "";
+    Object  dataString = "";
 
-    String XXX = "";
+    String XXXbentenison = "";
+    Book[] books = new Book[100];
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,54 +50,81 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
+int i = 0;
                 for (DataSnapshot BookSnapshot: dataSnapshot.getChildren()) {
+                    String isbn = (String) BookSnapshot.child("ISBN").getValue();
+                    String author = (String) BookSnapshot.child("Author").getValue();
+                    String imageaddress = (String) BookSnapshot.child("img").getValue();
+                    String Description = (String) BookSnapshot.child("Description").getValue();
+                    String name = (String) BookSnapshot.child("Name").getValue();
+                    String publisher = (String) BookSnapshot.child("Publisher").getValue();
+                    String maxCopys = (String) BookSnapshot.child("MaxCopys").getValue();
+                    String numCopys = (String) BookSnapshot.child("NumCopys").getValue();
+                    String page =     (String) BookSnapshot.child("Page").getValue();
+                    String totrating =(String) BookSnapshot.child("Rating").getValue();
+                    String numrating =(String) BookSnapshot.child("rating").getValue();
 
-                    user1 =  BookSnapshot.getValue();
-                    XXX += user1;
 
+                    books[i] = new Book(isbn, name, imageaddress, author, Description, page, publisher, totrating, numCopys, maxCopys, numrating);
+                i++;
 
                 }
+                System.out.println(books[0].isbn);
+                System.out.println(books[0].author);
+                System.out.println(books[0].imageAddress);
+                System.out.println(books[0].description);
+                System.out.println(books[0].bookName);
+                System.out.println(books[0].publisher);
+                System.out.println(books[0].max_copys);
+                System.out.println(books[0].numberOfCopys);
+                System.out.println(books[0].page);
+                System.out.println(books[0].rating);
+                System.out.println(books[0].num_rating);
+                System.out.println(books[1].isbn);
+                System.out.println(books[1].author);
+                System.out.println(books[1].imageAddress);
+                System.out.println(books[1].description);
+                System.out.println(books[1].bookName);
+                System.out.println(books[1].publisher);
+                System.out.println(books[1].max_copys);
+                System.out.println(books[1].numberOfCopys);
+                System.out.println(books[1].page);
+                System.out.println(books[1].rating);
+                System.out.println(books[1].num_rating);
+                System.out.println(books[2].isbn);
+                System.out.println(books[2].author);
+                System.out.println(books[2].imageAddress);
+                System.out.println(books[2].description);
+                System.out.println(books[2].bookName);
+                System.out.println(books[2].publisher);
+                System.out.println(books[2].max_copys);
+                System.out.println(books[2].numberOfCopys);
+                System.out.println(books[2].page);
+                System.out.println(books[2].rating);
+                System.out.println(books[2].num_rating);
+                System.out.println(books[3].isbn);
+                System.out.println(books[3].author);
+                System.out.println(books[3].imageAddress);
+                System.out.println(books[3].description);
+                System.out.println(books[3].bookName);
+                System.out.println(books[3].publisher);
+                System.out.println(books[3].max_copys);
+                System.out.println(books[3].numberOfCopys);
+                System.out.println(books[3].page);
+                System.out.println(books[3].rating);
+                System.out.println(books[3].num_rating);
+                System.out.println(books[4].isbn);
+                System.out.println(books[4].author);
+                System.out.println(books[4].imageAddress);
+                System.out.println(books[4].description);
+                System.out.println(books[4].bookName);
+                System.out.println(books[4].publisher);
+                System.out.println(books[4].max_copys);
+                System.out.println(books[4].numberOfCopys);
+                System.out.println(books[4].page);
+                System.out.println(books[4].rating);
+                System.out.println(books[4].num_rating);
 
-               System.out.println( "xxxxxxxxxxx \n xxxxxxxxxxx\n xxxxxxxxxxx\n xxxxxxxxxxx\n xxxxxxxxxxxxxxxxxxxxxxxxxxxxx" + "\n" +  /*dataSnapshot.getValue() */ XXX + "\n" + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX \n XXXXXXXXXXXXXXXXXXXX");
-
-
-                /*
-
-               int i = 0;
-
-                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-
-                    int isbn = (int) messageSnapshot.child("ISBN").getValue();
-                    String author = (String) messageSnapshot.child("Author").getValue();
-                    URL imageaddress = (URL) messageSnapshot.child("img").getValue();
-                    String Description = (String) messageSnapshot.child("Description").getValue();
-                    String name = (String) messageSnapshot.child("Name").getValue();
-                    String publisher = (String) messageSnapshot.child("Publisher").getValue();
-                    int maxCopys = (int) messageSnapshot.child("MaxCopys").getValue();
-                    int numCopys = (int) messageSnapshot.child("NumCopys").getValue();
-                    int page = (int) messageSnapshot.child("Page").getValue();
-                    int totrating = (int) messageSnapshot.child("Rating").getValue();
-                    int numrating = (int) messageSnapshot.child("rating").getValue();
-
-
-                    System.out.println("xxxxxxxxxxxxxxxxxxxxxxx \n xxxxxxxxxxxxxxxxxx  \n xxxxxxxxxxxxxxxxx \n xxxxxxxxxxxxx" + isbn + " " + author + "" + imageaddress + " " + Description + "" + name + "" + publisher + "" + maxCopys + ""
-                            + "" + numCopys + "" + page + "" + totrating + "" + numrating);
-
-
-                    // Book[] book = {
-                    //         new Book(isbn, name, imageaddress, author, Description, page, publisher, totrating, numCopys, maxCopys, numrating),
-
-                };
-
-
-
-
-                    i++;
-               // }
-
-
-*/
 
 
 
