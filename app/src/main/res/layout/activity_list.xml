@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="5dp"
-    android:id="@+id/activity_list"
     android:layout_width="match_parent"
-    android:background="@android:color/background_light"
-    android:orientation="vertical"
-    android:weightSum="1">
+    android:layout_height="match_parent">
     <SearchView
         android:id="@+id/searchbar"
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
     <ListView
-        android:id="@+id/listView1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:id="@+id/bookRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchbar"
+        app:layout_constraintVertical_bias="1.0" />
 
-
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
