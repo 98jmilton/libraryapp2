@@ -2,12 +2,9 @@
 package com.example.ezmilja.libraryapp;
 
 import android.os.Bundle;
-
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-
 import com.firebase.client.Firebase;
-
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.google.firebase.database.DataSnapshot;
