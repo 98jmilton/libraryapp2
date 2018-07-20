@@ -1,5 +1,7 @@
 package com.example.ezmilja.libraryapp;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,13 +11,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import static com.example.ezmilja.libraryapp.BooksArray.books;
+
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ImageViewHolder> {
 
-    private int[] images;
+    private Book[] images;
+    Context context;
 
-    public  BookAdapter(int[] images){
+    public  BookAdapter(Book[] books, Context context_){
 
-        this.images = images;
+        this.images = books;
+        this.context = context_;
     }
 
     @NonNull
@@ -26,11 +35,20 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ImageViewHolde
         return imageViewHolder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        int image_id = images[position];
-        holder.BookImage.setImageResource(image_id);
-        holder.BookDetails.setText("Author:"+position);
+
+        Glide.with(this.context)
+                .load(books[position].imageAddress)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.getImage());
+
+
+
+
+
+        holder.BookDetails.setText( books[position].bookName +"\n \n"+ books[position].author);
     }
 
     @Override
@@ -47,6 +65,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ImageViewHolde
             super(itemView);
             BookImage = itemView.findViewById(R.id.imageViewCustom);
             BookDetails = itemView.findViewById(R.id.bookDetails);
+
         }
+        public ImageView getImage(){ return this.BookImage;}
     }
 }

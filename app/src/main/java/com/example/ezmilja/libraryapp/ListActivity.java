@@ -43,7 +43,7 @@ public class ListActivity extends AppCompatActivity {
         Rv.setHasFixedSize(true);
         Rv.setLayoutManager(layoutManager);
 
-        adapter=new BookAdapter(images);
+        adapter=new BookAdapter(books,this);
         Rv.setAdapter(adapter);
 
         int k=0;
