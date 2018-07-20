@@ -7,15 +7,16 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     >
-
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imageViewCustom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ado"
         />
+
     <TextView
-        android:id="@+id/contact_name"
-        android:layout_width="0dp"
+        android:id="@+id/bookDetails"
+        android:layout_width="10dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         />

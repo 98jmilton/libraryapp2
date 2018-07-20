@@ -4,9 +4,13 @@ package com.example.ezmilja.libraryapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -18,33 +22,29 @@ import static com.example.ezmilja.libraryapp.SplashScreen.j;
 
 public class ListActivity extends AppCompatActivity {
 
+    private RecyclerView Rv;
+
+    private RecyclerView.LayoutManager layoutManager;
+
+    private BookAdapter adapter;
+
+
+    private int[] images = {
+            R.drawable.ado,R.drawable.advancecobra,R.drawable.agileretrospectives,R.drawable.antinaction,R.drawable.bounce
+    };
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        ListView lv = (ListView) findViewById(R.id.bookRecycler);
+        Rv = (RecyclerView) findViewById(R.id.bookRecycler);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        Rv.setHasFixedSize(true);
+        Rv.setLayoutManager(layoutManager);
 
-
-        final List<String> your_array_list = new ArrayList<String>();
-        int i;
-        for (i=0;i<j;i++) {
-            your_array_list.add( "Book Name: "+books[i].bookName + "\n" + "Author: " + books[i].author);
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,your_array_list );
-
-        lv.setAdapter(arrayAdapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-               // Intent androidsolved_intent = new Intent(getApplicationContext(), MessageScreen.class);
-               // androidsolved_intent.putExtra("partner", your_array_list.get(position));
-              // startActivity(androidsolved_intent);
-            }
-        });
+        adapter=new BookAdapter(images);
+        Rv.setAdapter(adapter);
 
         int k=0;
                 while (k<j){
