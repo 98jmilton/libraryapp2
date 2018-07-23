@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.io.InputStream;
 
 import static com.example.ezmilja.libraryapp.BooksArray.books;
@@ -55,7 +54,6 @@ public class SplashScreen extends AppCompatActivity {
                 j= dataSnapshot.getChildrenCount();
                 int i = 0;
 
-
                 for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
                     String isbn = (String) BookSnapshot.child("ISBN").getValue();
                     String author = (String) BookSnapshot.child("Author").getValue();
@@ -72,14 +70,10 @@ public class SplashScreen extends AppCompatActivity {
 
                     books[i] = new Book(isbn, name, imageaddress, author, Description, page, publisher, totrating, numCopys, maxCopys, numrating);
                     i++;
-
                 }
 
                 String imageaddress = (books[0].imageAddress);
                 new DownloadImageTask((ImageView) findViewById(R.id.imageView6)).execute(imageaddress);
-
-
-
             }
 
             @Override
@@ -96,7 +90,8 @@ public class SplashScreen extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat
                     .requestPermissions(SplashScreen.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
-        } else {
+        }
+        else {
 
             Thread myThread = new Thread() {
                 @Override
