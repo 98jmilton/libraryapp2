@@ -24,7 +24,7 @@ import static com.example.ezmilja.libraryapp.SplashScreen.j;
 
 public class ListActivity extends AppCompatActivity {
 
-    ArrayAdapter<String> searchAdapter;
+    ArrayAdapter<String> searchArrayAdapter;
     private RecyclerView Rv;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
@@ -34,12 +34,6 @@ public class ListActivity extends AppCompatActivity {
     private BookAdapter adapter;
 
     ArrayList<String> myBookNames = new ArrayList<>();
-
-
-
-
-    private SearchView searchView;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,22 +49,9 @@ public class ListActivity extends AppCompatActivity {
 
         int k = 0;
        for(k =0; k < j; k++) {
-//        System.out.println(books[k].isbn);
-//        System.out.println(books[k].author);
-//        System.out.println(books[k].imageAddress);
-//        System.out.println(books[k].description);
-//        System.out.println(books[k].bookName);
-//        System.out.println(books[k].publisher);
-//        System.out.println(books[k].max_copys);
-//        System.out.println(books[k].numberOfCopys);
-//        System.out.println(books[k].page);
-//        System.out.println(books[k].rating);
-//        System.out.println(books[k].num_rating);
             String nameArray = books[k].bookName;
-
             myBookNames.add(nameArray);
        }
-            System.out.println(myBookNames);
     }
 
 
@@ -87,8 +68,9 @@ public class ListActivity extends AppCompatActivity {
         final SearchView searchView = (SearchView)item.getActionView();
 
         //suggestion list for searching
-//        searchAdapter = new ArrayAdapter<> (ListActivity.this, android.R.layout.simple_list_item_1, myBookNames);
-//        Rv.setAdapter(mAdapter);
+        searchArrayAdapter = new ArrayAdapter<> (ListActivity.this, android.R.layout.simple_list_item_1, myBookNames);
+
+        Rv.setAdapter(mAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 

@@ -183,13 +183,7 @@ public class SplashScreen extends AppCompatActivity {
             }
             return mIcon11;
         }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
-
-
 }
 
 
