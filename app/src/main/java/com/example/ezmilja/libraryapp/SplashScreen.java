@@ -33,21 +33,17 @@ public class SplashScreen extends AppCompatActivity {
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
-    Object  dataString = "";
-
-    String XXXbentenison = "";
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(), "yourfont.ttf");
-        TextView TextView1 = (TextView) findViewById(R.id.TextView1);
+        TextView TextView1 = findViewById(R.id.TextView1);
         TextView1.setTypeface(myTypeFace1);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference BookRef = database.getReference("/ Books/");
 
-
+        //Read data from database
         BookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -71,9 +67,6 @@ public class SplashScreen extends AppCompatActivity {
                     books[i] = new Book(isbn, name, imageaddress, author, Description, page, publisher, totrating, numCopys, maxCopys, numrating);
                     i++;
                 }
-
-                String imageaddress = (books[0].imageAddress);
-                new DownloadImageTask((ImageView) findViewById(R.id.imageView6)).execute(imageaddress);
             }
 
             @Override
@@ -84,7 +77,7 @@ public class SplashScreen extends AppCompatActivity {
 
         requestPermission();
     }
-
+    //Request Camera Permission
     private void requestPermission() {
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -160,28 +153,6 @@ public class SplashScreen extends AppCompatActivity {
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
-
-    //show image from String url
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
         }
     }
 }

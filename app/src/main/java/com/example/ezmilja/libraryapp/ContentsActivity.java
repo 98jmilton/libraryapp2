@@ -60,8 +60,8 @@ public class ContentsActivity extends AppCompatActivity {
         btn_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  Intent intent = new Intent(ContentsActivity.this, CheckoutActivity.class);
-              //  startActivity(intent);
+                Intent intent = new Intent(ContentsActivity.this, CheckoutActivity.class);
+                startActivity(intent);
             }
         });
     };

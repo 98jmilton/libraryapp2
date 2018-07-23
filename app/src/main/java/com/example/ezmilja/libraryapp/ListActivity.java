@@ -69,7 +69,7 @@ public class ListActivity extends AppCompatActivity {
 
         //suggestion list for searching
         searchArrayAdapter = new ArrayAdapter<> (ListActivity.this, android.R.layout.simple_list_item_1, myBookNames);
-
+        mAdapter = new BookAdapter(books, this);
         Rv.setAdapter(mAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
