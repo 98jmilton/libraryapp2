@@ -30,7 +30,6 @@ public class ContentsActivity extends AppCompatActivity {
         btn_list = (Button) findViewById(R.id.btn_list);
         btn_list.setTypeface(myTypeFace1);
 
-
         btn_rqst = (Button) findViewById(R.id.btn_rqst);
         btn_rqst.setTypeface(myTypeFace1);
 
