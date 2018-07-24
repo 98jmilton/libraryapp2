@@ -1,8 +1,5 @@
-
 package com.example.ezmilja.libraryapp;
 
-import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +18,6 @@ import static com.example.ezmilja.libraryapp.BooksArray.books;
 import static com.example.ezmilja.libraryapp.BooksArray.i;
 import static com.example.ezmilja.libraryapp.SplashScreen.j;
 
-
 public class ListActivity extends AppCompatActivity {
 
     ArrayAdapter<String> searchArrayAdapter;
@@ -32,6 +28,8 @@ public class ListActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
 
     private BookAdapter adapter;
+
+    private SearchAdapter searchAdapter;
 
     ArrayList<String> myBookNames = new ArrayList<>();
 
@@ -47,14 +45,12 @@ public class ListActivity extends AppCompatActivity {
         adapter = new BookAdapter(books, this);
         Rv.setAdapter(adapter);
 
-        int k = 0;
-       for(k =0; k < j; k++) {
+        int k;
+        for(k =0; k < j; k++) {
             String nameArray = books[k].bookName;
             myBookNames.add(nameArray);
-       }
+        }
     }
-
-
 
     //Search to filter results
     @Override
@@ -68,9 +64,8 @@ public class ListActivity extends AppCompatActivity {
         final SearchView searchView = (SearchView)item.getActionView();
 
         //suggestion list for searching
-        searchArrayAdapter = new ArrayAdapter<> (ListActivity.this, android.R.layout.simple_list_item_1, myBookNames);
-        mAdapter = new BookAdapter(books, this);
-        Rv.setAdapter(mAdapter);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myBookNames);
+//        Rv.setAdapter(searchAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 

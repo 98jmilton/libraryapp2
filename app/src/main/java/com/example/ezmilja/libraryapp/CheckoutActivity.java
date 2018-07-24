@@ -13,7 +13,6 @@ private Button scanButton;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
-
         //Open Barcode scanner
         scanButton = findViewById(R.id.scan_button);
         scanButton.setOnClickListener(new View.OnClickListener() {
@@ -23,7 +22,5 @@ private Button scanButton;
                 startActivity(intent);
             }
         });
-
     }
-
 }

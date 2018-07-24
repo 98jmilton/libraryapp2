@@ -51,20 +51,21 @@ public class SplashScreen extends AppCompatActivity {
                 int i = 0;
 
                 for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
-                    String isbn = (String) BookSnapshot.child("ISBN").getValue();
                     String author = (String) BookSnapshot.child("Author").getValue();
-                    String imageaddress = (String) BookSnapshot.child("ImageAddress").getValue();
-                    String Description = (String) BookSnapshot.child("Description").getValue();
                     String name = (String) BookSnapshot.child("BookName").getValue();
-                    String publisher = (String) BookSnapshot.child("Publisher").getValue();
+                    String description = (String) BookSnapshot.child("Description").getValue();
+                    String isbn = (String) BookSnapshot.child("ISBN").getValue();
+                    String imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
                     String maxCopys = (String) BookSnapshot.child("MaxCopys").getValue();
                     String numCopys = (String) BookSnapshot.child("NumCopys").getValue();
+                    String numRating = (String) BookSnapshot.child("NumRating").getValue();
                     String page = (String) BookSnapshot.child("Pages").getValue();
-                    String totrating = (String) BookSnapshot.child("Rating").getValue();
-                    String numrating = (String) BookSnapshot.child("Numrating").getValue();
+                    String publisher = (String) BookSnapshot.child("Publisher").getValue();
+                    String totRating = (String) BookSnapshot.child("Rating").getValue();
 
 
-                    books[i] = new Book(isbn, name, imageaddress, author, Description, page, publisher, totrating, numCopys, maxCopys, numrating);
+
+                    books[i] = new Book(isbn, name, imageAddress, author, description, page, publisher, totRating, numCopys, maxCopys, numRating);
                     i++;
                 }
             }

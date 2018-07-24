@@ -1,3 +1,4 @@
+
 package com.example.ezmilja.libraryapp;
 
 import android.annotation.SuppressLint;
@@ -21,7 +22,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ImageViewHolde
     private Book[] images;
     Context context;
 
-    public  BookAdapter(Book[] books, Context context_){
+    public  BookAdapter(Book[] books, Context context_) {
 
         this.images = books;
         this.context = context_;
@@ -58,8 +59,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ImageViewHolde
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder{
 
-    ImageView BookImage;
-    TextView BookDetails;
+        ImageView BookImage;
+        TextView BookDetails;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
