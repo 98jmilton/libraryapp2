@@ -8,9 +8,15 @@
     android:paddingBottom="10dp"
     >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/imageViewCustom"
-            android:layout_width="46dp"
+            android:layout_width="10dp"
             android:layout_height="120dp"
             android:layout_weight="1"
             android:src="@drawable/ado" />
@@ -26,3 +32,5 @@
             android:textSize="30dp" />
 
     </LinearLayout>
+
+</LinearLayout>

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import java.util.ArrayList;
 import static com.example.ezmilja.libraryapp.BooksArray.books;
 import static com.example.ezmilja.libraryapp.BooksArray.i;
@@ -17,10 +18,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     private Context context;
     private ArrayList<String> myBookNames;
 
-    public class SearchViewHolder extends RecyclerView.ViewHolder {
-        public SearchViewHolder(View itemView) {
-            super(itemView);
+     static class SearchViewHolder extends RecyclerView.ViewHolder {
+        TextView BookDetails;
 
+        SearchViewHolder(View itemView) {
+            super(itemView);
 
         }
     }
@@ -36,11 +38,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         int k;
-        for(k =0; k < j; k++) {
+        for(k = 0; k < j; k++) {
             String nameArray = books[k].bookName;
             myBookNames.add(nameArray);
         }
-
         View view = inflater.inflate(R.layout.custom_layout, parent, false);
         return new SearchViewHolder(view);
     }
@@ -48,7 +49,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
 
-        //holder.serial_number.setText(<your string array[position]>);
+        holder.BookDetails.setText((CharSequence) myBookNames);
 
     }
 

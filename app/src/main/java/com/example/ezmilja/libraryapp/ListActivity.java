@@ -36,15 +36,9 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
-        Rv = (RecyclerView) findViewById(R.id.bookRecycler);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        Rv.setHasFixedSize(true);
-        Rv.setLayoutManager(layoutManager);
-
-        adapter = new BookAdapter(books, this);
-        Rv.setAdapter(adapter);
     }
+
+
 
     //Search to filter results
     @Override
@@ -52,14 +46,21 @@ public class ListActivity extends AppCompatActivity {
 
         //Search Bar to filter results of books
         MenuInflater inflater = getMenuInflater();
-
         inflater.inflate(R.menu.searchmenu, menu);
         MenuItem item = menu.findItem(R.id.searchlist);
         final SearchView searchView = (SearchView)item.getActionView();
 
+
+        //Set up RecyclerView with adapter
+        Rv = findViewById(R.id.bookRecycler);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        Rv.setHasFixedSize(true);
+        Rv.setLayoutManager(layoutManager);
+        adapter = new BookAdapter(books, this,myBookNames);
+
         //suggestion list for searching
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myBookNames);
-       // Rv.setAdapter(searchAdapter);
+        Rv.setAdapter(adapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -77,6 +78,7 @@ public class ListActivity extends AppCompatActivity {
                 return true;
             }
         });
+
         return super.onCreateOptionsMenu(menu);
     }
 
