@@ -73,7 +73,6 @@ public class SplashScreen extends AppCompatActivity {
                     i++;
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -89,12 +88,12 @@ public class SplashScreen extends AppCompatActivity {
         }
 
         else {
+            //Restart Current Activity
             Toast.makeText(SplashScreen.this, "Please enable Internet connection to continue", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getApplicationContext(),SplashScreen.class);
             startActivity(intent);
         }
     }
-
 
     //Request Camera Permission
     private void requestCameraPermission() {
@@ -104,7 +103,7 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-    //Move to Contents
+    //Move to Contents Activity
     private void toContents(){
 
         Thread myThread = new Thread() {
@@ -123,6 +122,7 @@ public class SplashScreen extends AppCompatActivity {
         myThread.start();
     }
 
+    //Camera Permissions Results
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -131,43 +131,11 @@ public class SplashScreen extends AppCompatActivity {
                     // Permission Granted
                     Toast.makeText(SplashScreen.this, "Permission Granted", Toast.LENGTH_SHORT)
                             .show();
-
-                    Thread myThread = new Thread() {
-                        @Override
-                        public void run() {
-                            try {
-                                sleep(2000);
-                                Intent intent = new Intent(getApplicationContext(),
-                                        ContentsActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    myThread.start();
                 }
-
                 else {
                     // Permission Denied
                     Toast.makeText(SplashScreen.this, "Permission Denied", Toast.LENGTH_SHORT)
                             .show();
-
-                    Thread myThread = new Thread() {
-                        @Override
-                        public void run() {
-                            try {
-                                sleep(2000);
-                                Intent intent = new Intent(getApplicationContext(), ContentsActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    myThread.start();
                 }
                 break;
             default:
@@ -175,8 +143,7 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-
-
+    //Check Internet Connection
     private boolean networkConnection() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
