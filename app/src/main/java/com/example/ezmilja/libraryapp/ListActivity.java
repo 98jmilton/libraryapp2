@@ -44,12 +44,6 @@ public class ListActivity extends AppCompatActivity {
 
         adapter = new BookAdapter(books, this);
         Rv.setAdapter(adapter);
-
-        int k;
-        for(k =0; k < j; k++) {
-            String nameArray = books[k].bookName;
-            myBookNames.add(nameArray);
-        }
     }
 
     //Search to filter results

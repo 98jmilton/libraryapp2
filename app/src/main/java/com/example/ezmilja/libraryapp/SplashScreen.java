@@ -1,11 +1,15 @@
 package com.example.ezmilja.libraryapp;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -23,8 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.io.InputStream;
 
+import static android.Manifest.permission.INTERNET;
 import static com.example.ezmilja.libraryapp.BooksArray.books;
 import static java.lang.Math.toIntExact;
+import static java.lang.Thread.sleep;
 
 
 public class SplashScreen extends AppCompatActivity {
@@ -63,8 +69,6 @@ public class SplashScreen extends AppCompatActivity {
                     String publisher = (String) BookSnapshot.child("Publisher").getValue();
                     String totRating = (String) BookSnapshot.child("Rating").getValue();
 
-
-
                     books[i] = new Book(isbn, name, imageAddress, author, description, page, publisher, totRating, numCopys, maxCopys, numRating);
                     i++;
                 }
@@ -76,32 +80,47 @@ public class SplashScreen extends AppCompatActivity {
             }
         });
 
-        requestPermission();
+        //Request permissions and move to contents page
+        requestCameraPermission();
+        networkConnection();
+
+        if (networkConnection()) {
+            toContents();
+        }
+
+        else {
+            Toast.makeText(SplashScreen.this, "Please enable Internet connection to continue", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(),SplashScreen.class);
+            startActivity(intent);
+        }
     }
+
+
     //Request Camera Permission
-    private void requestPermission() {
+    private void requestCameraPermission() {
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat
-                    .requestPermissions(SplashScreen.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
+            ActivityCompat.requestPermissions(SplashScreen.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
         }
-        else {
+    }
 
-            Thread myThread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        sleep(2000);
-                        Intent intent = new Intent(getApplicationContext(), ContentsActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+    //Move to Contents
+    private void toContents(){
+
+        Thread myThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    sleep(2000);
+                    Intent intent = new Intent(getApplicationContext(), ContentsActivity.class);
+                    startActivity(intent);
+                    finish();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            };
-            myThread.start();
-        }
+            }
+        };
+        myThread.start();
     }
 
     @Override
@@ -149,13 +168,33 @@ public class SplashScreen extends AppCompatActivity {
                         }
                     };
                     myThread.start();
-
                 }
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+
+
+    private boolean networkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
 }
 
 

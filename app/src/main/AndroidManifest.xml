@@ -26,8 +26,12 @@
         <activity
             android:name=".ContentsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".CheckoutActivity"/>
-        <activity android:name=".ScanActivity"/>
+        <activity
+            android:name=".CheckoutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ScanActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
