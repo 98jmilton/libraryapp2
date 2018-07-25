@@ -58,8 +58,8 @@ public class ListActivity extends AppCompatActivity {
         final SearchView searchView = (SearchView)item.getActionView();
 
         //suggestion list for searching
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myBookNames);
-//        Rv.setAdapter(searchAdapter);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myBookNames);
+       // Rv.setAdapter(searchAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 

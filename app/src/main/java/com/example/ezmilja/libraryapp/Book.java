@@ -14,8 +14,8 @@ public class Book {
     public String publisher;
     public String rating;
     public String num_rating;
-    public String numberOfCopys;
-    public String max_copys;
+    public String numberOfCopies;
+    public String max_copies;
 
 
 
@@ -30,9 +30,9 @@ public class Book {
         this.page = page;
         this.publisher = publisher;
         this.rating = rating;
-        this.max_copys = max_copys;
+        this.max_copies = max_copys;
         this.num_rating = num_rating;
-        this.numberOfCopys = numberOfCopys;
+        this.numberOfCopies = numberOfCopys;
 
     }
 
@@ -52,18 +52,18 @@ public class Book {
 
     public String getRating() {return rating;}
 
-    public String getNumberOfCopys(){return numberOfCopys;}
+    public String getNumberOfCopys(){return numberOfCopies;}
 
-    public String getMax_copys(){return max_copys;}
+    public String getMax_copys(){return max_copies;}
 
     public String getNum_rating(){return num_rating;}
 
     public void addToNumberOfCopys(int added){
-        numberOfCopys = numberOfCopys + added;
+        numberOfCopies = numberOfCopies + added;
     }
 
     public void setBookInfo(String isbn, String bookName, String imageAddress, String author, String description,
-                            String page, String publisher, String rating, String numberOfCopys, String max_copys, String num_rating){
+                            String page, String publisher, String rating, String numberOfCopies, String max_copies, String num_rating){
 
 
     }

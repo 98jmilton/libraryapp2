@@ -31,8 +31,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         this.myBookNames =myBookNames;
     }
 
-
-
     @NonNull
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,8 +42,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
 
         View view = inflater.inflate(R.layout.custom_layout, parent, false);
-        SearchViewHolder holder = new SearchViewHolder(view);
-        return holder;
+        return new SearchViewHolder(view);
     }
 
     @Override

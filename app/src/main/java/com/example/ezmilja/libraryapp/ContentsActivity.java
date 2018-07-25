@@ -26,18 +26,21 @@ public class ContentsActivity extends AppCompatActivity {
     private void createButton(){
 
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
-        btn_list = (Button) findViewById(R.id.btn_list);
+
+        //List
+        btn_list =  findViewById(R.id.btn_list);
         btn_list.setTypeface(myTypeFace1);
 
-        btn_rqst = (Button) findViewById(R.id.btn_rqst);
+        //Requests
+        btn_rqst =  findViewById(R.id.btn_rqst);
         btn_rqst.setTypeface(myTypeFace1);
 
-
-        btn_check = (Button) findViewById(R.id.btn_check);
+        //Check In/Out
+        btn_check = findViewById(R.id.btn_check);
         btn_check.setTypeface(myTypeFace1);
 
 
-        TextView textView2 = (TextView) findViewById(R.id.textView2);
+        TextView textView2 = findViewById(R.id.textView2);
         textView2.setTypeface(myTypeFace1);
 
         btn_list.setOnClickListener(new View.OnClickListener() {
