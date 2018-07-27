@@ -103,7 +103,7 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
 
         });
 
-       // VolleyInitialiser.getInstance().addToRequestQueue(request);
+        //VolleyInitialiser.getInstance().addToRequestQueue(request);
     }
 
     @Override
