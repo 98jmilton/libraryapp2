@@ -46,7 +46,7 @@ public class ContentsActivity extends AppCompatActivity {
         btn_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ContentsActivity.this, ListActivity.class);
+                Intent intent = new Intent(ContentsActivity.this, RecyclerActivity.class);
                 startActivity(intent);
             }
         });

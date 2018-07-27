@@ -53,6 +53,7 @@ public class SplashScreen extends AppCompatActivity {
         BookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+               // j= dataSnapshot.getChildrenCount();
                 j= dataSnapshot.getChildrenCount();
                 int i = 0;
 

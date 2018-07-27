@@ -6,55 +6,115 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
+import java.util.List;
 import static com.example.ezmilja.libraryapp.BooksArray.books;
-import static com.example.ezmilja.libraryapp.BooksArray.i;
-import static com.example.ezmilja.libraryapp.SplashScreen.j;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
-
-    private LayoutInflater inflater;
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder>
+        implements Filterable {
     private Context context;
-    private ArrayList<String> myBookNames;
+    private List<BookRow> bookList;
+    private List<BookRow> bookListFiltered;
+    private BooksAdapterListener listener;
 
-     static class SearchViewHolder extends RecyclerView.ViewHolder {
-        TextView BookDetails;
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView name;
+        public ImageView thumbnail;
 
-        SearchViewHolder(View itemView) {
-            super(itemView);
+         MyViewHolder(View view) {
+            super(view);
+            name = view.findViewById(R.id.bookDetails);
+            thumbnail = view.findViewById(R.id.imageViewCustom);
 
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // send selected book row in callback
+                    listener.onBookSelected(bookListFiltered.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
-    public SearchAdapter(Context context,ArrayList myBookNames) {
-        inflater = LayoutInflater.from(context);
+    SearchAdapter(Context context, List<BookRow> bookList, BooksAdapterListener listener) {
         this.context = context;
-        this.myBookNames =myBookNames;
+        this.listener = listener;
+        this.bookList = bookList;
+        this.bookListFiltered = bookList;
     }
 
     @NonNull
     @Override
-    public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.custom_layout, parent, false);
 
-        int k;
-        for(k = 0; k < j; k++) {
-            String nameArray = books[k].bookName;
-            myBookNames.add(nameArray);
-        }
-        View view = inflater.inflate(R.layout.custom_layout, parent, false);
-        return new SearchViewHolder(view);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        final BookRow bookRow = bookListFiltered.get(position);
 
-        holder.BookDetails.setText((CharSequence) myBookNames);
+        holder.name.setText( books[position].bookName +"\n \n"+ books[position].author);
+
+
+        Glide.with(context)
+                .load(bookRow.getImage())
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.thumbnail);
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        return i;
+        return bookListFiltered.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    bookListFiltered = bookList;
+                } else {
+                    List<BookRow> filteredList = new ArrayList<>();
+                    for (BookRow row : bookList) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name match
+                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    bookListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = bookListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+               bookListFiltered = (ArrayList<BookRow>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public interface BooksAdapterListener {
+        void onBookSelected(BookRow bookRow);
     }
 }
