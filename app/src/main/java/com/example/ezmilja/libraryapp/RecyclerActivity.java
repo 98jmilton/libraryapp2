@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.SearchView;
@@ -21,11 +20,10 @@ import static com.example.ezmilja.libraryapp.BooksArray.books;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.firebase.database.DataSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.List;
 import com.google.firebase.database.DatabaseReference;
@@ -40,70 +38,39 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
     private SearchAdapter mAdapter;
     private SearchView searchView;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference BookRef = database.getReference("/ Books/");
-
-    //fetch data for viewing
-    String bookData =books[i-1].bookName;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        System.out.println("111111"+ bookList);
-        System.out.println("222222");
-
         recyclerView = findViewById(R.id.recycler_view);
         bookList = new ArrayList<>();
         mAdapter = new SearchAdapter(this, bookList, this);
 
-        // white background notification bar
-        whiteNotificationBar(recyclerView);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        fetchBooks();
-        System.out.println("111111"+ bookList);
-        System.out.println("222222");
+        //fetchBooks();
     }
 
-    //fetches json by making http calls
+    //fill bookList from database
     private void fetchBooks() {
-        JsonArrayRequest request = new JsonArrayRequest(bookData,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        if (response == null) {
-                            Toast.makeText(getApplicationContext(), "Couldn't fetch the library! Please try again.", Toast.LENGTH_LONG).show();
-                            return;
-                        }
 
-                        List<BookRow> items = new Gson().fromJson(response.toString(), new TypeToken<List<BookRow>>() {
-                        }.getType());
+        bookList.clear();
+        int namePosition;
+        for (namePosition=0; namePosition<j ; namePosition++) {
 
-                        // adding contacts to book list
-                        bookList.clear();
-                        bookList.addAll(items);
 
-                        // refreshing recycler view
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // error in getting json
-                Log.e(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+        }
 
-        });
-
-        //VolleyInitialiser.getInstance().addToRequestQueue(request);
+        // refreshing recycler view
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -126,7 +93,6 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
                 mAdapter.getFilter().filter(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String query) {
                 // filter recycler view when text is changed
@@ -152,7 +118,7 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
         return super.onOptionsItemSelected(item);
     }
 
-    // close search view on back button pressed
+    //close search view on back button pressed
     @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {
@@ -160,15 +126,6 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
             return;
         }
         super.onBackPressed();
-    }
-
-    private void whiteNotificationBar(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
     }
 
     @Override

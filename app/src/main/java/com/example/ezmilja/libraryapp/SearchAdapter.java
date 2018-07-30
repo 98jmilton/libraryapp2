@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import static com.example.ezmilja.libraryapp.BooksArray.books;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder>
-        implements Filterable {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder> implements Filterable {
+
     private Context context;
     private List<BookRow> bookList;
     private List<BookRow> bookListFiltered;
@@ -62,16 +62,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final BookRow bookRow = bookListFiltered.get(position);
 
-        holder.name.setText( books[position].bookName +"\n \n"+ books[position].author);
-
+        holder.name.setText(BookRow.getName());
 
         Glide.with(context)
                 .load(bookRow.getImage())
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.thumbnail);
-
-
-
     }
 
     @Override

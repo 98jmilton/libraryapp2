@@ -7,7 +7,7 @@ import java.net.URL;
 public class Book {
     public String isbn;
     public String bookName;
-    public String  imageAddress;
+    public String imageAddress;
     public String author;
     public String description;
     public String page;

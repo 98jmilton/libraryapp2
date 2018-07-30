@@ -58,6 +58,7 @@ public class SplashScreen extends AppCompatActivity {
                 int i = 0;
 
                 for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
+
                     String isbn         = (String) BookSnapshot.child("ISBN").getValue();
                     String name         = (String) BookSnapshot.child("BookName").getValue();
                     String imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
@@ -74,6 +75,7 @@ public class SplashScreen extends AppCompatActivity {
                     i++;
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

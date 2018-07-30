@@ -36,7 +36,7 @@ private boolean on;
     }
 
 
-    //Show where to find ISBN on book
+    //ImageButton to open xml ISBN info
     private void isbnInfo() {
         info = findViewById(R.id.info_button);
         info.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +47,7 @@ private boolean on;
         });
     }
 
+    //Display ISBN info xml
     private void makeInfoDialog(){
         final Dialog dialog = new Dialog(CheckoutActivity.this);
         dialog.setContentView(R.layout.content_isbninfo);
