@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import static com.example.ezmilja.libraryapp.BookRow.getName;
+import static com.example.ezmilja.libraryapp.BookRow.name;
 import static com.example.ezmilja.libraryapp.BooksArray.books;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,7 +30,10 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import static com.example.ezmilja.libraryapp.BooksArray.i;
@@ -56,17 +63,142 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        fetchBooks();
+        getName();
+        System.out.println("XXXXXX\n"+name);
+        //fetchBooks();
     }
 
     //fill bookList from database
     private void fetchBooks() {
 
+
         // TODO: Add database items to bookList
-        // List<BookRow> items = new Gson().fromJson(response.toString(), new TypeToken<List<BookRow>>() {}.getType());
+        List<BookRow> bookItems = new List<BookRow>() {
+
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            public Iterator<BookRow> iterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @NonNull
+            @Override
+            public <T> T[] toArray(@NonNull T[] ts) {
+                return null;
+            }
+
+            @Override
+            public boolean add(BookRow bookRow) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(@NonNull Collection<?> collection) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(@NonNull Collection<? extends BookRow> collection) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int i, @NonNull Collection<? extends BookRow> collection) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(@NonNull Collection<?> collection) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(@NonNull Collection<?> collection) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public BookRow get(int i) {
+                return null;
+            }
+
+            @Override
+            public BookRow set(int i, BookRow bookRow) {
+                return null;
+            }
+
+            @Override
+            public void add(int i, BookRow bookRow) {
+
+            }
+
+            @Override
+            public BookRow remove(int i) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<BookRow> listIterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<BookRow> listIterator(int i) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public List<BookRow> subList(int i, int i1) {
+                return null;
+            }
+        };
         // adding contacts to book list
         bookList.clear();
-       // bookList.addAll(items);
+        bookList.addAll(bookItems);
         // refreshing recycler view
         mAdapter.notifyDataSetChanged();
         //VolleyInitialiser.getInstance().addToRequestQueue(request);
@@ -129,6 +261,6 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
 
     @Override
     public void onBookSelected(BookRow bookRow) {
-        Toast.makeText(getApplicationContext(), "Selected: " + bookRow.getName() , Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Selected: " + getName() , Toast.LENGTH_LONG).show();
     }
 }

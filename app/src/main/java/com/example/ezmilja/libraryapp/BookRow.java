@@ -16,7 +16,7 @@ public class BookRow {
     }
 
     public static String getName() {
-        for (position = 0; position<j ;position++) {
+        for (position = 0; position < books.length ;position++) {
             name = books[position].bookName;
         }
         return name;
@@ -24,7 +24,7 @@ public class BookRow {
 
     public String getImage() {
 
-        for (position = 0; position<j ;position++) {
+        for (position = 0; position<books.length ;position++) {
             image = books[position].imageAddress;
         }
         return image;
