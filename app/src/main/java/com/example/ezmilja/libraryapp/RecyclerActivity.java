@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -50,27 +51,24 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
         bookList = new ArrayList<>();
         mAdapter = new SearchAdapter(this, bookList, this);
 
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        //fetchBooks();
+        fetchBooks();
     }
 
     //fill bookList from database
     private void fetchBooks() {
 
+       // List<BookRow> items = new Gson().fromJson(response.toString(), new TypeToken<List<BookRow>>() {}.getType());
+        // adding contacts to book list
         bookList.clear();
-        int namePosition;
-        for (namePosition=0; namePosition<j ; namePosition++) {
-
-
-        }
-
+       // bookList.addAll(items);
         // refreshing recycler view
         mAdapter.notifyDataSetChanged();
+        //VolleyInitialiser.getInstance().addToRequestQueue(request);
     }
 
     @Override
