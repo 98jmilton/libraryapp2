@@ -62,7 +62,8 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
     //fill bookList from database
     private void fetchBooks() {
 
-       // List<BookRow> items = new Gson().fromJson(response.toString(), new TypeToken<List<BookRow>>() {}.getType());
+        // TODO: Add database items to bookList
+        // List<BookRow> items = new Gson().fromJson(response.toString(), new TypeToken<List<BookRow>>() {}.getType());
         // adding contacts to book list
         bookList.clear();
        // bookList.addAll(items);
