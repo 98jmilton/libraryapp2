@@ -1,32 +1,29 @@
 package com.example.ezmilja.libraryapp;
 
-import android.widget.TextView;
-
 import static com.example.ezmilja.libraryapp.BooksArray.books;
-import static com.example.ezmilja.libraryapp.SplashScreen.j;
 
 public class BookRow {
-    static String name;
-    static String image;
-    TextView bookDetails;
-   static int position;
+
+    String name;
+    String image;
 
     public BookRow() {
 
     }
 
-    public static String getName() {
-        for (position = 0; position < books.length ;position++) {
-            name = books[position].bookName;
-        }
+    public String getName() {
+//        int position;
+//        for (position = 0; position < books.length ;position++) {
+//            name = books[position].bookName;
+//        }
         return name;
     }
 
     public String getImage() {
-
-        for (position = 0; position<books.length ;position++) {
-            image = books[position].imageAddress;
-        }
+//        int position;
+//        for (position = 0; position<books.length ;position++) {
+//            image = books[position].imageAddress;
+//        }
         return image;
     }
 }

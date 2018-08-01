@@ -26,12 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.io.InputStream;
-
+import java.util.ArrayList;
 import static android.Manifest.permission.INTERNET;
 import static com.example.ezmilja.libraryapp.BooksArray.books;
 import static java.lang.Math.toIntExact;
 import static java.lang.Thread.sleep;
-
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -53,7 +52,7 @@ public class SplashScreen extends AppCompatActivity {
         BookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               // j= dataSnapshot.getChildrenCount();
+
                 j= dataSnapshot.getChildrenCount();
                 int i = 0;
 

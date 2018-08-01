@@ -62,7 +62,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final BookRow bookRow = bookListFiltered.get(position);
 
-        holder.name.setText(BookRow.getName());
+        holder.name.setText(bookRow.getName());
 
         Glide.with(context)
                 .load(bookRow.getImage())
