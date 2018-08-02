@@ -8,7 +8,6 @@ import com.android.volley.toolbox.Volley;
 
 
 //Automatic scheduling of network requests
-
 public abstract class VolleyInitialiser extends Application {
 
     public static final String TAG = VolleyInitialiser.class

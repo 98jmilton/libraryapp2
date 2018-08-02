@@ -98,56 +98,53 @@ public class LeaderboardList extends AppCompatActivity {
         buttonRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //makeRequestDialog();
+                makeRequestDialog();
             }
         });
     }
 
-//    private void makeRequestDialog(){
-//        final Dialog dialog = new Dialog(LeaderboardList.this);
-//        dialog.setContentView(R.layout.request);
-//        dialog.show();
-//
-//        Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
-//
-//        Button btn_submitRequest = (Button) dialog.findViewById(R.id.btn_submitrequest);
-//        Button btn_back = (Button)dialog.findViewById(R.id.btn_back);
-//        btn_submitRequest.setTypeface(myTypeFace1);
-//        btn_back.setTypeface(myTypeFace1);
-//
-//        final EditText edt_name = dialog.findViewById(R.id.name);
-//        final EditText edt_author = dialog.findViewById(R.id.reason);
-//        final EditText edt_email = dialog.findViewById(R.id.email);
-//
-//        btn_submitRequest.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String temp_name = edt_name.getText().toString();
-//                String temp_author = edt_author.getText().toString();
-//                String temp_email = edt_email.getText().toString();
-//                if (requestCheck(temp_name, temp_author, temp_email)) {
+    private void makeRequestDialog(){
+        final Dialog dialog = new Dialog(LeaderboardList.this);
+        dialog.setContentView(R.layout.activity_request_book);
+        dialog.show();
+
+        Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
+
+        Button btn_submitRequest =  dialog.findViewById(R.id.btn_submitrequest);
+        Button btn_back = dialog.findViewById(R.id.btn_back);
+        btn_submitRequest.setTypeface(myTypeFace1);
+        btn_back.setTypeface(myTypeFace1);
+
+        final EditText edt_name = dialog.findViewById(R.id.name);
+        final EditText edt_author = dialog.findViewById(R.id.reason);
+        final EditText edt_email = dialog.findViewById(R.id.email);
+
+        btn_submitRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String temp_name = edt_name.getText().toString();
+                String temp_author = edt_author.getText().toString();
+                String temp_email = edt_email.getText().toString();
+                if (requestCheck(temp_name, temp_author, temp_email)) {
 //                    RequestBook temp = new RequestBook(temp_name, temp_author, temp_email, 0);
 //                    originalList.add(temp);
 //                    makeListView();
 //                    dialog.dismiss();
-//                    //send to database//
-//                    NewRquestTask task = new NewRquestTask(view.getContext());
-//                    System.out.println(task.execute(temp));
-//
-//                }
-//                else {
-//                    Toast.makeText(LeaderboardList.this, "Error: Please input correctly", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-//
-//        btn_back.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog.dismiss();
-//            }
-//        });
-//    }
+                    //send to database//
+                }
+                else {
+                    Toast.makeText(LeaderboardList.this, "Error: Please input correctly", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
 
     private boolean requestCheck(String name, String author, String email){
         if (name.length() == 0 || author.length() == 0){

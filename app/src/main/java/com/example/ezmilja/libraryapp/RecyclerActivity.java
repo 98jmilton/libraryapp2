@@ -2,24 +2,33 @@ package com.example.ezmilja.libraryapp;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
@@ -35,7 +44,7 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
     private List<BookRow> bookList;
     private SearchAdapter mAdapter;
     private SearchView searchView;
-    private static final String URL = "https://librarydatabase-fd173.firebaseio.com/";
+    FirebaseRecyclerAdapter<BookRow, SearchAdapter.MyViewHolder> bookAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,50 +54,32 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        recyclerView = findViewById(R.id.recycler_view);
-        bookList = new ArrayList<>();
-        mAdapter = new SearchAdapter(this, bookList, this);
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+
+        bookList = new ArrayList<> ();
+        mAdapter = new SearchAdapter(this, bookList, this);
+
+        DatabaseReference booksRef = FirebaseDatabase.getInstance().getReference("/Books/");
+        Query booksQuery = booksRef.orderByKey();
 
         fetchBooks();
-        System.out.println("Size is equal to " + bookList);
+
+        FirebaseRecyclerOptions booksOptions = new FirebaseRecyclerOptions.Builder<BookRow>().setQuery(booksQuery, BookRow.class).build();
+
+        recyclerView.setAdapter(mAdapter);
+
+        System.out.println("hhhhhhhhhhh\n" + booksOptions + "\nhhhhhhhhhh");
     }
 
     //TODO: Make this add name, image etc. to bookList as items and we are finished thanks
     //fill bookList with items from database
-    private void fetchBooks()
-    {JsonArrayRequest request = new JsonArrayRequest(URL,
-            new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    if (response == null) {
-                        Toast.makeText(getApplicationContext(), "Couldn't fetch the contacts! Please try again.", Toast.LENGTH_LONG).show();
-                        return;
-                    }
+    private void fetchBooks() {
 
-                    List<BookRow> items = new Gson().fromJson(response.toString(), new TypeToken<List<BookRow>>() {
-                    }.getType());
 
-                    // adding books to books list
-                    bookList.clear();
-                    bookList.addAll(items);
 
-                    // refreshing recycler view
-                    mAdapter.notifyDataSetChanged();
-                }
-            }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            // error in getting json
-            Log.e(TAG, "Error: " + error.getMessage());
-            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    });
-    //VolleyInitialiser.getInstance().addToRequestQueue(request);
     }
 
     @Override
@@ -123,9 +114,9 @@ public class RecyclerActivity extends AppCompatActivity implements SearchAdapter
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        /* Handle action bar item clicks here. The action bar will
+           automatically handle clicks on the Home/Up button, so long
+           as you specify a parent activity in AndroidManifest.xml.     */
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.ezmilja.libraryapp.BooksArray.books;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder> implements Filterable {
 
@@ -24,6 +23,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     private BooksAdapterListener listener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+
         public TextView name;
         public ImageView thumbnail;
 
@@ -93,7 +93,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
                             filteredList.add(row);
                         }
                     }
-
                     bookListFiltered = filteredList;
                 }
 
