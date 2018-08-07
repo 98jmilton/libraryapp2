@@ -34,8 +34,8 @@ import static java.lang.Thread.sleep;
 
 public class SplashScreen extends AppCompatActivity {
 
-    public static long j=0;
-
+    public static int j=0;
+    int i=0;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +46,28 @@ public class SplashScreen extends AppCompatActivity {
         TextView1.setTypeface(myTypeFace1);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference BookRef = database.getReference("/ Books/");
+        DatabaseReference BookRef = database.getReference("/Books/");
 
-        //Read data from database
         BookRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                j= (int) dataSnapshot.getChildrenCount();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                j= dataSnapshot.getChildrenCount();
-                int i = 0;
+            }
+        });
+
+        books = new Book[j];
+        BookRef.addValueEventListener(new ValueEventListener() {
+            int i = 0;
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                j= (int) dataSnapshot.getChildrenCount();
+                books = new Book[j];
+                System.out.println("EEEEEEEEEEEEE\nHHHHHHHHHHHHH");
 
                 for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
 
@@ -72,6 +85,8 @@ public class SplashScreen extends AppCompatActivity {
 
                     books[i] = new Book(isbn, name, imageAddress, author, description, page, publisher,numRating, totRating, numCopies, maxCopies);
                     i++;
+
+                    System.out.println("whatwhatwhat");
                 }
             }
 
@@ -80,7 +95,6 @@ public class SplashScreen extends AppCompatActivity {
 
             }
         });
-
         //Request permissions and move to contents page
         requestCameraPermission();
         networkConnection();
