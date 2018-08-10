@@ -41,7 +41,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1" />
+        tools:layout_constraintRight_creator="1"
+        android:onClick="onRadioButtonClicked"/>
 
     <ImageButton
         android:id="@+id/info_button"
@@ -59,13 +60,12 @@
         android:layout_alignParentRight="true" />
 
 
-    <AutoCompleteTextView
+    <EditText
         android:id="@+id/dropDownTextView"
         android:layout_width="296dp"
         android:layout_height="70dp"
         android:layout_alignBottom="@+id/info_button"
         android:layout_centerHorizontal="true"
-        android:digits="0123456789"
         android:hint="  ISBN e.g (978-0544003415)"
         android:inputType="number"
         android:textAlignment="center"
@@ -90,7 +90,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1">
+        tools:layout_constraintRight_creator="1"
+
+        >
 
         <RadioButton
             android:id="@+id/radioButtonIn"
@@ -98,7 +100,8 @@
             android:layout_height="108dp"
             android:text="Check IN"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            />
 
         <RadioButton
             android:id="@+id/radioButtonOut"
