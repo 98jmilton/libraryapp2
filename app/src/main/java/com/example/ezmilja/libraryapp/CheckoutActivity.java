@@ -59,7 +59,7 @@ private EditText editText;
 
         isbnInfo();
         scan();
-        onRadioButtonClicked();
+
     }
 
     //ImageButton to open xml ISBN info

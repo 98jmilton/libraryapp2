@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
 import static com.example.ezmilja.libraryapp.ContentsActivity.books;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ImageViewHolder> {
 
@@ -59,10 +60,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ImageViewHolde
             }
 
         }
-         catch (NullPointerException e) {
-             e.printStackTrace();
-             System.out.println("Null Error = " + e );
-         }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println("Null Error = " + e );
+        }
 
     }
 

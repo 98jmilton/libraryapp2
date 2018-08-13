@@ -2,9 +2,9 @@ package com.example.ezmilja.libraryapp;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,15 +15,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class ContentsActivity extends AppCompatActivity {
 
-    private Button btn_list,btn31list,btn_rqst,btn_check;
+    private Button btn_list,btn_rqst,btn_check;
     static int j;
+    static FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final static public DatabaseReference BookRef = database.getReference();
 
     static  String currentIsbn="";
     public static Book[] books;
-
+    static FirebaseStorage storage = FirebaseStorage.getInstance();
+    final static public StorageReference storageReference = storage.getReference();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +68,12 @@ public class ContentsActivity extends AppCompatActivity {
                         books[i] = new Book(isbn ,bookName, author, imageAddress, genre);
                     }
                     catch (ArrayIndexOutOfBoundsException e){
-                        e.printStackTrace();
-                        Toast.makeText(ContentsActivity.this,"Book data updated ",Toast.LENGTH_LONG).show();
+
+                        Toast.makeText(ContentsActivity.this, "Database updated ", Toast.LENGTH_LONG).show();
+                        return;
 
                     }
                     i++;
-                    return;
                 }
             }
 
@@ -108,13 +113,13 @@ public class ContentsActivity extends AppCompatActivity {
             }
         });
 
-       btn_rqst.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-           Intent intent = new Intent(ContentsActivity.this, LeaderboardList.class);
-           startActivity(intent);
-         }
-       });
+        btn_rqst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContentsActivity.this, LeaderboardList.class);
+                startActivity(intent);
+            }
+        });
 
         btn_check.setOnClickListener(new View.OnClickListener() {
             @Override
