@@ -67,8 +67,8 @@ public class ContentsActivity extends AppCompatActivity {
                         Toast.makeText(ContentsActivity.this,"Book data updated ",Toast.LENGTH_LONG).show();
 
                     }
-//                   System.out.println(books[i].bookNameX+"XXXXXXXXXXX"+ books[i].authorX);
                     i++;
+                    return;
                 }
             }
 
