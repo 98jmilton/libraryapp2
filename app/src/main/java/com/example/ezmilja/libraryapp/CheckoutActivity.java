@@ -3,23 +3,24 @@ package com.example.ezmilja.libraryapp;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
@@ -28,21 +29,22 @@ public class CheckoutActivity extends AppCompatActivity {
 
 private Button scanButton;
 private ImageButton info;
-private static RadioButton radioButton;
+private static RadioButton radioButton,radioGroup;
 private static Button button;
-private static RadioGroup radioGroup;
 private boolean on;
 private String temp;
 private int cur,in,out;
+private EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
-
+        editText = findViewById(R.id.dropDownTextView);
+        editText.setText(currentIsbn);
         BookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot BookSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
                     temp = (String) BookSnapshot.child(currentIsbn).child("NumCopys").getValue();
 
                 }
@@ -57,8 +59,8 @@ private int cur,in,out;
 
         isbnInfo();
         scan();
+        onRadioButtonClicked();
     }
-
 
     //ImageButton to open xml ISBN info
     private void isbnInfo() {
@@ -104,10 +106,12 @@ private int cur,in,out;
                 if (checked)
                     out = cur+1;
                     BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(in);
+                    Toast.makeText(CheckoutActivity.this, "Book Checked IN", Toast.LENGTH_SHORT).show();
                     break;
             case R.id.radioButtonOut:
                 if (checked)
                     out = cur-1;
+                    Toast.makeText(CheckoutActivity.this, "Book Checked OUT", Toast.LENGTH_SHORT).show();
                     BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(out);
                     break;
         }
@@ -123,6 +127,6 @@ private int cur,in,out;
             }
         });
     }
-
 }
+
 
