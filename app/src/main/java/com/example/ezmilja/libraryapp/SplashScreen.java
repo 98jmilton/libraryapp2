@@ -122,7 +122,7 @@ public class SplashScreen extends AppCompatActivity {
                 public void run() {
                     try {
                         sleep(2000);
-                        Intent intent = new Intent(getApplicationContext(), ContentsActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), SignUp.class);
                         startActivity(intent);
                         finish();
                     } catch (InterruptedException e) {
@@ -155,7 +155,7 @@ public class SplashScreen extends AppCompatActivity {
                         public void run() {
                             try {
                                 sleep(2000);
-                                Intent intent = new Intent(getApplicationContext(), ContentsActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), SignUp.class);
                                 startActivity(intent);
                                 finish();
                             } catch (InterruptedException e) {

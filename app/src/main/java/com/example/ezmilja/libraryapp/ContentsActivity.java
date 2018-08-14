@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +26,12 @@ public class ContentsActivity extends AppCompatActivity {
     public static String[] isbns = new String[j];
     public static Book[] books = new Book[j];
 
+    private Button btn_list,btn_rqst,btn_check,btn_logout;
+    static int j;
+
+    //firebase auth object
+    private FirebaseAuth firebaseAuth;
+
     private Button btn_list,btn_rqst,btn_check;
     static  String currentIsbn="";
 
@@ -31,6 +39,10 @@ public class ContentsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contents);
+
+        //initializing firebase authentication object
+        firebaseAuth = FirebaseAuth.getInstance();
+
         createButton();
 
 
@@ -88,6 +100,10 @@ public class ContentsActivity extends AppCompatActivity {
         btn_check = findViewById(R.id.btn_check);
         btn_check.setTypeface(myTypeFace1);
 
+        //logout of the firebase authentication
+        btn_logout =  findViewById(R.id.btn_logout);
+        btn_logout.setTypeface(myTypeFace1);
+
 
         TextView textView2 = findViewById(R.id.textView2);
         textView2.setTypeface(myTypeFace1);
@@ -113,6 +129,18 @@ public class ContentsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ContentsActivity.this, CheckoutActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //logging out the user
+                firebaseAuth.signOut();
+                //closing activity
+                finish();
+                //starting login activity
+                startActivity(new Intent(ContentsActivity.this, LoginActivity.class));
             }
         });
     };
