@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,40 +17,24 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
+import static com.example.ezmilja.libraryapp.SplashScreen.j;
+
 public class ContentsActivity extends AppCompatActivity {
+    public static String[] isbns = new String[j];
+    public static Book[] books = new Book[j];
 
     private Button btn_list,btn_rqst,btn_check;
-    static int j;
-    static FirebaseDatabase database = FirebaseDatabase.getInstance();
-    final static public DatabaseReference BookRef = database.getReference();
-
     static  String currentIsbn="";
-    public static Book[] books;
-    static FirebaseStorage storage = FirebaseStorage.getInstance();
-    final static public StorageReference storageReference = storage.getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contents);
         createButton();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference BookRef = database.getReference("/Books/");
 
-        BookRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                j= (int) dataSnapshot.getChildrenCount();
-                books = new Book[j];
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-        BookRef.addValueEventListener(new ValueEventListener() {
+        BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
             int i = 0;
 
             @Override
@@ -63,16 +46,20 @@ public class ContentsActivity extends AppCompatActivity {
                     String author       = (String) BookSnapshot.child("Author").getValue();
                     String imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
                     String genre        = (String) BookSnapshot.child("Genre").getValue();
+                    System.out.println(isbn +bookName +author +imageAddress +genre);
 
                     try{
                         books[i] = new Book(isbn ,bookName, author, imageAddress, genre);
+                        isbns[i] = (String) BookSnapshot.child("ISBN").getValue();
+
                     }
                     catch (ArrayIndexOutOfBoundsException e){
 
-                        Toast.makeText(ContentsActivity.this, "Database updated ", Toast.LENGTH_LONG).show();
                         return;
 
                     }
+                    Toast.makeText(ContentsActivity.this, "Database updated ", Toast.LENGTH_LONG).show();
+
                     i++;
                 }
             }

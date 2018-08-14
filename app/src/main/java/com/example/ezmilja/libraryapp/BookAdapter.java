@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
 import static com.example.ezmilja.libraryapp.ContentsActivity.books;
+import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;

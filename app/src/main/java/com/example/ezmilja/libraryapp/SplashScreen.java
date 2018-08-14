@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -24,16 +25,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 
-
 public class SplashScreen extends AppCompatActivity {
-
     public static int p=0;
-    public static int h=0;
     static FirebaseDatabase database = FirebaseDatabase.getInstance();
     final static public DatabaseReference BookRef = database.getReference();
-    static FirebaseStorage storage = FirebaseStorage.getInstance();
-    final static public StorageReference storageReference = storage.getReference();
+
     private static final int MY_PERMISSIONS_REQUEST_CODE = 123;
+    static int j;
 
 
     private Context mContext;
@@ -49,22 +47,19 @@ public class SplashScreen extends AppCompatActivity {
         // Get the application context
         mContext = getApplicationContext();
         mActivity = SplashScreen.this;
-
-        checkPermission();
-        BookRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
+        BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                j= (int) dataSnapshot.getChildrenCount();
 
-                h = (int) dataSnapshot.getChildrenCount();
-                System.out.println(h);
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // ...
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+        checkPermission();
+
     }
 
     protected void checkPermission(){

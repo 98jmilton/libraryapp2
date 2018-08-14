@@ -30,7 +30,7 @@ public class BookDetailsPage extends AppCompatActivity {
     private String Author = "Not Found";
     private String Publisher = "Not Found";
     private String Description  = "Not Found";
-    private String Rating = "Not Found";
+    private String Rating = "Not Yet Rated";
     private String Pages = "Not Found";
     private String imageAddress ;
     private String Genre = "Not Found";
@@ -70,7 +70,7 @@ public class BookDetailsPage extends AppCompatActivity {
                     bookAuthor.setText("Author: "+ Author);
                     bookPublisher.setText("Publisher: "+ Publisher);
                     bookDescription.setText("Description: "+ Description);
-                    bookRating.setText("User Rating: "+ Rating);
+                    if(Integer.valueOf(Rating)!=0)bookRating.setText("User Rating: "+ Rating);
                     bookPages.setText("Page Count:"+ Pages);
                     bookGenre.setText("Genre:"+ Genre);
 
