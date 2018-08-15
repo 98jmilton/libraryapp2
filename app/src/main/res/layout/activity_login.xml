@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="15dp"
-            android:background="@drawable/mybuttonnormal"
+            android:background="@drawable/button"
             android:text="Sign in"
             android:textColor="@android:color/background_light" />
 

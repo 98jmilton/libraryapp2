@@ -25,7 +25,7 @@ public class ContentsActivity extends AppCompatActivity {
     public static Book[] books = new Book[j];
 
     private Button btn_list,btn_rqst,btn_check,btn_logout;
-
+     String isbn = "Not found", bookName = "Not found", author = "Not found", imageAddress = "Not found", genre ="Not found";
     //firebase auth object
     private FirebaseAuth firebaseAuth;
     static  String currentIsbn="";
@@ -48,11 +48,12 @@ public class ContentsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot BookSnapshot : dataSnapshot.child("/Books/").getChildren()) {
 
-                    String isbn         = (String) BookSnapshot.child("ISBN").getValue();
-                    String bookName     = (String) BookSnapshot.child("BookName").getValue();
-                    String author       = (String) BookSnapshot.child("Author").getValue();
-                    String imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
-                    String genre        = (String) BookSnapshot.child("Genre").getValue();
+                    isbn         = (String) BookSnapshot.child("ISBN").getValue();
+                    bookName     = (String) BookSnapshot.child("BookName").getValue();
+                    author       = (String) BookSnapshot.child("Author").getValue();
+                    imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
+                    genre        = (String) BookSnapshot.child("Genre").getValue();
+                    if(genre == ""){genre = "not found";}
                     System.out.println("qweiop"+isbn+bookName+author+imageAddress+genre);
                     try{
                         books[i] = new Book(isbn ,bookName, author, imageAddress, genre);
@@ -70,7 +71,7 @@ public class ContentsActivity extends AppCompatActivity {
                     String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
                     String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
                     String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
-                    String email        = "James@ericsson.com";
+                    String email        = (String) BookSnapshotB.child("email").getValue();
 
                     System.out.println("poo"+reqbook +reqauthor +reqvotes +email);
                     int votes = Integer.valueOf(reqvotes);

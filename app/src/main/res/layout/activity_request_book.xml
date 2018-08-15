@@ -1,84 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="400dp"
-    android:layout_height="550dp"
-    tools:context="com.example.ezmilja.libraryapp.RequestBook"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="81dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="100"
+    android:background="@layout/popupbckgrnd"
+    >
 
     <EditText
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="89dp"
+        android:layout_weight="100"
         android:ems="10"
         android:hint="Book Name"
         android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="@+id/reason"
-        app:layout_constraintRight_toRightOf="@+id/reason"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
-
-    <Button
-        android:id="@+id/btn_submitrequest"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="264dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/mybuttonlarge"
-        android:text="Request"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.309"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1" />
+         />
 
     <EditText
         android:id="@+id/reason"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="36dp"
+        android:layout_weight="100"
         android:ems="10"
         android:hint="Author"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        />
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_weight="100">
     <Button
         android:id="@+id/btn_back"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="17dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="19dp"
-        android:background="@drawable/mybuttonlarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonpopupl"
         android:text="CLOSE"
         android:textColor="@android:color/background_light"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.309"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_submitrequest"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        android:layout_weight="50"
+        android:layout_marginRight="1dp"
+        />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/btn_submitrequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonpopupr"
+        android:text="Request"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:layout_weight="50"
+        android:layout_marginLeft="1dp"
+        />
+
+
+</LinearLayout>
+
+
+</LinearLayout>

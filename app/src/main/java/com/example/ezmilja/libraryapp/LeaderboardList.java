@@ -67,7 +67,7 @@ public class LeaderboardList extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                //customAdapter.getFilter().filter(s);
+                customAdapter.getFilter().filter(s);
                 return false;
             }
         });
@@ -140,7 +140,7 @@ public class LeaderboardList extends AppCompatActivity {
                     BookRef.child("/Requests/").child(temp_name).child("bookName").setValue(temp_name);
                     BookRef.child("/Requests/").child(temp_name).child("bookAuthor").setValue(temp_author);
                     BookRef.child("/Requests/").child(temp_name).child("email").setValue(user.getEmail());
-                    BookRef.child("/Requests/").child(temp_name).child("votes").setValue(temp.getVote());
+                    BookRef.child("/Requests/").child(temp_name).child("votes").setValue(String.valueOf(temp.getVote()));
                 }
                 else {
                     Toast.makeText(LeaderboardList.this, "Error: Please input correctly", Toast.LENGTH_LONG).show();
@@ -242,7 +242,7 @@ public class LeaderboardList extends AppCompatActivity {
                 public void onClick(View view) {
                     final AlertDialog alertDialog = new AlertDialog.Builder(LeaderboardList.this)
                             .setTitle(myBook.getBookName())
-                            .setMessage("Author: " + "\n" + myBook.getAuthor() + "\n" + "\nRequested by"+myBook.getEmail()).setNeutralButton("Close", null).show();
+                            .setMessage("Author: " + "\n" + myBook.getAuthor() + "\n" + "\nRequested by "+myBook.getEmail()).setNeutralButton("Close", null).show();
                 }
             });
 

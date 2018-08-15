@@ -24,7 +24,8 @@
             android:layout_height="77dp"
             android:layout_weight="0.96"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp" />
+            tools:layout_editor_absoluteY="8dp"
+            android:queryHint="Search by name or author"/>
 
         <Button
             android:id="@+id/buttonRequest"
@@ -37,7 +38,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/mybuttonlarge"
+            android:background="@drawable/button"
             android:backgroundTint="@color/colorPrimary"
             android:text="Request"
             android:textColor="@android:color/background_light"

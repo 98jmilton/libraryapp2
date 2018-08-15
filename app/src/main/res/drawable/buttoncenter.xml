@@ -3,5 +3,5 @@
     android:shape="rectangle" android:padding="70dp">
     <!-- you can use any color you want I used here gray color-->
     <solid android:color="#FF002561"/>
-    <corners android:radius="70dp"/>
+
 </shape>
