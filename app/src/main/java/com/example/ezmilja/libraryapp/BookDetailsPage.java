@@ -30,15 +30,18 @@ public class BookDetailsPage extends AppCompatActivity {
     private String Author = "Not Found";
     private String Publisher = "Not Found";
     private String Description  = "Not Found";
-    private String Rating = "Not Yet Rated";
+    private String Rating = "404";
+    private String NumRating = "404";
     private String Pages = "Not Found";
     private String imageAddress ;
     private String Genre = "Not Found";
     private URL imageUrl;
+    private String done;
+
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookdetails);
-
         bookISBN=  findViewById(R.id.bookISBN);
         bookName= findViewById(R.id.bookName);
         bookAuthor= findViewById(R.id.bookAuthor);
@@ -54,29 +57,39 @@ public class BookDetailsPage extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for(DataSnapshot BookSnapshot: dataSnapshot.getChildren()) {
+                    System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHH"+ currentIsbn);
                     ISBN = (String) BookSnapshot.child(currentIsbn).child("ISBN").getValue();
                     Name = (String) BookSnapshot.child(currentIsbn).child("BookName").getValue();
                     Author = (String) BookSnapshot.child(currentIsbn).child("Author").getValue();
                     Publisher = (String) BookSnapshot.child(currentIsbn).child("Publisher").getValue();
                     Description = (String) BookSnapshot.child(currentIsbn).child("Description").getValue();
                     Rating = (String) BookSnapshot.child(currentIsbn).child("Rating").getValue();
+                    NumRating = (String) BookSnapshot.child(currentIsbn).child("NumRating").getValue();
                     Pages = (String) BookSnapshot.child(currentIsbn).child("Pages").getValue();
                     imageAddress = (String) BookSnapshot.child(currentIsbn).child("ImageAddress").getValue();
                     Genre = (String) BookSnapshot.child(currentIsbn).child("Genre").getValue();
                     System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHH"+ ISBN);
 
-                    bookISBN.setText("ISBN: "+ ISBN);
-                    bookName.setText("Title: "+ Name);
-                    bookAuthor.setText("Author: "+ Author);
-                    bookPublisher.setText("Publisher: "+ Publisher);
-                    bookDescription.setText("Description: "+ Description);
-                    if(Integer.valueOf(Rating)!=0)bookRating.setText("User Rating: "+ Rating);
-                    bookPages.setText("Page Count:"+ Pages);
-                    bookGenre.setText("Genre:"+ Genre);
+                    if(Rating == "404" || NumRating == "404") {
+                        int maths = Integer.valueOf(Rating) / Integer.valueOf(NumRating);
+                        done = String.valueOf(maths);
+                    }
+                    else{
+                        done = "Not yet rated";
+                    }
 
 
                     try {
-                        imageUrl =new URL(imageAddress);
+                        if(ISBN !=null && Name !=null && Author !=null && Publisher !=null&&Description !=null&&Rating !=null&&Pages !=null&&imageAddress !=null&&Genre!=null ){
+                        bookISBN.setText("ISBN: "+ ISBN);
+                        bookName.setText("Title: "+ Name);
+                        bookAuthor.setText("Author: "+ Author);
+                        bookPublisher.setText("Publisher: "+ Publisher);
+                        bookDescription.setText("Description: "+ Description);
+                        bookRating.setText("User Rating: "+ done);
+                        bookPages.setText("Page Count:"+ Pages);
+                        bookGenre.setText("Genre:"+ Genre);
+                        imageUrl =new URL(imageAddress);}
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
@@ -96,6 +109,7 @@ public class BookDetailsPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(BookDetailsPage.this, CheckoutActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

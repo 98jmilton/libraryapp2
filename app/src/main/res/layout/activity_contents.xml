@@ -97,11 +97,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="500dp"
         android:background="@drawable/mybuttonnormal"
         android:text="Logout"
         android:textColor="@android:color/background_light"
-        tools:layout_editor_absoluteX="293dp"
-        tools:layout_editor_absoluteY="503dp" />
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"

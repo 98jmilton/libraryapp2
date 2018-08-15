@@ -13,12 +13,10 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
+import static com.example.ezmilja.libraryapp.LeaderboardList.originalList;
+import static com.example.ezmilja.libraryapp.LeaderboardList.requestBook;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 import static com.example.ezmilja.libraryapp.SplashScreen.j;
 
@@ -27,12 +25,9 @@ public class ContentsActivity extends AppCompatActivity {
     public static Book[] books = new Book[j];
 
     private Button btn_list,btn_rqst,btn_check,btn_logout;
-    static int j;
 
     //firebase auth object
     private FirebaseAuth firebaseAuth;
-
-    private Button btn_list,btn_rqst,btn_check;
     static  String currentIsbn="";
 
     @Override
@@ -46,20 +41,19 @@ public class ContentsActivity extends AppCompatActivity {
         createButton();
 
 
-        BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
+        BookRef.addValueEventListener(new ValueEventListener() {
             int i = 0;
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot BookSnapshot : dataSnapshot.child("/Books/").getChildren()) {
 
                     String isbn         = (String) BookSnapshot.child("ISBN").getValue();
                     String bookName     = (String) BookSnapshot.child("BookName").getValue();
                     String author       = (String) BookSnapshot.child("Author").getValue();
                     String imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
                     String genre        = (String) BookSnapshot.child("Genre").getValue();
-                    System.out.println(isbn +bookName +author +imageAddress +genre);
-
+                    System.out.println("qweiop"+isbn+bookName+author+imageAddress+genre);
                     try{
                         books[i] = new Book(isbn ,bookName, author, imageAddress, genre);
                         isbns[i] = (String) BookSnapshot.child("ISBN").getValue();
@@ -70,10 +64,26 @@ public class ContentsActivity extends AppCompatActivity {
                         return;
 
                     }
-                    Toast.makeText(ContentsActivity.this, "Database updated ", Toast.LENGTH_LONG).show();
-
                     i++;
                 }
+                for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
+                    String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
+                    String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
+                    String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
+                    String email        = "James@ericsson.com";
+
+                    System.out.println("poo"+reqbook +reqauthor +reqvotes +email);
+                    int votes = Integer.valueOf(reqvotes);
+                    try{
+                        if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes,false));
+                    }
+                    catch (ArrayIndexOutOfBoundsException e){
+
+                        return;
+
+                    }
+                }
+                Toast.makeText(ContentsActivity.this, "Database updated ", Toast.LENGTH_LONG).show();
             }
 
             @Override
