@@ -23,6 +23,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     //defining view objects
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private EditText ReEditTextPassword;
     private Button buttonSignup;
 
     private TextView textViewSignin;
@@ -56,6 +57,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         //initializing views
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        ReEditTextPassword = (EditText) findViewById(R.id.ReEditTextPassword);
         textViewSignin = (TextView) findViewById(R.id.textViewSignin);
 
         buttonSignup = (Button) findViewById(R.id.buttonSignup);
@@ -68,6 +70,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void registerUser(){
+
 
         //getting email and password from edit texts
         email = editTextEmail.getText().toString().trim();
@@ -117,7 +120,21 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
 
         if(view == buttonSignup){
-            registerUser();
+            if (editTextPassword.getText().toString().trim().equals(ReEditTextPassword.getText().toString().trim())){
+
+                if (!editTextEmail.getText().toString().endsWith("@ericsson.com")) {
+                    Toast.makeText(SignUp.this,"Must be an Ericsson Email to sign up",Toast.LENGTH_LONG).show();
+
+                }
+                else{
+                    registerUser();
+                }
+            }
+            else{
+                Toast.makeText(SignUp.this,"Passwords do not match!",Toast.LENGTH_LONG).show();
+
+            }
+
         }
 
         if(view == textViewSignin){

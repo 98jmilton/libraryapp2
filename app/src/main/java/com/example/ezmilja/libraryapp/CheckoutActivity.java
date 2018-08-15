@@ -2,7 +2,6 @@ package com.example.ezmilja.libraryapp;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -39,7 +38,8 @@ private static RadioButton radioButton;
 private static RadioGroup radioGroup;
 private boolean on;
 private String temp,temp2,setRating,numRating;
-private int curNum,curRat;
+private int curNum;
+private Double curRat;
 private EditText editText;
 boolean isIsbnBool=false;
 float rating;
@@ -251,7 +251,7 @@ float rating;
                         temp2 = (String) dataSnapshot.child(currentIsbn).child("Rating").getValue();
                         numRating = (String) dataSnapshot.child(currentIsbn).child("NumRating").getValue();
                         System.out.println("les oueff"+temp2);
-                        curRat = Integer.valueOf(temp2);
+                       // curRat = Double.valueOf(temp2);
                         addRating();
                     }
                     @Override
@@ -268,7 +268,22 @@ float rating;
         numRating = String.valueOf(Integer.valueOf(numRating)+1);
         BookRef.child("/Books/").child(currentIsbn).child("Rating").setValue(setRating);
         BookRef.child("/Books/").child(currentIsbn).child("numRating").setValue(numRating);
-        finish();
+
+        Thread myThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    sleep(2000);
+                    Intent intent = new Intent(getApplicationContext(), ContentsActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        myThread.start();
     }
 }
 

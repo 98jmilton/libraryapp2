@@ -109,7 +109,6 @@ public class BookDetailsPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(BookDetailsPage.this, CheckoutActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
