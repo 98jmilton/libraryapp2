@@ -40,10 +40,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ImageViewHolde
 
         try {
             if (books[position].imageAddressX != null) {
-                Glide.with(this.context)
-                        .load(books[position].imageAddressX)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.getImage());
+                Glide.with(this.context).load(books[position].imageAddressX).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.getImage());
 
                 holder.BookDetails.setText(books[position].bookNameX+ "\n" + books[position].authorX + "\n" + books[position].genreX);
 
@@ -67,16 +64,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ImageViewHolde
 
     }
 
-    private void toDetails() {
-        toDetails();
-    }
 
     @Override
     public int getItemCount() {
         return books.length;
     }
 
-    public static class ImageViewHolder extends RecyclerView.ViewHolder{
+    public class ImageViewHolder extends RecyclerView.ViewHolder{
 
         ImageView BookImage;
         TextView BookDetails;

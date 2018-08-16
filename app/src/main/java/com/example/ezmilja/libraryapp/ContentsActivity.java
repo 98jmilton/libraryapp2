@@ -19,6 +19,9 @@ import static com.example.ezmilja.libraryapp.LeaderboardList.originalList;
 import static com.example.ezmilja.libraryapp.LeaderboardList.requestBook;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 import static com.example.ezmilja.libraryapp.SplashScreen.j;
+import static com.example.ezmilja.libraryapp.BookList.listViewList;
+import static com.example.ezmilja.libraryapp.BookList.book;
+
 
 public class ContentsActivity extends AppCompatActivity {
     public static String[] isbns = new String[j];
@@ -56,7 +59,8 @@ public class ContentsActivity extends AppCompatActivity {
                     if(genre == ""){genre = "not found";}
                     System.out.println("qweiop"+isbn+bookName+author+imageAddress+genre);
                     try{
-                        books[i] = new Book(isbn ,bookName, author, imageAddress, genre);
+                        listViewList.add(book= new Book(isbn,bookName,author,imageAddress,genre));
+
                         isbns[i] = (String) BookSnapshot.child("ISBN").getValue();
 
                     }

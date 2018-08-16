@@ -221,6 +221,7 @@ public class LeaderboardList extends AppCompatActivity {
                 holder.btn_more =  vi.findViewById(R.id.btn_more);
                 vi.setTag(holder);
             }
+
             else{
                 holder = (ViewHolder) vi.getTag();
             }
