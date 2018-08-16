@@ -285,6 +285,14 @@ float rating;
         };
         myThread.start();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+        Intent intent = new Intent( this, ContentsActivity.class);
+        startActivity(intent);
+    }
 }
 
 

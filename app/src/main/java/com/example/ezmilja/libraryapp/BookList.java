@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,32 +15,28 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.ezmilja.libraryapp.ContentsActivity.books;
 import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
 
 public class BookList extends AppCompatActivity {
     public static Book book;
     SearchView searchView;
     private BookList.CustomAdapter customAdapter;
-    public static ArrayList<Book> listViewList =new ArrayList<Book>();
-    private ListView listView;
+    public static ArrayList<Book> listViewList =new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
 
-        listView = findViewById(R.id.list_view);
         makeListView();
 
-        searchView = findViewById(R.id.searchbarboi);
+        searchView = findViewById(R.id.search_books);
+        searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
@@ -55,7 +52,7 @@ public class BookList extends AppCompatActivity {
 
     private void makeListView(){
 
-        listView = findViewById(R.id.list_view);
+        ListView listView = findViewById(R.id.list_view);
 
         customAdapter = new BookList.CustomAdapter(BookList.this, listViewList);
         listView.setAdapter(customAdapter);
@@ -67,7 +64,7 @@ public class BookList extends AppCompatActivity {
         Context context;
         List<Book> showList;
 
-        public CustomAdapter(Context context, List<Book> items) {
+        CustomAdapter(Context context, List<Book> items) {
             this.context = context;
             this.showList = items;
         }
@@ -106,17 +103,14 @@ public class BookList extends AppCompatActivity {
                 holder = (ViewHolder) vi.getTag();
             }
 
-            holder.bookDetails.setText(myBook.getName());
+            holder.bookDetails.setText(myBook.getName()+"\n\n"+myBook.getAuthor());
 
             if (myBook.imageAddressX != null) {
                 Glide.with(context).load(myBook.imageAddressX).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.image);
             }
 
             try {
-
-
                 view.setOnClickListener(new View.OnClickListener() {
-
                     @Override
 
                     public void onClick(View v) {
@@ -184,5 +178,12 @@ public class BookList extends AppCompatActivity {
                 }
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+        Intent intent = new Intent( this, ContentsActivity.class);
+        startActivity(intent);
     }
 }

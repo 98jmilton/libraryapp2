@@ -26,6 +26,6 @@
         android:layout_marginTop="20dp"
         android:layout_weight="1"
         android:fontFamily="@assets/yourfont.ttf"
-        android:textSize="20sp" />
+        android:textSize="17sp" />
 
 </LinearLayout>

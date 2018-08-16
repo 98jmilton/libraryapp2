@@ -128,6 +128,7 @@ public class ContentsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ContentsActivity.this, BookList.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -136,6 +137,7 @@ public class ContentsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ContentsActivity.this, LeaderboardList.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -144,6 +146,7 @@ public class ContentsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ContentsActivity.this, CheckoutActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -158,5 +161,11 @@ public class ContentsActivity extends AppCompatActivity {
                 startActivity(new Intent(ContentsActivity.this, LoginActivity.class));
             }
         });
-    };
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

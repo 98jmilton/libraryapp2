@@ -3,6 +3,7 @@ package com.example.ezmilja.libraryapp;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -340,5 +341,12 @@ public class LeaderboardList extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+        Intent intent = new Intent( this, ContentsActivity.class);
+        startActivity(intent);
     }
 }
