@@ -4,13 +4,15 @@
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
 
-    <solid android:color="#ffff" />
-
+    <solid
+        android:color="#ffffff"/>
     <corners
-        android:bottomLeftRadius="110dp"
-        android:bottomRightRadius="90dp"
-        android:topLeftRadius="80dp"
-        android:topRightRadius="1200dp"
-        />
+        android:radius="40dp" />
+    <padding
+        android:left="2dp"
+        android:top="4dp"
+        android:right="2dp"
+        android:bottom="2dp" />
+
 
 </shape>

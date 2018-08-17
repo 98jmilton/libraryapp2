@@ -9,7 +9,7 @@
 
     <EditText
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="100"
         android:ems="10"
@@ -19,7 +19,7 @@
 
     <EditText
         android:id="@+id/reason"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="100"
         android:ems="10"
@@ -32,30 +32,33 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="100">
+
         <Button
             android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="0.5dp"
+            android:layout_marginBottom="0.5dp"
+            android:layout_weight="50"
             android:background="@drawable/buttonpopupl"
             android:text="CLOSE"
             android:textColor="@android:color/background_light"
-            android:textSize="20sp"
-            android:layout_weight="50"
-            android:layout_marginRight="1dp"
             />
 
         <Button
             android:id="@+id/btn_submitrequest"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/buttonpopupr"
-            android:text="Request"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="50"
             android:layout_marginLeft="1dp"
-            />
-
+            android:layout_marginRight="0.5dp"
+            android:layout_marginBottom="0.5dp"
+            android:background="@drawable/buttonpopupr"
+            android:text="Request"
+            android:textColor="@android:color/background_light" />
 
     </LinearLayout>
 

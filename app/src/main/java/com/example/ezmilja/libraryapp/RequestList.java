@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,6 +26,9 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,31 +37,79 @@ import java.util.List;
 
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 
-public class LeaderboardList extends AppCompatActivity {
+public class RequestList extends AppCompatActivity {
 
     private Button buttonRequest;
     private ListView listView;
     public static RequestBook requestBook;
     public static ArrayList<RequestBook> originalList=new ArrayList<RequestBook>();
-    private Button btn_more;
     private SearchView searchView;
-    private LeaderboardList.CustomAdapter customAdapter;
-    boolean vote=false;
+    private RequestList.CustomAdapter customAdapter;
     private FirebaseAuth firebaseAuth;
     FirebaseUser user;
-
-
+    String isbn = "Not found", bookName = "Not found", author = "Not found", imageAddress = "Not found", genre ="Not found";
+    boolean isUpVoted;
+    String[] emails;
+    String votedby, curUser;
+    int k;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard_list);
-
         sortlist(originalList);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-
+        listView = findViewById(R.id.list_view);
         createButton();
-        makeListView();
+        curUser =String.valueOf(user.getEmail());
+
+        BookRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int i = 0;
+                k = 0;
+                originalList.clear();
+                int d;
+
+
+                    for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
+                    k= (int) dataSnapshot.child("/Requests/").getChildrenCount();
+
+                    String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
+                    String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
+                    String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
+                    String email        = (String) BookSnapshotB.child("email").getValue();
+                    String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
+
+                    if(votedby!=null) {emails = votedby.split(",");}
+                    else{votedby=""; emails[i]="";}
+                    System.out.println("poo"+reqbook +reqauthor +reqvotes +email);
+                    int votes = Integer.valueOf(reqvotes);
+                    int w=0;
+                    if(w<=email.length()){
+                    if(emails[w].equals(curUser)){isUpVoted=true;}
+                    else{isUpVoted=false;}w++;}
+                    System.out.println(emails[i]+"AAAAAAAAAAAAAAAA"+String.valueOf(user.getEmail())+"aaaaaaaaaaaaaaaaa"+isUpVoted);
+
+                    try{
+                        if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes,isUpVoted));
+                        if(i==k-1)makeListView();
+                    }
+                    catch (ArrayIndexOutOfBoundsException e){
+
+                        return;
+
+                    }
+                    i++;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         searchView = findViewById(R.id.jeffdasearchbar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -88,13 +140,13 @@ public class LeaderboardList extends AppCompatActivity {
 
         listView = findViewById(R.id.leaderbd_list);
 
-        customAdapter = new LeaderboardList.CustomAdapter(LeaderboardList.this, originalList);
+        customAdapter = new RequestList.CustomAdapter(RequestList.this, originalList);
         listView.setAdapter(customAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int postion, long l) {
-                Toast.makeText(LeaderboardList.this, "Goodbye Dave! Hello Steve!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RequestList.this, "Goodbye Dave! Hello Steve!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -114,7 +166,7 @@ public class LeaderboardList extends AppCompatActivity {
     }
 
     private void makeRequestDialog(){
-        final Dialog dialog = new Dialog(LeaderboardList.this);
+        final Dialog dialog = new Dialog(RequestList.this);
         dialog.setContentView(R.layout.activity_request_book);
         dialog.show();
 
@@ -142,9 +194,10 @@ public class LeaderboardList extends AppCompatActivity {
                     BookRef.child("/Requests/").child(temp_name).child("bookAuthor").setValue(temp_author);
                     BookRef.child("/Requests/").child(temp_name).child("email").setValue(user.getEmail());
                     BookRef.child("/Requests/").child(temp_name).child("votes").setValue(String.valueOf(temp.getVote()));
+                    BookRef.child("/Requests/").child(temp_name).child("votedBy").setValue(user.getEmail());
                 }
                 else {
-                    Toast.makeText(LeaderboardList.this, "Error: Please input correctly", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RequestList.this, "Error: Please input correctly", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -242,7 +295,7 @@ public class LeaderboardList extends AppCompatActivity {
             holder.btn_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final AlertDialog alertDialog = new AlertDialog.Builder(LeaderboardList.this)
+                    final AlertDialog alertDialog = new AlertDialog.Builder(RequestList.this)
                             .setTitle(myBook.getBookName())
                             .setMessage("Author: " + "\n" + myBook.getAuthor() + "\n" + "\nRequested by "+myBook.getEmail()).setNeutralButton("Close", null).show();
                 }
@@ -253,19 +306,41 @@ public class LeaderboardList extends AppCompatActivity {
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String tempVotedby="";
                     if (myBook.getisUpVoted()) {
                         myBook.setisUpVoted(false);
                         holder.image.setImageResource(R.drawable.dave);
                         myBook.addVote(-1);
 
+                        int r = 0;
+                        if(r<=emails.length) {
+                            if (emails[r] != String.valueOf(user.getEmail())) {
+                                System.out.println("AAAAAAAAAAAAAAAAAAAAAA  EMAIL FOUND");
+                            } else {
+                                if (votedby != null) tempVotedby = votedby +",";
+                                else tempVotedby = tempVotedby + votedby +",";
+                            }
+                        }
                         holder.bookVote.setText(myBook.getVote()+ "");
+                        BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
 
                     }
                     else {
                         myBook.setisUpVoted(true);
                         holder.image.setImageResource(R.drawable.steve);
                         myBook.addVote(1);
+
+                        int r = 0;
+                        if(r<= emails.length){
+                            if(emails[r]!=String.valueOf(user.getEmail())){
+                                if(votedby!=null)tempVotedby=votedby+String.valueOf(user.getEmail())+",";
+                                else tempVotedby = String.valueOf(user.getEmail())+",";
+                            }
+                            r++;
+                        }
+
                         holder.bookVote.setText( myBook.getVote() + "");
+                        BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
 
                     }
 

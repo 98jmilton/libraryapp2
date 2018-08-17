@@ -26,7 +26,7 @@ public class RequestBook implements Comparable{
         this.author = author;
         this.email = email;
         this.votes = votes;
-        this.isUpVoted = false;
+        this.isUpVoted = isUpVoted;
     }
 
 

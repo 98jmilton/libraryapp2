@@ -2,25 +2,15 @@ package com.example.ezmilja.libraryapp;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
-import static com.example.ezmilja.libraryapp.LeaderboardList.originalList;
-import static com.example.ezmilja.libraryapp.LeaderboardList.requestBook;
-import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 import static com.example.ezmilja.libraryapp.SplashScreen.j;
-import static com.example.ezmilja.libraryapp.BookList.listViewList;
-import static com.example.ezmilja.libraryapp.BookList.book;
 
 
 public class ContentsActivity extends AppCompatActivity {
@@ -28,7 +18,6 @@ public class ContentsActivity extends AppCompatActivity {
     public static Book[] books = new Book[j];
 
     private Button btn_list,btn_rqst,btn_check,btn_logout;
-     String isbn = "Not found", bookName = "Not found", author = "Not found", imageAddress = "Not found", genre ="Not found";
     //firebase auth object
     private FirebaseAuth firebaseAuth;
     static  String currentIsbn="";
@@ -44,58 +33,7 @@ public class ContentsActivity extends AppCompatActivity {
         createButton();
 
 
-        BookRef.addValueEventListener(new ValueEventListener() {
-            int i = 0;
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot BookSnapshot : dataSnapshot.child("/Books/").getChildren()) {
-
-                    isbn         = (String) BookSnapshot.child("ISBN").getValue();
-                    bookName     = (String) BookSnapshot.child("BookName").getValue();
-                    author       = (String) BookSnapshot.child("Author").getValue();
-                    imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
-                    genre        = (String) BookSnapshot.child("Genre").getValue();
-                    if(genre == ""){genre = "not found";}
-                    System.out.println("qweiop"+isbn+bookName+author+imageAddress+genre);
-                    try{
-                        listViewList.add(book= new Book(isbn,bookName,author,imageAddress,genre));
-
-                        isbns[i] = (String) BookSnapshot.child("ISBN").getValue();
-
-                    }
-                    catch (ArrayIndexOutOfBoundsException e){
-
-                        return;
-
-                    }
-                    i++;
-                }
-                for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
-                    String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
-                    String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
-                    String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
-                    String email        = (String) BookSnapshotB.child("email").getValue();
-
-                    System.out.println("poo"+reqbook +reqauthor +reqvotes +email);
-                    int votes = Integer.valueOf(reqvotes);
-                    try{
-                        if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes,false));
-                    }
-                    catch (ArrayIndexOutOfBoundsException e){
-
-                        return;
-
-                    }
-                }
-                Toast.makeText(ContentsActivity.this, "Database updated ", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
     }
 
@@ -135,7 +73,7 @@ public class ContentsActivity extends AppCompatActivity {
         btn_rqst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ContentsActivity.this, LeaderboardList.class);
+                Intent intent = new Intent(ContentsActivity.this, RequestList.class);
                 startActivity(intent);
                 finish();
             }

@@ -38,7 +38,7 @@
             android:name=".ScanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LeaderboardList"
+            android:name=".RequestList"
             android:screenOrientation="portrait" />
         <activity
             android:name=".BookDetailsPage"

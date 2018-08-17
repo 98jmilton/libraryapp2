@@ -57,8 +57,8 @@
     <RatingBar
         android:id="@+id/ratingBar"
         style="@android:style/Widget.DeviceDefault.Light.RatingBar"
-        android:layout_width="236dp"
-        android:layout_height="57dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:autofillHints="@color/colorPrimaryDark"
         android:background="@android:color/background_light"
         android:numStars="5"
