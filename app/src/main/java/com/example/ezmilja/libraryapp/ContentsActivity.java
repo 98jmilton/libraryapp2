@@ -31,10 +31,6 @@ public class ContentsActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         createButton();
-
-
-
-
     }
 
     private void createButton(){
