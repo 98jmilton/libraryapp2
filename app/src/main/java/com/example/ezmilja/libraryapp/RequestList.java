@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -70,6 +72,8 @@ public class RequestList extends AppCompatActivity {
                 int i = 0;
                 k = 0;
                 originalList.clear();
+                isUpVoted=false;
+                int votes = 0;
                 int d;
 
                     for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
@@ -79,16 +83,19 @@ public class RequestList extends AppCompatActivity {
                     String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
                     String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
                     String email        = (String) BookSnapshotB.child("email").getValue();
-                    String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
+                    votedby      = (String) BookSnapshotB.child("votedBy").getValue();
 
-                    if(votedby!=null) {emails = votedby.split(",");}
+                    if(votedby!=null) {emails = votedby.toString().trim().split("\\,");}
                     else{votedby=""; emails[i]="";}
                     System.out.println("poo"+reqbook +reqauthor +reqvotes +email);
-                    int votes = Integer.valueOf(reqvotes);
+                    if(reqvotes!=null) votes = Integer.valueOf(reqvotes);
                     int w=0;
-                    if(w<=email.length()){
-                    if(emails[w].equals(curUser)){isUpVoted=true;}
-                    else{isUpVoted=false;}w++;}
+                    int len=emails.length;
+                    while(w<len){
+                        if(emails[w].equals(curUser)){isUpVoted=true;}
+                    w++;}
+
+
 
                     try{
                         if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes,isUpVoted));
@@ -166,6 +173,8 @@ public class RequestList extends AppCompatActivity {
     private void makeRequestDialog(){
         final Dialog dialog = new Dialog(RequestList.this);
         dialog.setContentView(R.layout.activity_request_book);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         dialog.show();
 
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
@@ -184,7 +193,7 @@ public class RequestList extends AppCompatActivity {
                 String temp_name = edt_name.getText().toString();
                 String temp_author = edt_author.getText().toString();
                 if (requestCheck(temp_name, temp_author, user.getEmail())) {
-                    RequestBook temp = new RequestBook(temp_name, temp_author, user.getEmail(), 0,false);
+                    RequestBook temp = new RequestBook(temp_name, temp_author, user.getEmail(), 1,true);
                     originalList.add(temp);
                     makeListView();
                     dialog.dismiss();
@@ -192,7 +201,9 @@ public class RequestList extends AppCompatActivity {
                     BookRef.child("/Requests/").child(temp_name).child("bookAuthor").setValue(temp_author);
                     BookRef.child("/Requests/").child(temp_name).child("email").setValue(user.getEmail());
                     BookRef.child("/Requests/").child(temp_name).child("votes").setValue(String.valueOf(temp.getVote()));
-                    BookRef.child("/Requests/").child(temp_name).child("votedBy").setValue(user.getEmail());
+                    BookRef.child("/Requests/").child(temp_name).child("votedBy").setValue(String.valueOf(curUser+","));
+
+
                 }
                 else {
                     Toast.makeText(RequestList.this, "Error: Please input correctly", Toast.LENGTH_LONG).show();
@@ -312,11 +323,12 @@ public class RequestList extends AppCompatActivity {
 
                         int r = 0;
                         if(r<=emails.length) {
-                            if (emails[r] != String.valueOf(user.getEmail())) {
+                            if (emails[r] == curUser) {
                                 System.out.println("AAAAAAAAAAAAAAAAAAAAAA  EMAIL FOUND");
                             } else {
-                                if (votedby != null) tempVotedby = votedby +",";
-                                else tempVotedby = tempVotedby + votedby +",";
+                                if(votedby!=""||votedby!=null) tempVotedby= emails[r]+",";
+                                else tempVotedby= votedby + emails[r]+",";
+
                             }
                         }
                         holder.bookVote.setText(myBook.getVote()+ "");
@@ -328,13 +340,10 @@ public class RequestList extends AppCompatActivity {
                         holder.image.setImageResource(R.drawable.steve);
                         myBook.addVote(1);
 
-                        int r = 0;
-                        if(r<= emails.length){
-                            if(emails[r]!=String.valueOf(user.getEmail())){
-                                if(votedby!=null)tempVotedby=votedby+String.valueOf(user.getEmail())+",";
-                                else tempVotedby = String.valueOf(user.getEmail())+",";
-                            }
-                            r++;
+
+                           if(votedby==""||votedby==null)tempVotedby= curUser+",";
+                           else tempVotedby= votedby + curUser+",";
+
                         }
 
                         holder.bookVote.setText( myBook.getVote() + "");
@@ -342,7 +351,7 @@ public class RequestList extends AppCompatActivity {
 
                     }
 
-                }
+
             });
 
             return vi;
