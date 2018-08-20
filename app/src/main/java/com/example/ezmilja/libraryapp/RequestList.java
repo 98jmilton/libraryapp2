@@ -72,7 +72,6 @@ public class RequestList extends AppCompatActivity {
                 originalList.clear();
                 int d;
 
-
                     for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
                     k= (int) dataSnapshot.child("/Requests/").getChildrenCount();
 
@@ -90,7 +89,6 @@ public class RequestList extends AppCompatActivity {
                     if(w<=email.length()){
                     if(emails[w].equals(curUser)){isUpVoted=true;}
                     else{isUpVoted=false;}w++;}
-                    System.out.println(emails[i]+"AAAAAAAAAAAAAAAA"+String.valueOf(user.getEmail())+"aaaaaaaaaaaaaaaaa"+isUpVoted);
 
                     try{
                         if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes,isUpVoted));

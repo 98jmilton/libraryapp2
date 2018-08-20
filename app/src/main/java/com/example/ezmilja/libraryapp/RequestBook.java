@@ -30,8 +30,8 @@ public class RequestBook implements Comparable{
     }
 
 
-    public String getBookName(){ return bookName;}
-    public String getAuthor(){ return author;}
+    public String getBookName(){return bookName;}
+    public String getAuthor(){return author;}
     public String getEmail(){return email;}
     public int getVote(){return votes;}
 

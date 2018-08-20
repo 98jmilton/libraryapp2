@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -31,7 +30,7 @@ public class BookList extends AppCompatActivity {
     public static Book book;
     SearchView searchView;
     private BookList.CustomAdapter customAdapter;
-    public static ArrayList<Book> listViewList =new ArrayList<Book>();
+    public static ArrayList<Book> listViewList =new ArrayList<>();
     private ListView listView;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +39,15 @@ public class BookList extends AppCompatActivity {
 
         listView = findViewById(R.id.list_view);
 
+        //Pull books from database
         BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
-
             @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             int i = 0;
-            int k= 0;
+            int k = 0;
             listViewList.clear();
             for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
-                k= (int) dataSnapshot.getChildrenCount();
+                k = (int) dataSnapshot.getChildrenCount();
 
                 String isbn         = (String) BookSnapshot.child("ISBN").getValue();
                 String bookName     = (String) BookSnapshot.child("BookName").getValue();
@@ -76,6 +75,7 @@ public class BookList extends AppCompatActivity {
         }
     });
 
+        //Search for books
         searchView = findViewById(R.id.search_books);
         searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -93,6 +93,7 @@ public class BookList extends AppCompatActivity {
         });
     }
 
+    //Set up ListView and adapter
     private void makeListView(){
 
         ListView listView = findViewById(R.id.list_view);
@@ -126,8 +127,9 @@ public class BookList extends AppCompatActivity {
         @Override
         public long getItemId(int position) {return showList.get(position).hashCode();}
 
+        //Fill layout with image, name and author
         @Override
-        public View getView(final int position, final View view, ViewGroup parent) {
+        public View getView (final int position, final View view, ViewGroup parent) {
 
             View vi = view;
             final ViewHolder holder;
@@ -152,9 +154,8 @@ public class BookList extends AppCompatActivity {
                 Glide.with(context).load(myBook.imageAddressX).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.image);
             }
 
+            //go to each book's own details page when clicked
             try {
-
-
                 view.setOnClickListener(new View.OnClickListener() {
 
                     @Override
@@ -174,6 +175,7 @@ public class BookList extends AppCompatActivity {
             return vi;
         }
 
+        //Filter from search method
         @Override
         public Filter getFilter() {
             if (bookFilter == null)
@@ -194,7 +196,7 @@ public class BookList extends AppCompatActivity {
                     results.count = showList.size();
                 } else {
                     // We perform filtering operation
-                    List<Book> nBookList = new ArrayList<Book>();
+                    List<Book> nBookList = new ArrayList<>();
 
                     for (Book b : listViewList) {
                         if (b.getName().toUpperCase()
@@ -213,9 +215,9 @@ public class BookList extends AppCompatActivity {
                 return results;
             }
 
+            // Now we have to inform the adapter about the new list filtered
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults results) {
-                // Now we have to inform the adapter about the new list filtered
                 if (results.count == 0) {
                     notifyDataSetInvalidated();
                 } else {
