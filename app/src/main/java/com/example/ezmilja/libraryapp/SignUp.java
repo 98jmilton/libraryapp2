@@ -25,13 +25,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private EditText editTextPassword;
     private EditText ReEditTextPassword;
     private Button buttonSignup;
-
     private TextView textViewSignin;
-
     private ProgressDialog progressDialog;
-
-
-   public static String email;
+    public static String email;
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
@@ -54,12 +50,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(getApplicationContext(), ContentsActivity.class));
         }
 
-        //initializing views
+        //initializing Textviews and buttons
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         ReEditTextPassword = (EditText) findViewById(R.id.ReEditTextPassword);
         textViewSignin = (TextView) findViewById(R.id.textViewSignin);
-
         buttonSignup = (Button) findViewById(R.id.buttonSignup);
 
         progressDialog = new ProgressDialog(this);
@@ -70,7 +65,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void registerUser(){
-
 
         //getting email and password from edit texts
         email = editTextEmail.getText().toString().trim();
@@ -119,12 +113,13 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
+        // When the Signup button is clicked
         if(view == buttonSignup){
+            // checks the text from editTextPassword and compares it to ReEditTextPassword
             if (editTextPassword.getText().toString().trim().equals(ReEditTextPassword.getText().toString().trim())){
-
+                // Check if the email field ends with "@ericsson.com"
                 if (!editTextEmail.getText().toString().endsWith("@ericsson.com")) {
                     Toast.makeText(SignUp.this,"Must be an Ericsson Email to sign up",Toast.LENGTH_LONG).show();
-
                 }
                 else{
                     registerUser();
@@ -137,6 +132,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
         }
 
+        // If the Sign in Here text is clicked
         if(view == textViewSignin){
             //open login activity when user taps on the already registered textview
             startActivity(new Intent(this, LoginActivity.class));
@@ -146,6 +142,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
     private void sendVerificationEmail()
     {
+        // Gets the current user from Firebase
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         user.sendEmailVerification()
@@ -154,7 +151,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             // email sent
-
 
                             // after email is sent just logout the user and finish this activity
                             FirebaseAuth.getInstance().signOut();

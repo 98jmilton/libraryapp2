@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    //defining views
+    //defining views and buttons
     private Button buttonSignIn;
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //if the email and password are not empty
         //displaying a progress dialog
 
-        progressDialog.setMessage("Registering Please Wait...");
+        progressDialog.setMessage("Signing in please wait...");
         progressDialog.show();
 
         //logging in the user
@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void checkIfEmailVerified()
     {
+        // Checks firebase for the current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user.isEmailVerified())
@@ -133,11 +134,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        // If sign in button is clicked
         if(view == buttonSignIn){
             userLogin();
         }
 
         if(view == textViewSignup){
+            // Signup button is clicked
             finish();
             startActivity(new Intent(this, SignUp.class));
         }
