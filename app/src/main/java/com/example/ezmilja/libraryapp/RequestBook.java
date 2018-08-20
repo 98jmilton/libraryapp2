@@ -1,25 +1,18 @@
 package com.example.ezmilja.libraryapp;
 
 import android.support.annotation.NonNull;
-
-import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 
 public class RequestBook implements Comparable{
 
-
     private final String bookName;
-
     private final String author;
-
     private int votes;
-
     private boolean isUpVoted;
-
     private final String email;
 
 
-    public RequestBook(final String bookName, final String author, final String email,
+    RequestBook(final String bookName, final String author, final String email,
                        final int votes, final boolean isUpVoted){
 
         this.bookName =bookName;

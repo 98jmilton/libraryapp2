@@ -31,20 +31,17 @@ public class BookList extends AppCompatActivity {
     SearchView searchView;
     private BookList.CustomAdapter customAdapter;
     public static ArrayList<Book> listViewList =new ArrayList<>();
-    private ListView listView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
-
-        listView = findViewById(R.id.list_view);
 
         //Pull books from database
         BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
             @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             int i = 0;
-            int k = 0;
+            int k;
             listViewList.clear();
             for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
                 k = (int) dataSnapshot.getChildrenCount();

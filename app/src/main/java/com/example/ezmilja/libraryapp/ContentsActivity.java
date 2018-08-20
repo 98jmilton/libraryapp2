@@ -17,7 +17,6 @@ public class ContentsActivity extends AppCompatActivity {
     public static String[] isbns = new String[j];
     public static Book[] books = new Book[j];
 
-    private Button btn_list,btn_rqst,btn_check,btn_logout;
     //firebase auth object
     private FirebaseAuth firebaseAuth;
     static  String currentIsbn="";
@@ -38,19 +37,19 @@ public class ContentsActivity extends AppCompatActivity {
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
 
         //List
-        btn_list =  findViewById(R.id.btn_list);
+        Button btn_list = findViewById(R.id.btn_list);
         btn_list.setTypeface(myTypeFace1);
 
         //Requests
-        btn_rqst =  findViewById(R.id.btn_rqst);
+        Button btn_rqst = findViewById(R.id.btn_rqst);
         btn_rqst.setTypeface(myTypeFace1);
 
         //Check In/Out
-        btn_check = findViewById(R.id.btn_check);
+        Button btn_check = findViewById(R.id.btn_check);
         btn_check.setTypeface(myTypeFace1);
 
         //logout of the firebase authentication
-        btn_logout =  findViewById(R.id.btn_logout);
+        Button btn_logout = findViewById(R.id.btn_logout);
         btn_logout.setTypeface(myTypeFace1);
 
 
