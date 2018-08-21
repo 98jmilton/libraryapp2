@@ -11,7 +11,6 @@ public class RequestBook implements Comparable{
     private boolean isUpVoted;
     private final String email;
 
-
     RequestBook(final String bookName, final String author, final String email,
                        final int votes, final boolean isUpVoted){
 

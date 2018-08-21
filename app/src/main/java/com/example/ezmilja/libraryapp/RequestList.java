@@ -1,6 +1,5 @@
 package com.example.ezmilja.libraryapp;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -40,10 +39,13 @@ import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 
 public class RequestList extends AppCompatActivity {
 
+    private Button buttonRequest;
     private ListView listView;
     public static RequestBook requestBook;
     public static ArrayList<RequestBook> originalList=new ArrayList<RequestBook>();
+    private SearchView searchView;
     private RequestList.CustomAdapter customAdapter;
+    private FirebaseAuth firebaseAuth;
     FirebaseUser user;
     String isbn = "Not found", bookName = "Not found", author = "Not found", imageAddress = "Not found", genre ="Not found";
     boolean isUpVoted;
@@ -55,7 +57,7 @@ public class RequestList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard_list);
         sortlist(originalList);
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         listView = findViewById(R.id.list_view);
         createButton();
@@ -68,6 +70,7 @@ public class RequestList extends AppCompatActivity {
                 int i = 0;
                 k = 0;
                 originalList.clear();
+                int d;
 
                 for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
                     k= (int) dataSnapshot.child("/Requests/").getChildrenCount();
@@ -106,7 +109,7 @@ public class RequestList extends AppCompatActivity {
             }
         });
 
-        SearchView searchView = findViewById(R.id.jeffdasearchbar);
+        searchView = findViewById(R.id.jeffdasearchbar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -149,7 +152,7 @@ public class RequestList extends AppCompatActivity {
     private void createButton(){
 
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
-        Button buttonRequest = findViewById(R.id.buttonRequest);
+        buttonRequest = findViewById(R.id.buttonRequest);
         buttonRequest.setTypeface(myTypeFace1);
 
         buttonRequest.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +224,7 @@ public class RequestList extends AppCompatActivity {
         Context context;
         List <RequestBook> showList;
 
-        CustomAdapter(Context context,List <RequestBook> items){
+        public CustomAdapter(Context context,List <RequestBook> items){
             this.context = context;
             this.showList = items;
             sortlist(showList);
@@ -251,6 +254,7 @@ public class RequestList extends AppCompatActivity {
 
         @Override
         public View getView(final int position, View view, ViewGroup parent) {
+
 
             View vi = view;
             final ViewHolder holder ;
@@ -284,6 +288,8 @@ public class RequestList extends AppCompatActivity {
                 holder.image.setImageResource(R.drawable.not_voted);
             }
 
+            //send help pls
+
             holder.btn_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -294,15 +300,14 @@ public class RequestList extends AppCompatActivity {
             });
 
 
-            //Display votes
+
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String tempVotedby="";
-                    //Display when user has not voted
                     if (myBook.getisUpVoted()) {
                         myBook.setisUpVoted(false);
-                        holder.image.setImageResource(R.drawable.not_voted);
+                        holder.image.setImageResource(R.drawable.voted);
                         myBook.addVote(-1);
 
                         int r = 0;
@@ -318,10 +323,9 @@ public class RequestList extends AppCompatActivity {
                         BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
 
                     }
-                    //Display when book is voted for by user
                     else {
                         myBook.setisUpVoted(true);
-                        holder.image.setImageResource(R.drawable.voted);
+                        holder.image.setImageResource(R.drawable.not_voted);
                         myBook.addVote(1);
 
                         int r = 0;
@@ -335,20 +339,25 @@ public class RequestList extends AppCompatActivity {
 
                         holder.bookVote.setText( myBook.getVote() + "");
                         BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
+
                     }
+
                 }
             });
+
             return vi;
         }
 
-        //Search filter method
+
         @Override
         public Filter getFilter() {
             if (bookFilter == null)
                 bookFilter = new BookFilter();
             return bookFilter;
         }
+
         class BookFilter extends Filter{
+
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
