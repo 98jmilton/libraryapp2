@@ -66,7 +66,6 @@ public class RequestList extends AppCompatActivity {
                 int i = 0;
                 k = 0;
                 originalList.clear();
-                int d;
                 for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
                     k= (int) dataSnapshot.child("/Requests/").getChildrenCount();
                     String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
@@ -75,11 +74,13 @@ public class RequestList extends AppCompatActivity {
                     String email        = (String) BookSnapshotB.child("email").getValue();
                     String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
                     if(votedby!=null) {emails = votedby.split(",");}
-                    else{votedby=""; emails[i]="";}
+                    // This line breaks it
+                    //else{votedby=""; emails[i]="";}
                     System.out.println("poo"+reqbook +reqauthor +reqvotes +email);
                     int votes = Integer.valueOf(reqvotes);
                     int w=0;
-                    if(w<=email.length()){
+                    //  LITERALLY THIS WAS CHECKING THE LENGTH OF THE STRING EMAIL NOT EMAILS[]............
+                    if(w<=emails.length){
                         if(emails[w].equals(curUser)){isUpVoted=true;}
                         else{isUpVoted=false;}w++;}
                     try{
@@ -165,7 +166,7 @@ public class RequestList extends AppCompatActivity {
                     BookRef.child("/Requests/").child(temp_name).child("bookName").setValue(temp_name);
                     BookRef.child("/Requests/").child(temp_name).child("bookAuthor").setValue(temp_author);
                     BookRef.child("/Requests/").child(temp_name).child("email").setValue(user.getEmail());
-                    BookRef.child("/Requests/").child(temp_name).child("votes").setValue(String.valueOf(temp.getVote()));
+                    BookRef.child("/Requests/").child(temp_name).child("votes").setValue("0");
                     BookRef.child("/Requests/").child(temp_name).child("votedBy").setValue(user.getEmail());
                 }
                 else {
