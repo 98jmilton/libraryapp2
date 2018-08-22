@@ -138,7 +138,7 @@ float rating;
     private void isIsbn(){
         if (currentIsbn.length()==13){isIsbnBool = true;isInDB();}
         else{isIsbnBool = false;}
-        Toast.makeText(CheckoutActivity.this, "Please enter a valid ISBN", Toast.LENGTH_SHORT).show();return;
+        Toast.makeText(CheckoutActivity.this, "Please enter a valid ISBN", Toast.LENGTH_SHORT).show();
     }
     private void isInDB() {
         for (int d = 0; d < j; d++) {

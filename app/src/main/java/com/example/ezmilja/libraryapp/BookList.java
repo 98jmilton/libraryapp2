@@ -1,5 +1,6 @@
 package com.example.ezmilja.libraryapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -137,6 +138,7 @@ public class BookList extends AppCompatActivity {
         public long getItemId(int position) {return showList.get(position).hashCode();}
 
         //Fill layout with image, name and author
+        @SuppressLint("InflateParams")
         @Override
         public View getView (final int position, final View view, ViewGroup parent) {
 
@@ -157,7 +159,7 @@ public class BookList extends AppCompatActivity {
                 holder = (ViewHolder) vi.getTag();
             }
 
-            holder.bookDetails.setText(myBook.getName()+"\n\n"+myBook.getAuthor());
+            holder.bookDetails.setText(myBook.getName()+"\n\n"+myBook.getAuthor()+"\n\n"+myBook.getGenre());
 
             if (myBook.imageAddressX != null) {
                 Glide.with(context).load(myBook.imageAddressX).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.image);
@@ -168,7 +170,6 @@ public class BookList extends AppCompatActivity {
                 view.setOnClickListener(new View.OnClickListener() {
 
                     @Override
-
                     public void onClick(View v) {
                         currentIsbn = myBook.isbnX;
                         Context context = view.getContext();
@@ -214,7 +215,14 @@ public class BookList extends AppCompatActivity {
                         } else if (b.getAuthor().toUpperCase()
                                 .contains(constraint.toString().toUpperCase())) {
                             nBookList.add(b);
-
+                        }
+                        else if (b.getGenre().toUpperCase()
+                                .contains(constraint.toString().toUpperCase())) {
+                            nBookList.add(b);
+                        }
+                        else if (b.getIsbn()
+                                .contains(constraint.toString())) {
+                            nBookList.add(b);
                         }
                     }
                     showList = nBookList;

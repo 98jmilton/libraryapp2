@@ -24,21 +24,19 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ezmilja.libraryapp.ContentsActivity;
+import com.example.ezmilja.libraryapp.RequestBook;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
-
 public class RequestList extends AppCompatActivity {
-
     private Button buttonRequest;
     private ListView listView;
     public static RequestBook requestBook;
@@ -55,32 +53,27 @@ public class RequestList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leaderboard_list);
+        setContentView(R.layout.activity_request_list);
         sortlist(originalList);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         listView = findViewById(R.id.list_view);
         createButton();
         curUser =String.valueOf(user.getEmail());
-
         BookRef.addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int i = 0;
                 k = 0;
                 originalList.clear();
                 int d;
-
                 for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
                     k= (int) dataSnapshot.child("/Requests/").getChildrenCount();
-
                     String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
                     String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
                     String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
                     String email        = (String) BookSnapshotB.child("email").getValue();
                     String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
-
                     if(votedby!=null) {emails = votedby.split(",");}
                     else{votedby=""; emails[i]="";}
                     System.out.println("poo"+reqbook +reqauthor +reqvotes +email);
@@ -89,33 +82,26 @@ public class RequestList extends AppCompatActivity {
                     if(w<=email.length()){
                         if(emails[w].equals(curUser)){isUpVoted=true;}
                         else{isUpVoted=false;}w++;}
-
                     try{
                         if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes,isUpVoted));
                         if(i==k-1)makeListView();
                     }
                     catch (ArrayIndexOutOfBoundsException e){
-
                         return;
-
                     }
                     i++;
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
-        searchView = findViewById(R.id.jeffdasearchbar);
+        searchView = findViewById(R.id.request_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String s) {
                 customAdapter.getFilter().filter(s);
@@ -123,7 +109,6 @@ public class RequestList extends AppCompatActivity {
             }
         });
     }
-
     private void sortlist(List list){
         Collections.sort(list, new Comparator() {
             @Override
@@ -135,12 +120,9 @@ public class RequestList extends AppCompatActivity {
         });
     }
     private void makeListView(){
-
         listView = findViewById(R.id.leaderbd_list);
-
         customAdapter = new RequestList.CustomAdapter(RequestList.this, originalList);
         listView.setAdapter(customAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int postion, long l) {
@@ -148,13 +130,10 @@ public class RequestList extends AppCompatActivity {
             }
         });
     }
-
     private void createButton(){
-
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
         buttonRequest = findViewById(R.id.buttonRequest);
         buttonRequest.setTypeface(myTypeFace1);
-
         buttonRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,22 +141,17 @@ public class RequestList extends AppCompatActivity {
             }
         });
     }
-
     private void makeRequestDialog(){
         final Dialog dialog = new Dialog(RequestList.this);
         dialog.setContentView(R.layout.activity_request_book);
         dialog.show();
-
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
-
         Button btn_submitRequest =  dialog.findViewById(R.id.btn_submitrequest);
         Button btn_back = dialog.findViewById(R.id.btn_back);
         btn_submitRequest.setTypeface(myTypeFace1);
         btn_back.setTypeface(myTypeFace1);
-
         final EditText edt_name = dialog.findViewById(R.id.name);
         final EditText edt_author = dialog.findViewById(R.id.reason);
-
         btn_submitRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,7 +173,6 @@ public class RequestList extends AppCompatActivity {
                 }
             }
         });
-
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,7 +180,6 @@ public class RequestList extends AppCompatActivity {
             }
         });
     }
-
     private boolean requestCheck(String name, String author, String email){
         if (name.length() == 0 || author.length() == 0){
             return false;
@@ -217,19 +189,15 @@ public class RequestList extends AppCompatActivity {
         }
         return false;
     }
-
     class CustomAdapter extends BaseAdapter implements Filterable {
-
         BookFilter bookFilter;
         Context context;
         List <RequestBook> showList;
-
         public CustomAdapter(Context context,List <RequestBook> items){
             this.context = context;
             this.showList = items;
             sortlist(showList);
         }
-
         private class ViewHolder{
             TextView bookName;
             TextView bookVote;
@@ -241,29 +209,21 @@ public class RequestList extends AppCompatActivity {
         public int getCount() {
             return showList.size();
         }
-
         @Override
         public Object getItem(int position) {
             return showList.get(position);
         }
-
         @Override
         public long getItemId(int position) {
             return showList.get(position).hashCode();
         }
-
         @Override
         public View getView(final int position, View view, ViewGroup parent) {
-
-
             View vi = view;
             final ViewHolder holder ;
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
             final RequestBook myBook = showList.get(position);
-
             if(view==null){
-
                 vi = inflater.inflate(R.layout.leaderboard_layout,null);
                 holder = new ViewHolder();
                 holder.bookName=  vi.findViewById(R.id.tbx_bookName);
@@ -273,23 +233,18 @@ public class RequestList extends AppCompatActivity {
                 holder.btn_more =  vi.findViewById(R.id.btn_more);
                 vi.setTag(holder);
             }
-
             else{
                 holder = (ViewHolder) vi.getTag();
             }
-
             holder.bookName.setText(myBook.getBookName());
             holder.bookVote.setText(myBook.getVote()+ "");
-
             if(myBook.getisUpVoted()){
-                holder.image.setImageResource(R.drawable.voted);
+                holder.image.setImageResource(R.drawable.grey_thumb);
             }
             else{
-                holder.image.setImageResource(R.drawable.voted_not);
+                holder.image.setImageResource(R.drawable.white_thumb);
             }
-
             //send help pls
-
             holder.btn_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -298,18 +253,14 @@ public class RequestList extends AppCompatActivity {
                             .setMessage("Author: " + "\n" + myBook.getAuthor() + "\n" + "\nRequested by "+myBook.getEmail()).setNeutralButton("Close", null).show();
                 }
             });
-
-
-
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String tempVotedby="";
                     if (myBook.getisUpVoted()) {
                         myBook.setisUpVoted(false);
-                        holder.image.setImageResource(R.drawable.voted);
+                        holder.image.setImageResource(R.drawable.grey_thumb);
                         myBook.addVote(-1);
-
                         int r = 0;
                         if(r<=emails.length) {
                             if (emails[r] != String.valueOf(user.getEmail())) {
@@ -321,13 +272,11 @@ public class RequestList extends AppCompatActivity {
                         }
                         holder.bookVote.setText(myBook.getVote()+ "");
                         BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
-
                     }
                     else {
                         myBook.setisUpVoted(true);
-                        holder.image.setImageResource(R.drawable.voted_not);
+                        holder.image.setImageResource(R.drawable.white_thumb);
                         myBook.addVote(1);
-
                         int r = 0;
                         if(r<= emails.length){
                             if(emails[r]!=String.valueOf(user.getEmail())){
@@ -336,28 +285,20 @@ public class RequestList extends AppCompatActivity {
                             }
                             r++;
                         }
-
                         holder.bookVote.setText( myBook.getVote() + "");
                         BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
-
                     }
-
                 }
             });
-
             return vi;
         }
-
-
         @Override
         public Filter getFilter() {
             if (bookFilter == null)
                 bookFilter = new BookFilter();
             return bookFilter;
         }
-
         class BookFilter extends Filter{
-
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
@@ -371,7 +312,6 @@ public class RequestList extends AppCompatActivity {
                 else {
                     // We perform filtering operation
                     List<RequestBook> nBookList = new ArrayList<RequestBook>();
-
                     for (RequestBook b : originalList) {
                         if (b.getBookName().toUpperCase()
                                 .contains(constraint.toString().toUpperCase())) {
@@ -380,7 +320,6 @@ public class RequestList extends AppCompatActivity {
                         else if (b.getAuthor().toUpperCase()
                                 .contains(constraint.toString().toUpperCase())) {
                             nBookList.add(b);
-
                         }
                     }
                     showList = nBookList;
@@ -389,7 +328,6 @@ public class RequestList extends AppCompatActivity {
                 }
                 return results;
             }
-
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults results) {
                 // Now we have to inform the adapter about the new list filtered
@@ -404,7 +342,6 @@ public class RequestList extends AppCompatActivity {
             }
         }
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

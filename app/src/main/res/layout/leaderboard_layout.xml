@@ -44,7 +44,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.015"
-        app:srcCompat="@drawable/voted_not"
+        app:srcCompat="@drawable/white_thumb"
         app:layout_constraintHorizontal_bias="1.0" />
 
     <TextView
