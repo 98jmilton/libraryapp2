@@ -285,7 +285,7 @@ public class RequestList extends AppCompatActivity {
                 holder.image.setImageResource(R.drawable.voted);
             }
             else{
-                holder.image.setImageResource(R.drawable.not_voted);
+                holder.image.setImageResource(R.drawable.voted_not);
             }
 
             //send help pls
@@ -325,7 +325,7 @@ public class RequestList extends AppCompatActivity {
                     }
                     else {
                         myBook.setisUpVoted(true);
-                        holder.image.setImageResource(R.drawable.not_voted);
+                        holder.image.setImageResource(R.drawable.voted_not);
                         myBook.addVote(1);
 
                         int r = 0;

@@ -30,6 +30,7 @@ public class BookList extends AppCompatActivity {
     public static Book book;
     SearchView searchView;
     private BookList.CustomAdapter customAdapter;
+    int welp = 0;
     public static ArrayList<Book> listViewList =new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,34 +39,38 @@ public class BookList extends AppCompatActivity {
 
         //Pull books from database
         BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
-            @Override
+        @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             int i = 0;
             int k;
             listViewList.clear();
+
+            if (welp == 1) doTheRefresh();
             for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
                 k = (int) dataSnapshot.getChildrenCount();
 
-                String isbn         = (String) BookSnapshot.child("ISBN").getValue();
-                String bookName     = (String) BookSnapshot.child("BookName").getValue();
-                String author       = (String) BookSnapshot.child("Author").getValue();
+                String isbn = (String) BookSnapshot.child("ISBN").getValue();
+                String bookName = (String) BookSnapshot.child("BookName").getValue();
+                String author = (String) BookSnapshot.child("Author").getValue();
                 String imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
-                String genre        = (String) BookSnapshot.child("Genre").getValue();
+                String genre = (String) BookSnapshot.child("Genre").getValue();
 
-                try{
-                    if(isbn!=null && bookName!=null && author!=null && imageAddress!=null && genre!=null){
-                        listViewList.add(book= new Book(isbn,bookName,author,imageAddress,genre));
-                        if(i==k-1)makeListView();
+                try {
+                    if (isbn != null && bookName != null && author != null && imageAddress != null && genre != null) {
+                        listViewList.add(book = new Book(isbn, bookName, author, imageAddress, genre));
+                        if (i == k - 1) {
+
+                            makeListView();
+                        }
                         i++;
                     }
-                }
-                catch (ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     return;
 
                 }
             }
+            welp++;
         }
-
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -89,7 +94,14 @@ public class BookList extends AppCompatActivity {
             }
         });
     }
+    private void doTheRefresh() {
 
+        listViewList.clear();
+        welp = 0;
+        Intent intent = new Intent( BookList.this, BookList.class);
+        startActivity(intent);
+
+    }
     //Set up ListView and adapter
     private void makeListView(){
 
