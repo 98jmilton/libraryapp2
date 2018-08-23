@@ -107,7 +107,6 @@ public class BookList extends AppCompatActivity {
                 return false;
             }
         });
-
         searchView.setIconifiedByDefault(true);
     }
 

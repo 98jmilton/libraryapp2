@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,8 +23,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ezmilja.libraryapp.ContentsActivity;
-import com.example.ezmilja.libraryapp.RequestBook;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -76,21 +73,20 @@ public class RequestList extends AppCompatActivity {
                     String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
 
                     if(votedby!=null) {emails = votedby.split(",");}
-                    // This line breaks it
-                    //else{votedby=""; emails[i]="";}
-
                     int votes = Integer.valueOf(reqvotes);
 
-                    //  LITERALLY THIS WAS CHECKING THE LENGTH OF THE STRING EMAIL NOT EMAILS[]............
+                    //Checks if user has already voted or originally made the request on create
                     for (String email1 : emails) {
                         boolean found = Arrays.asList(emails).contains(curUser);
                         if (found) {
-                            if (email1.equals(curUser)) isUpVoted = true; }
-                            else { isUpVoted = false; }
-
+                            if (email1.equals(curUser)) {isUpVoted = true;}
+                        }
+                            else {isUpVoted = false;}
+                        if (curUser.equals(email) && !isUpVoted) {
+                            isUpVoted = true;
+                        }
                     }
-                      //  if(emails[w].equals(curUser)){isUpVoted=true;}
-                       // else{isUpVoted=false;}w++;}
+                    //Add requests to list
                     try{
                         if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes, votedby,isUpVoted));
                         makeListView();
@@ -98,14 +94,13 @@ public class RequestList extends AppCompatActivity {
                     catch (ArrayIndexOutOfBoundsException e){
                         return;
                     }
-
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        searchView = findViewById(R.id.search_view);
+        searchView = findViewById(R.id.request_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -118,6 +113,7 @@ public class RequestList extends AppCompatActivity {
             }
         });
     }
+    //Order request list based on votes
     private void sortlist(List list){
         Collections.sort(list, new Comparator() {
             @Override
@@ -128,6 +124,7 @@ public class RequestList extends AppCompatActivity {
             }
         });
     }
+
     private void makeListView(){
         listView = findViewById(R.id.leaderbd_list);
         customAdapter = new RequestList.CustomAdapter(RequestList.this, originalList);
@@ -146,6 +143,7 @@ public class RequestList extends AppCompatActivity {
         });
     }
     private void makeRequestDialog(){
+
         final Dialog dialog = new Dialog(RequestList.this);
         dialog.setContentView(R.layout.activity_request_book);
         dialog.show();
@@ -156,6 +154,7 @@ public class RequestList extends AppCompatActivity {
         btn_back.setTypeface(myTypeFace1);
         final EditText edt_name = dialog.findViewById(R.id.name);
         final EditText edt_author = dialog.findViewById(R.id.reason);
+
         btn_submitRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,7 +196,7 @@ public class RequestList extends AppCompatActivity {
         BookFilter bookFilter;
         Context context;
         List <RequestBook> showList;
-        public CustomAdapter(Context context,List <RequestBook> items){
+        CustomAdapter(Context context,List <RequestBook> items){
             this.context = context;
             this.showList = items;
             sortlist(showList);
@@ -206,7 +205,6 @@ public class RequestList extends AppCompatActivity {
             TextView bookName;
             TextView bookVote;
             ImageView image;
-            boolean upVote;
             Button btn_more;
         }
         @Override
@@ -237,7 +235,7 @@ public class RequestList extends AppCompatActivity {
                 holder.btn_more =  vi.findViewById(R.id.btn_more);
                 vi.setTag(holder);
             }
-            else{
+            else {
                 holder = (ViewHolder) vi.getTag();
             }
             holder.bookName.setText(myBook.getBookName());
@@ -260,40 +258,45 @@ public class RequestList extends AppCompatActivity {
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    View parentRow = (View) v.getParent();
-                    ListView listView = (ListView) parentRow.getParent();
                     votedby = myBook.getVotedby();
+                    String tempVotedby = "";
 
-                    String tempVotedby="";
-                    if (myBook.getisUpVoted()) {
-                        myBook.setisUpVoted(false);
-                        holder.image.setImageResource(R.drawable.white_thumb);
-                        myBook.addVote(-1);
+                    //Lock vote of the user who made the original request
+                    if (!curUser.equals(myBook.getEmail())) {
 
-                        tempVotedby = votedby.replace(curUser + ",", "");
+                        //Remove vote
+                        if (myBook.getisUpVoted()) {
+                            myBook.setisUpVoted(false);
+                            holder.image.setImageResource(R.drawable.white_thumb);
+                            myBook.addVote(-1);
 
-                        holder.bookVote.setText(myBook.getVote()+ "");
-                        BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
-                    }
-                    else {
-                        myBook.setisUpVoted(true);
-                        holder.image.setImageResource(R.drawable.grey_thumb);
-                        myBook.addVote(1);
+                            tempVotedby = votedby.replace(curUser + ",", "");
 
-                        if (votedby == null) {
-                            votedby ="";
+                            holder.bookVote.setText(myBook.getVote() + "");
+                            BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
                         }
+                        //Add vote
+                        else {
+                            myBook.setisUpVoted(true);
+                            holder.image.setImageResource(R.drawable.grey_thumb);
+                            myBook.addVote(1);
 
-                        tempVotedby = votedby + curUser + ",";
+                            if (votedby == null) {
+                                votedby = "";
+                            }
 
-                        holder.bookVote.setText( myBook.getVote() + "");
-                        BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
+                            tempVotedby = votedby + curUser + ",";
+
+                            holder.bookVote.setText(myBook.getVote() + "");
+                            BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
+                        }
                     }
                 }
             });
             return vi;
         }
+
+        //Search Filter Method
         @Override
         public Filter getFilter() {
             if (bookFilter == null)
