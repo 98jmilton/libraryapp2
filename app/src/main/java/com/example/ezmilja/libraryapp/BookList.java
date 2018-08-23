@@ -4,11 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -16,73 +20,82 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
+import static com.example.ezmilja.libraryapp.ContentsActivity.detailscurrentPage;
+import static com.example.ezmilja.libraryapp.ContentsActivity.listcurrentPage;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
+
 
 public class BookList extends AppCompatActivity {
     public static Book book;
     SearchView searchView;
-    private BookList.CustomAdapter customAdapter;
+    public  ArrayList<Book> listViewList =new ArrayList<Book>();
+    private CustomAdapter customAdapter;
     int welp = 0;
-    public static ArrayList<Book> listViewList =new ArrayList<>();
-
+    Boolean reload;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+        reload=true;
 
         //Pull books from database
         BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            int i = 0;
-            int k;
-            listViewList.clear();
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int i = 0;
+                int k;
+                if(listcurrentPage){
 
-            if (welp == 1) doTheRefresh();
-            for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
-                k = (int) dataSnapshot.getChildrenCount();
+                    listViewList.clear();
+                    for (DataSnapshot BookSnapshot : dataSnapshot.getChildren()) {
+                        k = (int) dataSnapshot.getChildrenCount();
 
-                String isbn = (String) BookSnapshot.child("ISBN").getValue();
-                String bookName = (String) BookSnapshot.child("BookName").getValue();
-                String author = (String) BookSnapshot.child("Author").getValue();
-                String imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
-                String genre = (String) BookSnapshot.child("Genre").getValue();
+                        String isbn         = (String) BookSnapshot.child("ISBN").getValue();
+                        String bookName     = (String) BookSnapshot.child("BookName").getValue();
+                        String author       = (String) BookSnapshot.child("Author").getValue();
+                        String imageAddress = (String) BookSnapshot.child("ImageAddress").getValue();
+                        String genre        = (String) BookSnapshot.child("Genre").getValue();
 
-                try {
-                    if (isbn != null && bookName != null && author != null && imageAddress != null && genre != null) {
-                        listViewList.add(book = new Book(isbn, bookName, author, imageAddress, genre));
-                        if (i == k - 1) {
-
-                            makeListView();
+                        try{
+                            if(isbn!=null && bookName!=null && author!=null && imageAddress!=null && genre!=null){
+                                listViewList.add(book= new Book(isbn,bookName,author,imageAddress,genre));
+                                if(i==k-1){
+                                    makeListView();
+                                }
+                                i++;
+                            }
                         }
-                        i++;
+                        catch (ArrayIndexOutOfBoundsException e){
+                            return;
+                        }
                     }
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    return;
+                    welp++;
+                    if(reload){
 
+                    }
                 }
             }
-            welp++;
-        }
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        }
-    });
+            }
+        });
 
         //Search for books
-        searchView = findViewById(R.id.search_books);
+        searchView = findViewById(R.id.search_view);
         searchView.setIconifiedByDefault(false);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
@@ -94,22 +107,28 @@ public class BookList extends AppCompatActivity {
                 return false;
             }
         });
-    }
-    private void doTheRefresh() {
 
-        listViewList.clear();
-        welp = 0;
-        Intent intent = new Intent( BookList.this, BookList.class);
-        startActivity(intent);
-
+        searchView.setIconifiedByDefault(true);
     }
-    //Set up ListView and adapter
+
     private void makeListView(){
 
-        ListView listView = findViewById(R.id.list_view);
-
+        sortlist(listViewList);
         customAdapter = new BookList.CustomAdapter(BookList.this, listViewList);
+        final ListView listView = findViewById(R.id.list_view);
         listView.setAdapter(customAdapter);
+
+    }
+
+    private void sortlist(List list) {
+        Collections.sort(list, new Comparator() {
+            @Override
+            public int compare(Object o, Object t1) {
+                Book b1 = (Book) o;
+                Book b2 = (Book) t1;
+                return b1.getName().compareTo(b2.getName());
+            }
+        });
     }
 
     class CustomAdapter extends BaseAdapter implements Filterable {
@@ -166,23 +185,28 @@ public class BookList extends AppCompatActivity {
             }
 
             //go to each book's own details page when clicked
-            try {
-                view.setOnClickListener(new View.OnClickListener() {
+            vi.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        currentIsbn = myBook.isbnX;
-                        Context context = view.getContext();
-                        Intent intent = new Intent(context, BookDetailsPage.class);
-                        context.startActivity(intent);
-                    }
-                });
+                @Override
 
-            }
-            catch (NullPointerException e) {
-                e.printStackTrace();
+                public void onClick(View v) {
+
+                    currentIsbn = myBook.isbnX;
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, BookDetailsPage.class);
+                    listcurrentPage = false;
+                    detailscurrentPage=true;
+                    context.startActivity(intent);
+                    BookList.this.finish();
+                }
+            });
+            holder.bookDetails.setText(myBook.getName()+"\n\n"+myBook.getAuthor()+"\n\n"+myBook.getGenre());
+
+            if (myBook.imageAddressX != null) {
+                Glide.with(context).load(myBook.imageAddressX).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.image);
             }
             return vi;
+
         }
 
         //Filter from search method
@@ -242,6 +266,16 @@ public class BookList extends AppCompatActivity {
                     notifyDataSetChanged();
                 }
             }
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
     @Override

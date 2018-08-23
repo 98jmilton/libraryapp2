@@ -25,9 +25,14 @@ public class ContentsActivity extends AppCompatActivity {
     public static String[] isbns = new String[j];
     public static Book[] books = new Book[j];
 
+    public static boolean listcurrentPage=false;
+    public static boolean detailscurrentPage=false;
+    public static boolean editorcurrentPage=false;
+
+    static String currentIsbn="";
+
     //firebase auth object
     private FirebaseAuth firebaseAuth;
-    static  String currentIsbn="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,8 @@ public class ContentsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ContentsActivity.this, BookList.class);
+                listcurrentPage=true;
+
                 startActivity(intent);
                 finish();
             }

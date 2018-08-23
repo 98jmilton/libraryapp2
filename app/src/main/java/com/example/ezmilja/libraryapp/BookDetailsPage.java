@@ -18,6 +18,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
+import static com.example.ezmilja.libraryapp.ContentsActivity.listcurrentPage;
+import static com.example.ezmilja.libraryapp.ContentsActivity.detailscurrentPage;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 
 
@@ -29,10 +31,10 @@ public class BookDetailsPage extends AppCompatActivity {
     private URL imageUrl;
     private String done;
 
-
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookdetails);
+
         bookISBN=  findViewById(R.id.bookISBN);
         bookName= findViewById(R.id.bookName);
         bookAuthor= findViewById(R.id.bookAuthor);
@@ -43,11 +45,12 @@ public class BookDetailsPage extends AppCompatActivity {
         bookImage= findViewById(R.id.bookImage);
         bookGenre = findViewById(R.id.bookGenre);
 
-        BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
+        BookRef.child("/Books/").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (detailscurrentPage) {
 
-                    System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHH"+ currentIsbn);
+                    System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHH" + currentIsbn);
                     ISBN = (String) dataSnapshot.child(currentIsbn).child("ISBN").getValue();
                     Name = (String) dataSnapshot.child(currentIsbn).child("BookName").getValue();
                     Author = (String) dataSnapshot.child(currentIsbn).child("Author").getValue();
@@ -58,13 +61,14 @@ public class BookDetailsPage extends AppCompatActivity {
                     Pages = (String) dataSnapshot.child(currentIsbn).child("Pages").getValue();
                     imageAddress = (String) dataSnapshot.child(currentIsbn).child("ImageAddress").getValue();
                     Genre = (String) dataSnapshot.child(currentIsbn).child("Genre").getValue();
-                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHH"+ ISBN);
+                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHH" + ISBN);
 
                     if (Rating == null && NumRating == null) {
                         done = "Not yet rated";
                     } else {
-                        if(Integer.valueOf(NumRating)==0){done = "Not yet rated";}
-                        else{
+                        if (Integer.valueOf(NumRating) == 0) {
+                            done = "Not yet rated";
+                        } else {
                             int maths = Integer.valueOf(Rating) / Integer.valueOf(NumRating);
                             done = String.valueOf(maths);
                         }
@@ -72,34 +76,36 @@ public class BookDetailsPage extends AppCompatActivity {
 
 
                     try {
-                        if(ISBN !=null && Name !=null && Author !=null && Publisher !=null&&Description !=null&&Rating !=null&&Pages !=null&&imageAddress !=null&&Genre!=null ){
-                        bookISBN.setText("ISBN: "+ ISBN);
-                        bookName.setText("Title: "+ Name);
-                        bookAuthor.setText("Author: "+ Author);
-                        bookPublisher.setText("Publisher: "+ Publisher);
-                        bookDescription.setText("Description: "+ Description);
-                        bookRating.setText("User Rating: "+ done);
-                        bookPages.setText("Page Count:"+ Pages);
-                        bookGenre.setText("Genre:"+ Genre);
-                        imageUrl =new URL(imageAddress);}
+                        if (ISBN != null && Name != null && Author != null && Publisher != null && Description != null && Rating != null && Pages != null && imageAddress != null && Genre != null) {
+                            bookISBN.setText("ISBN: " + ISBN);
+                            bookName.setText("Title: " + Name);
+                            bookAuthor.setText("Author: " + Author);
+                            bookPublisher.setText("Publisher: " + Publisher);
+                            bookDescription.setText("Description: " + Description);
+                            bookRating.setText("User Rating: " + done);
+                            bookPages.setText("Page Count:" + Pages);
+                            bookGenre.setText("Genre:" + Genre);
+                            imageUrl = new URL(imageAddress);
+                        }
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
                     Glide.with(BookDetailsPage.this).load(imageUrl).into(bookImage);
-
+                }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
-        Button btn_edit = findViewById(R.id.btn_checkout);
-        btn_edit.setOnClickListener(new View.OnClickListener() {
+        Button btn_checkout = findViewById(R.id.btn_checkout);
+        btn_checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                detailscurrentPage=false;
                 Intent intent = new Intent(BookDetailsPage.this, CheckoutActivity.class);
+                finish();
                 startActivity(intent);
             }
         });
@@ -108,6 +114,8 @@ public class BookDetailsPage extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+        detailscurrentPage=false;
+        listcurrentPage=true;
         Intent intent = new Intent( this, BookList.class);
         finish();
         startActivity(intent);

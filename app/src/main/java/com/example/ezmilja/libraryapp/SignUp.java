@@ -135,6 +135,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         // If the Sign in Here text is clicked
         if(view == textViewSignin){
             //open login activity when user taps on the already registered textview
+            finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
 
