@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -48,7 +49,8 @@ public class RequestList extends AppCompatActivity {
     String isbn = "Not found", bookName = "Not found", author = "Not found", imageAddress = "Not found", genre ="Not found";
     boolean isUpVoted;
     String[] emails;
-    String votedby, curUser;
+    String votedby;
+    String curUser;
     int k;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,6 @@ public class RequestList extends AppCompatActivity {
         BookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int i = 0;
                 k = 0;
                 originalList.clear();
                 for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
@@ -73,24 +74,31 @@ public class RequestList extends AppCompatActivity {
                     String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
                     String email        = (String) BookSnapshotB.child("email").getValue();
                     String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
+
                     if(votedby!=null) {emails = votedby.split(",");}
                     // This line breaks it
                     //else{votedby=""; emails[i]="";}
-                    System.out.println("poo"+reqbook +reqauthor +reqvotes +email);
+
                     int votes = Integer.valueOf(reqvotes);
-                    int w=0;
+
                     //  LITERALLY THIS WAS CHECKING THE LENGTH OF THE STRING EMAIL NOT EMAILS[]............
-                    if(w<=emails.length){
-                        if(emails[w].equals(curUser)){isUpVoted=true;}
-                        else{isUpVoted=false;}w++;}
+                    for (String email1 : emails) {
+                        boolean found = Arrays.asList(emails).contains(curUser);
+                        if (found) {
+                            if (email1.equals(curUser)) isUpVoted = true; }
+                            else { isUpVoted = false; }
+
+                    }
+                      //  if(emails[w].equals(curUser)){isUpVoted=true;}
+                       // else{isUpVoted=false;}w++;}
                     try{
-                        if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes,isUpVoted));
-                        if(i==k-1)makeListView();
+                        if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes, votedby,isUpVoted));
+                        makeListView();
                     }
                     catch (ArrayIndexOutOfBoundsException e){
                         return;
                     }
-                    i++;
+
                 }
             }
             @Override
@@ -124,13 +132,8 @@ public class RequestList extends AppCompatActivity {
         listView = findViewById(R.id.leaderbd_list);
         customAdapter = new RequestList.CustomAdapter(RequestList.this, originalList);
         listView.setAdapter(customAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int postion, long l) {
-                Toast.makeText(RequestList.this, "Goodbye Dave! Hello Steve!", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
+
     private void createButton(){
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
         buttonRequest = findViewById(R.id.buttonRequest);
@@ -159,7 +162,7 @@ public class RequestList extends AppCompatActivity {
                 String temp_name = edt_name.getText().toString();
                 String temp_author = edt_author.getText().toString();
                 if (requestCheck(temp_name, temp_author, user.getEmail())) {
-                    RequestBook temp = new RequestBook(temp_name, temp_author, user.getEmail(), 0,false);
+                    RequestBook temp = new RequestBook(temp_name, temp_author, user.getEmail(), 0, user.getEmail(),false);
                     originalList.add(temp);
                     makeListView();
                     dialog.dismiss();
@@ -245,7 +248,7 @@ public class RequestList extends AppCompatActivity {
             else{
                 holder.image.setImageResource(R.drawable.white_thumb);
             }
-            //send help pls
+
             holder.btn_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -257,35 +260,33 @@ public class RequestList extends AppCompatActivity {
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    View parentRow = (View) v.getParent();
+                    ListView listView = (ListView) parentRow.getParent();
+                    votedby = myBook.getVotedby();
+
                     String tempVotedby="";
                     if (myBook.getisUpVoted()) {
                         myBook.setisUpVoted(false);
-                        holder.image.setImageResource(R.drawable.grey_thumb);
+                        holder.image.setImageResource(R.drawable.white_thumb);
                         myBook.addVote(-1);
-                        int r = 0;
-                        if(r<=emails.length) {
-                            if (emails[r] != String.valueOf(user.getEmail())) {
-                                System.out.println("AAAAAAAAAAAAAAAAAAAAAA  EMAIL FOUND");
-                            } else {
-                                if (votedby != null) tempVotedby = votedby +",";
-                                else tempVotedby = tempVotedby + votedby +",";
-                            }
-                        }
+
+                        tempVotedby = votedby.replace(curUser + ",", "");
+
                         holder.bookVote.setText(myBook.getVote()+ "");
                         BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
                     }
                     else {
                         myBook.setisUpVoted(true);
-                        holder.image.setImageResource(R.drawable.white_thumb);
+                        holder.image.setImageResource(R.drawable.grey_thumb);
                         myBook.addVote(1);
-                        int r = 0;
-                        if(r<= emails.length){
-                            if(emails[r]!=String.valueOf(user.getEmail())){
-                                if(votedby!=null)tempVotedby=votedby+String.valueOf(user.getEmail())+",";
-                                else tempVotedby = String.valueOf(user.getEmail())+",";
-                            }
-                            r++;
+
+                        if (votedby == null) {
+                            votedby ="";
                         }
+
+                        tempVotedby = votedby + curUser + ",";
+
                         holder.bookVote.setText( myBook.getVote() + "");
                         BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
                     }

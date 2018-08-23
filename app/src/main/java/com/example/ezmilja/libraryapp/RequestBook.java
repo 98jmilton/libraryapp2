@@ -10,15 +10,17 @@ public class RequestBook implements Comparable{
     private int votes;
     private boolean isUpVoted;
     private final String email;
+    private final  String votedby;
 
     RequestBook(final String bookName, final String author, final String email,
-                       final int votes, final boolean isUpVoted){
+                       final int votes,final String votedby, final boolean isUpVoted){
 
         this.bookName =bookName;
         this.author = author;
         this.email = email;
         this.votes = votes;
         this.isUpVoted = isUpVoted;
+        this.votedby = votedby;
     }
 
 
@@ -26,6 +28,7 @@ public class RequestBook implements Comparable{
     public String getAuthor(){return author;}
     public String getEmail(){return email;}
     public int getVote(){return votes;}
+    public String getVotedby() { return votedby ;}
 
     public boolean getisUpVoted(){return isUpVoted;}
     public void addVote(int add){votes += add; BookRef.child("/Requests/").child(bookName).child("votes").setValue(String.valueOf(votes));}
