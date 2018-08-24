@@ -75,7 +75,7 @@ public class RequestList extends AppCompatActivity {
                 int i = 0;
 
 
-                if(listcurrentPage){
+                if(requestcurrentPage){
 
                     originalList.clear();
                 for (DataSnapshot BookSnapshotB : dataSnapshot.getChildren()) {
