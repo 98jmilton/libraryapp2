@@ -80,10 +80,7 @@ public class BookList extends AppCompatActivity {
                         }
                     }
                     welp++;
-                    if(reload){
-
-                    }
-                }
+                                   }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

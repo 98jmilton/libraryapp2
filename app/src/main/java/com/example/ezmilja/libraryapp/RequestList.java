@@ -35,6 +35,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.example.ezmilja.libraryapp.ContentsActivity.listcurrentPage;
+import static com.example.ezmilja.libraryapp.ContentsActivity.requestcurrentPage;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 
 public class RequestList extends AppCompatActivity {
@@ -65,18 +68,23 @@ public class RequestList extends AppCompatActivity {
         listView = findViewById(R.id.list_view);
         createButton();
         curUser =String.valueOf(user.getEmail());
-        BookRef.addValueEventListener(new ValueEventListener() {
+        BookRef.child("/Requests/").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 k = 0;
-                originalList.clear();
-                for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
-                    k= (int) dataSnapshot.child("/Requests/").getChildrenCount();
-                    String reqbook   = (String) BookSnapshotB.child("bookName").getValue();
-                    String reqauthor = (String) BookSnapshotB.child("bookAuthor").getValue();
-                    String reqvotes  = (String) BookSnapshotB.child("votes").getValue();
-                    String email     = (String) BookSnapshotB.child("email").getValue();
-                    String votedby   = (String) BookSnapshotB.child("votedBy").getValue();
+                int i = 0;
+
+
+                if(listcurrentPage){
+
+                    originalList.clear();
+                for (DataSnapshot BookSnapshotB : dataSnapshot.getChildren()) {
+                    k= (int) dataSnapshot.getChildrenCount();
+                    String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
+                    String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
+                    String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
+                    String email        = (String) BookSnapshotB.child("email").getValue();
+                    String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
 
                     if(votedby!=null) {emails = votedby.split(",");}
                     if (reqvotes==null) {reqvotes="0";}
@@ -96,11 +104,15 @@ public class RequestList extends AppCompatActivity {
                     //Add requests to list
                     try{
                         if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes, votedby,isUpVoted));
-                        makeListView();
-                    }
+                        if(i==k-1){
+                            makeListView();
+                        }
+                        i++;                    }
                     catch (ArrayIndexOutOfBoundsException e){
                         return;
                     }
+
+                }
                 }
             }
             @Override
@@ -156,7 +168,7 @@ public class RequestList extends AppCompatActivity {
         dialog.setContentView(R.layout.activity_request_book);
         dialog.show();
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
-
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));;
         Button btn_submitRequest =  dialog.findViewById(R.id.btn_submitrequest);
         Button btn_back = dialog.findViewById(R.id.btn_back);
         btn_submitRequest.setTypeface(myTypeFace1);
@@ -260,7 +272,7 @@ public class RequestList extends AppCompatActivity {
             holder.bookVote.setText(myBook.getVote()+ "");
 
             if (curUser.equals(myBook.getEmail())) {
-                holder.image.setImageResource(R.drawable.ic_baseline_delete_24px);
+                holder.image.setImageResource(R.drawable.delete);
             }
 
             else if(myBook.getisUpVoted()){
@@ -420,6 +432,7 @@ public class RequestList extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+        requestcurrentPage = false;
         Intent intent = new Intent( this, ContentsActivity.class);
         startActivity(intent);
     }

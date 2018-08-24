@@ -27,7 +27,7 @@ public class ContentsActivity extends AppCompatActivity {
 
     public static boolean listcurrentPage=false;
     public static boolean detailscurrentPage=false;
-    public static boolean editorcurrentPage=false;
+    public static boolean requestcurrentPage=false;
 
     static String currentIsbn="";
 
@@ -69,7 +69,7 @@ public class ContentsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ContentsActivity.this, BookList.class);
-                listcurrentPage=true;
+                listcurrentPage = true;
 
                 startActivity(intent);
                 finish();
@@ -81,6 +81,8 @@ public class ContentsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ContentsActivity.this, RequestList.class);
                 startActivity(intent);
+                requestcurrentPage = true;
+
                 finish();
             }
         });
