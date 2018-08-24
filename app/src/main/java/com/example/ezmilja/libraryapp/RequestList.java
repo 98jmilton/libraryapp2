@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +36,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
+
 public class RequestList extends AppCompatActivity {
+
     private Button buttonRequest;
     private ListView listView;
     public static RequestBook requestBook;
@@ -43,12 +47,14 @@ public class RequestList extends AppCompatActivity {
     private RequestList.CustomAdapter customAdapter;
     private FirebaseAuth firebaseAuth;
     FirebaseUser user;
-    String isbn = "Not found", bookName = "Not found", author = "Not found", imageAddress = "Not found", genre ="Not found";
+    String bookName;
     boolean isUpVoted;
     String[] emails;
     String votedby;
     String curUser;
     int k;
+    Typeface myTypeFace1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +72,14 @@ public class RequestList extends AppCompatActivity {
                 originalList.clear();
                 for (DataSnapshot BookSnapshotB : dataSnapshot.child("/Requests/").getChildren()) {
                     k= (int) dataSnapshot.child("/Requests/").getChildrenCount();
-                    String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
-                    String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
-                    String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
-                    String email        = (String) BookSnapshotB.child("email").getValue();
-                    String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
+                    String reqbook   = (String) BookSnapshotB.child("bookName").getValue();
+                    String reqauthor = (String) BookSnapshotB.child("bookAuthor").getValue();
+                    String reqvotes  = (String) BookSnapshotB.child("votes").getValue();
+                    String email     = (String) BookSnapshotB.child("email").getValue();
+                    String votedby   = (String) BookSnapshotB.child("votedBy").getValue();
 
                     if(votedby!=null) {emails = votedby.split(",");}
+                    if (reqvotes==null) {reqvotes="0";}
                     int votes = Integer.valueOf(reqvotes);
 
                     //Checks if user has already voted or originally made the request on create
@@ -142,25 +149,35 @@ public class RequestList extends AppCompatActivity {
             }
         });
     }
+    //Add new request
     private void makeRequestDialog(){
 
         final Dialog dialog = new Dialog(RequestList.this);
         dialog.setContentView(R.layout.activity_request_book);
         dialog.show();
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
+
         Button btn_submitRequest =  dialog.findViewById(R.id.btn_submitrequest);
         Button btn_back = dialog.findViewById(R.id.btn_back);
         btn_submitRequest.setTypeface(myTypeFace1);
         btn_back.setTypeface(myTypeFace1);
+
         final EditText edt_name = dialog.findViewById(R.id.name);
         final EditText edt_author = dialog.findViewById(R.id.reason);
 
         btn_submitRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String temp_name = edt_name.getText().toString();
                 String temp_author = edt_author.getText().toString();
-                if (requestCheck(temp_name, temp_author, user.getEmail())) {
+
+                //Firebase path does not allow these characters
+                if (temp_name.contains(".") || temp_name.contains("#") || temp_name.contains("$") || temp_name.contains("[") || temp_name.contains("]")) {
+                    Toast.makeText(RequestList.this,"Book name cannot contain '.', '#', '$', '[', or ']'",Toast.LENGTH_LONG).show();
+                }
+
+                else if (requestCheck(temp_name, temp_author, user.getEmail())) {
                     RequestBook temp = new RequestBook(temp_name, temp_author, user.getEmail(), 0, user.getEmail(),false);
                     originalList.add(temp);
                     makeListView();
@@ -168,7 +185,7 @@ public class RequestList extends AppCompatActivity {
                     BookRef.child("/Requests/").child(temp_name).child("bookName").setValue(temp_name);
                     BookRef.child("/Requests/").child(temp_name).child("bookAuthor").setValue(temp_author);
                     BookRef.child("/Requests/").child(temp_name).child("email").setValue(user.getEmail());
-                    BookRef.child("/Requests/").child(temp_name).child("votes").setValue("0");
+                    BookRef.child("/Requests/").child(temp_name).child("votes").setValue("1");
                     BookRef.child("/Requests/").child(temp_name).child("votedBy").setValue(user.getEmail());
                 }
                 else {
@@ -225,6 +242,7 @@ public class RequestList extends AppCompatActivity {
             final ViewHolder holder ;
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final RequestBook myBook = showList.get(position);
+
             if(view==null){
                 vi = inflater.inflate(R.layout.leaderboard_layout,null);
                 holder = new ViewHolder();
@@ -240,10 +258,15 @@ public class RequestList extends AppCompatActivity {
             }
             holder.bookName.setText(myBook.getBookName());
             holder.bookVote.setText(myBook.getVote()+ "");
-            if(myBook.getisUpVoted()){
+
+            if (curUser.equals(myBook.getEmail())) {
+                holder.image.setImageResource(R.drawable.ic_baseline_delete_24px);
+            }
+
+            else if(myBook.getisUpVoted()){
                 holder.image.setImageResource(R.drawable.grey_thumb);
             }
-            else{
+            else {
                 holder.image.setImageResource(R.drawable.white_thumb);
             }
 
@@ -261,9 +284,45 @@ public class RequestList extends AppCompatActivity {
                     votedby = myBook.getVotedby();
                     String tempVotedby = "";
 
-                    //Lock vote of the user who made the original request
-                    if (!curUser.equals(myBook.getEmail())) {
+                    //Deleting the user's own request
+                    if (curUser.equals(myBook.getEmail())) {
+                        final String requestName = myBook.getBookName();
 
+                        final Dialog deletedialog = new Dialog(RequestList.this);
+                        deletedialog.setContentView(R.layout.deleterequest);
+                        deletedialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                        TextView title = deletedialog.findViewById(R.id.title);
+                        title.setTypeface(myTypeFace1);
+                        title.setText("Are you sure you want to delete this request from the database?");
+
+                        Button yes= deletedialog.findViewById(R.id.yes);
+                        Button no = deletedialog.findViewById(R.id.no);
+
+                        yes.setTypeface(myTypeFace1);
+                        no.setTypeface(myTypeFace1);
+                        deletedialog.show();
+
+                        yes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String request = requestName;
+                                BookRef.child("/Requests/").child(request).removeValue();
+                                deletedialog.dismiss();
+                                Toast.makeText(RequestList.this,"Request Deleted",Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        no.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                deletedialog.dismiss();
+                            }
+                        });
+                    }
+
+                    //Voting for another user's request
+                    if (!curUser.equals(myBook.getEmail())) {
                         //Remove vote
                         if (myBook.getisUpVoted()) {
                             myBook.setisUpVoted(false);
