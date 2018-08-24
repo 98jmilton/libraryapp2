@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:weightSum="100"
     android:background="@layout/popupbckgrnd"
-
     >
 
     <TextView

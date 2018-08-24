@@ -74,45 +74,51 @@ public class RequestList extends AppCompatActivity {
                 k = 0;
                 int i = 0;
 
-
                 if(requestcurrentPage){
 
                     originalList.clear();
-                for (DataSnapshot BookSnapshotB : dataSnapshot.getChildren()) {
-                    k= (int) dataSnapshot.getChildrenCount();
-                    String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
-                    String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
-                    String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
-                    String email        = (String) BookSnapshotB.child("email").getValue();
-                    String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
+                    for (DataSnapshot BookSnapshotB : dataSnapshot.getChildren()) {
+                        k= (int) dataSnapshot.getChildrenCount();
+                        String reqbook      = (String) BookSnapshotB.child("bookName").getValue();
+                        String reqauthor    = (String) BookSnapshotB.child("bookAuthor").getValue();
+                        String reqvotes     = (String) BookSnapshotB.child("votes").getValue();
+                        String email        = (String) BookSnapshotB.child("email").getValue();
+                        String votedby      = (String) BookSnapshotB.child("votedBy").getValue();
 
-                    if(votedby!=null) {emails = votedby.split(",");}
-                    if (reqvotes==null) {reqvotes="0";}
-                    int votes = Integer.valueOf(reqvotes);
+                        if(votedby!=null) {emails = votedby.split(",");}
 
-                    //Checks if user has already voted or originally made the request on create
-                    for (String email1 : emails) {
-                        boolean found = Arrays.asList(emails).contains(curUser);
-                        if (found) {
-                            if (email1.equals(curUser)) {isUpVoted = true;}
+                        //Prevents crashes if database requests has been deleted
+                        if (reqvotes==null) {reqvotes="0";}
+                        if (emails==null) {
+                            emails = new String[1];
+                            emails[0] = curUser;
                         }
+
+                        int votes = Integer.valueOf(reqvotes);
+
+                        //Checks if user has already voted or originally made the request on create
+                        for (String email1 : emails) {
+                            boolean found = Arrays.asList(emails).contains(curUser);
+                            if (found) {
+                                if (email1.equals(curUser)) {isUpVoted = true;}
+                            }
                             else {isUpVoted = false;}
-                        if (curUser.equals(email) && !isUpVoted) {
-                            isUpVoted = true;
+                            if (curUser.equals(email) && !isUpVoted) {
+                                isUpVoted = true;
+                            }
                         }
-                    }
-                    //Add requests to list
-                    try{
-                        if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes, votedby,isUpVoted));
-                        if(i==k-1){
-                            makeListView();
+                        //Add requests to list
+                        try{
+                            if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes, votedby,isUpVoted));
+                            if(i==k-1){
+                                makeListView();
+                            }
+                            i++;                    }
+                        catch (ArrayIndexOutOfBoundsException e){
+                            return;
                         }
-                        i++;                    }
-                    catch (ArrayIndexOutOfBoundsException e){
-                        return;
-                    }
 
-                }
+                    }
                 }
             }
             @Override
@@ -198,7 +204,7 @@ public class RequestList extends AppCompatActivity {
                     BookRef.child("/Requests/").child(temp_name).child("bookAuthor").setValue(temp_author);
                     BookRef.child("/Requests/").child(temp_name).child("email").setValue(user.getEmail());
                     BookRef.child("/Requests/").child(temp_name).child("votes").setValue("1");
-                    BookRef.child("/Requests/").child(temp_name).child("votedBy").setValue(user.getEmail());
+                    BookRef.child("/Requests/").child(temp_name).child("votedBy").setValue(user.getEmail()+",");
                 }
                 else {
                     Toast.makeText(RequestList.this, "Error: Please input correctly", Toast.LENGTH_LONG).show();
