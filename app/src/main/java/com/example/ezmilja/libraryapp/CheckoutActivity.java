@@ -151,7 +151,6 @@ float rating;
     private void radioCheck(){
         if (radioButton.getText().equals("Check IN")) {
             String in = String.valueOf(curNum + 1);
-            System.out.println(in);
             BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(in);
             Toast.makeText(CheckoutActivity.this, "Book Checked IN", Toast.LENGTH_SHORT).show();
             makeRatingDialog();
@@ -159,7 +158,6 @@ float rating;
         }
         else if (radioButton.getText().equals("Check OUT")){
             String out = String.valueOf(curNum - 1);
-            System.out.println(out);
             BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(out);
             Toast.makeText(CheckoutActivity.this, "Book Checked OUT", Toast.LENGTH_SHORT).show();
             finish();
@@ -250,7 +248,6 @@ float rating;
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         temp2 = (String) dataSnapshot.child(currentIsbn).child("Rating").getValue();
                         numRating = (String) dataSnapshot.child(currentIsbn).child("NumRating").getValue();
-                        System.out.println("les oueff"+temp2);
                        // curRat = Double.valueOf(temp2);
                         addRating();
                     }
