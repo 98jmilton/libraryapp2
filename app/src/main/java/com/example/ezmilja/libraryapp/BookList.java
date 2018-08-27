@@ -67,9 +67,9 @@ public class BookList extends AppCompatActivity {
                         String genre        = (String) BookSnapshot.child("Genre").getValue();
 
                         try{
-                            if(isbn!=null && bookName!=null && author!=null && imageAddress!=null && genre!=null){
-                                listViewList.add(book= new Book(isbn,bookName,author,imageAddress,genre));
-                                if(i==k-1){
+                            if(isbn!=null && bookName!=null && author!=null && imageAddress!=null && genre!=null) {
+                                listViewList.add(book = new Book(isbn, bookName, author, imageAddress, genre));
+                                if (i == k - 1) {
                                     makeListView();
                                 }
                                 i++;
@@ -80,7 +80,7 @@ public class BookList extends AppCompatActivity {
                         }
                     }
                     welp++;
-                                   }
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

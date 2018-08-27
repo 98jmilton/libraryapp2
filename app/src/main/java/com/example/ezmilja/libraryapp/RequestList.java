@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.ezmilja.libraryapp.ContentsActivity.listcurrentPage;
 import static com.example.ezmilja.libraryapp.ContentsActivity.requestcurrentPage;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 
@@ -87,7 +86,7 @@ public class RequestList extends AppCompatActivity {
 
                         if(votedby!=null) {emails = votedby.split(",");}
 
-                        //Prevents crashes if database requests has been deleted
+                        //Prevents crashes if database requests has been deleted/new requests added
                         if (reqvotes==null) {reqvotes="0";}
                         if (emails==null) {
                             emails = new String[1];
@@ -109,7 +108,7 @@ public class RequestList extends AppCompatActivity {
                         }
                         //Add requests to list
                         try{
-                            if(reqbook!=null && reqauthor!=null && reqvotes!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes, votedby,isUpVoted));
+                            if(reqbook!=null && reqauthor!=null && email!=null)originalList.add(requestBook= new RequestBook(reqbook,reqauthor, email, votes, votedby,isUpVoted));
                             if(i==k-1){
                                 makeListView();
                             }
@@ -126,6 +125,7 @@ public class RequestList extends AppCompatActivity {
             }
         });
         searchView = findViewById(R.id.request_search);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -218,15 +218,10 @@ public class RequestList extends AppCompatActivity {
             }
         });
     }
-    private boolean requestCheck(String name, String author, String email){
-        if (name.length() == 0 || author.length() == 0){
-            return false;
-        }
-        if (email.toLowerCase().endsWith("@ericsson.com")){
-            return true;
-        }
-        return false;
+    private boolean requestCheck(String name, String author, String email) {
+        return name.length() != 0 && author.length() != 0 && email.toLowerCase().endsWith("@ericsson.com");
     }
+
     class CustomAdapter extends BaseAdapter implements Filterable {
         BookFilter bookFilter;
         Context context;
@@ -324,8 +319,7 @@ public class RequestList extends AppCompatActivity {
                         yes.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String request = requestName;
-                                BookRef.child("/Requests/").child(request).removeValue();
+                                BookRef.child("/Requests/").child(requestName).removeValue();
                                 deletedialog.dismiss();
                                 Toast.makeText(RequestList.this,"Request Deleted",Toast.LENGTH_LONG).show();
                             }
@@ -393,7 +387,7 @@ public class RequestList extends AppCompatActivity {
                 }
                 else {
                     // We perform filtering operation
-                    List<RequestBook> nBookList = new ArrayList<RequestBook>();
+                    List<RequestBook> nBookList = new ArrayList<>();
                     for (RequestBook b : originalList) {
                         if (b.getBookName().toUpperCase()
                                 .contains(constraint.toString().toUpperCase())) {

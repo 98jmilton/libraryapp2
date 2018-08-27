@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -22,23 +21,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
-import static com.example.ezmilja.libraryapp.ContentsActivity.isbns;
 import static com.example.ezmilja.libraryapp.ContentsActivity.listcurrentPage;
 import static com.example.ezmilja.libraryapp.ContentsActivity.detailscurrentPage;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
-import static com.example.ezmilja.libraryapp.SplashScreen.j;
-
 
 public class BookDetailsPage extends AppCompatActivity {
     TextView bookISBN,bookName,bookAuthor,bookPublisher,bookDescription,bookRating,bookPages,bookGenre;
     private ImageView bookImage;
-    private String temp,temp2,setRating,numRating;
+    private String setRating;
+    String ourRating="0.0";
+    RatingBar theratingBar;
+    float ratingbarValue;
 
     private String ISBN, Name, Author, Publisher, Description, Rating, NumRating, Pages, imageAddress, Genre;
     private URL imageUrl;
     private String done;
-    float rating;
-    boolean isIsbnBool=false;
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookdetails);
@@ -52,6 +49,10 @@ public class BookDetailsPage extends AppCompatActivity {
         bookPages= findViewById(R.id.bookPages);
         bookImage= findViewById(R.id.bookImage);
         bookGenre = findViewById(R.id.bookGenre);
+
+        theratingBar = (RatingBar) findViewById(R.id.ratingBar);
+
+
 
         BookRef.child("/Books/").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -77,7 +78,7 @@ public class BookDetailsPage extends AppCompatActivity {
                         if (Integer.valueOf(NumRating) == 0) {
                             done = "Not yet rated";
                         } else {
-                            int maths = Integer.valueOf(Rating) / Integer.valueOf(NumRating);
+                            double maths = Double.valueOf(Rating) / Double.valueOf(NumRating);
                             done = String.valueOf(maths);
                         }
                     }
@@ -126,8 +127,6 @@ public class BookDetailsPage extends AppCompatActivity {
     }
     private void makeRatingDialog(){
 
-
-
         BookRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -149,15 +148,17 @@ public class BookDetailsPage extends AppCompatActivity {
         dialog.setContentView(R.layout.rating_dialog);
         dialog.show();
 
+
+
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
 
-        TextView title = (TextView) dialog.findViewById(R.id.tbx_title);
+        TextView title = dialog.findViewById(R.id.tbx_title);
         title.setTypeface(myTypeFace1);
 
-        TextView bookName = (TextView) dialog.findViewById(R.id.tbx_bookname);
+        TextView bookName = dialog.findViewById(R.id.tbx_bookname);
         bookName.setText(Name);
 
-        TextView author = (TextView) dialog.findViewById(R.id.tbx_author);
+        TextView author = dialog.findViewById(R.id.tbx_author);
         author.setText(Author);
         try {
             imageUrl =new URL(imageAddress);
@@ -168,7 +169,7 @@ public class BookDetailsPage extends AppCompatActivity {
         Glide.with(BookDetailsPage.this).load(imageUrl).into(dialogBookImg);
 
 
-        Button close = (Button) dialog.findViewById(R.id.close);
+        Button close = dialog.findViewById(R.id.close);
         close.setTypeface(myTypeFace1);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,10 +190,10 @@ public class BookDetailsPage extends AppCompatActivity {
     }
     public void addRating(){
 
-        setRating = String.valueOf(Float.valueOf(temp2)+rating);
-        numRating = String.valueOf(Integer.valueOf(numRating)+1);
+        setRating = String.valueOf(Float.valueOf(ourRating)+Float.valueOf(Rating));
+        NumRating = String.valueOf(Integer.valueOf(NumRating)+1);
         BookRef.child("/Books/").child(currentIsbn).child("Rating").setValue(setRating);
-        BookRef.child("/Books/").child(currentIsbn).child("numRating").setValue(numRating);
+        BookRef.child("/Books/").child(currentIsbn).child("NumRating").setValue(NumRating);
 
         Thread myThread = new Thread() {
             @Override
