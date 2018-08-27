@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -30,17 +30,17 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:background="@drawable/button"
-            android:backgroundTint="@color/colorPrimary"
             android:text="Request"
             android:layout_weight="20"
-            android:textColor="@android:color/background_light"
-            android:textColorLink="@android:color/background_light"
             android:textSize="20sp"
             tools:text="Request"
+            android:textColor="#ffffff"
+
             />
     </LinearLayout>
 
     <ListView
+        android:layout_marginTop="5dp"
         android:id="@+id/leaderbd_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

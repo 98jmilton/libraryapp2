@@ -343,7 +343,7 @@ public class RequestList extends AppCompatActivity {
 
                             tempVotedby = votedby.replace(curUser + ",", "");
 
-                            holder.bookVote.setText(myBook.getVote() + "");
+                            holder.bookVote.setText(myBook.getVote() + ",");
                             BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
                         }
                         //Add vote
@@ -358,7 +358,7 @@ public class RequestList extends AppCompatActivity {
 
                             tempVotedby = votedby + curUser + ",";
 
-                            holder.bookVote.setText(myBook.getVote() + "");
+                            holder.bookVote.setText(myBook.getVote() + ",");
                             BookRef.child("/Requests/").child(myBook.getBookName()).child("votedBy").setValue(tempVotedby);
                         }
                     }

@@ -27,24 +27,30 @@
         </activity>
         <activity
             android:name=".BookList"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ContentsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"/>
         <activity
             android:name=".CheckoutActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ScanActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".RequestList"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".BookDetailsPage"
-            android:screenOrientation="portrait" />
-        <activity android:name=".SignUp" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".SignUp"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".LoginActivity"
             android:theme="@style/AppTheme2" ></activity>
     </application>

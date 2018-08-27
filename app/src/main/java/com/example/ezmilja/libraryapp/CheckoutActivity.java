@@ -2,7 +2,9 @@ package com.example.ezmilja.libraryapp;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +31,7 @@ import java.net.URL;
 import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
 import static com.example.ezmilja.libraryapp.ContentsActivity.isbns;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
-import static com.example.ezmilja.libraryapp.SplashScreen.j;
+import static com.example.ezmilja.libraryapp.SplashScreen.bookCount;
 
 public class CheckoutActivity extends AppCompatActivity {
 private static String imageAddress,Name,Author;
@@ -69,6 +71,8 @@ float rating;
     private void makeInfoDialog(){
         final Dialog dialog = new Dialog(CheckoutActivity.this);
         dialog.setContentView(R.layout.content_isbninfo);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));;
+
         dialog.show();
 
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
@@ -141,9 +145,9 @@ float rating;
         Toast.makeText(CheckoutActivity.this, "Please enter a valid ISBN", Toast.LENGTH_SHORT).show();
     }
     private void isInDB() {
-        for (int d = 0; d < j; d++) {
+        for (int d = 0; d < bookCount; d++) {
             if (isbns[d].equals(currentIsbn)) {
-                d = j;
+                d = bookCount;
                 radioCheck();
             }
         }
@@ -204,7 +208,9 @@ float rating;
 
             final Dialog dialog = new Dialog(CheckoutActivity.this);
             dialog.setContentView(R.layout.rating_dialog);
-            dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));;
+
+        dialog.show();
 
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
 

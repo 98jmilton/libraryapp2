@@ -9,7 +9,8 @@
         android:id="@+id/Layout2"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="4dp">
 
         <LinearLayout
             android:id="@+id/linearLayout"

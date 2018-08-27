@@ -2,7 +2,9 @@ package com.example.ezmilja.libraryapp;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -59,18 +61,17 @@ public class BookDetailsPage extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (detailscurrentPage) {
 
-                    System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHH" + currentIsbn);
-                    ISBN = (String) dataSnapshot.child(currentIsbn).child("ISBN").getValue();
-                    Name = (String) dataSnapshot.child(currentIsbn).child("BookName").getValue();
-                    Author = (String) dataSnapshot.child(currentIsbn).child("Author").getValue();
-                    Publisher = (String) dataSnapshot.child(currentIsbn).child("Publisher").getValue();
-                    Description = (String) dataSnapshot.child(currentIsbn).child("Description").getValue();
-                    Rating = (String) dataSnapshot.child(currentIsbn).child("Rating").getValue();
-                    NumRating = (String) dataSnapshot.child(currentIsbn).child("NumRating").getValue();
-                    Pages = (String) dataSnapshot.child(currentIsbn).child("Pages").getValue();
-                    imageAddress = (String) dataSnapshot.child(currentIsbn).child("ImageAddress").getValue();
-                    Genre = (String) dataSnapshot.child(currentIsbn).child("Genre").getValue();
-                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHH" + ISBN);
+                    DataSnapshot snapshot = dataSnapshot.child(currentIsbn);
+                    ISBN = (String) snapshot.child("ISBN").getValue();
+                    Name = (String) snapshot.child("BookName").getValue();
+                    Author = (String) snapshot.child("Author").getValue();
+                    Publisher = (String) snapshot.child("Publisher").getValue();
+                    Description = (String) snapshot.child("Description").getValue();
+                    Rating = (String) snapshot.child("Rating").getValue();
+                    NumRating = (String) snapshot.child("NumRating").getValue();
+                    Pages = (String) snapshot.child("Pages").getValue();
+                    imageAddress = (String) snapshot.child("ImageAddress").getValue();
+                    Genre = (String) snapshot.child("Genre").getValue();
 
                     if (Rating == null && NumRating == null) {
                         done = "Not yet rated";
@@ -146,6 +147,7 @@ public class BookDetailsPage extends AppCompatActivity {
 
         final Dialog dialog = new Dialog(BookDetailsPage.this);
         dialog.setContentView(R.layout.rating_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));;
         dialog.show();
 
 

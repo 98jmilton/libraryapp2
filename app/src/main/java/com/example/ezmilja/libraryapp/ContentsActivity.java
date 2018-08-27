@@ -18,12 +18,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import static com.example.ezmilja.libraryapp.SplashScreen.j;
+import static com.example.ezmilja.libraryapp.SplashScreen.bookCount;
 
 
 public class ContentsActivity extends AppCompatActivity {
-    public static String[] isbns = new String[j];
-    public static Book[] books = new Book[j];
+    public static String[] isbns = new String[bookCount];
+    public static Book[] books = new Book[bookCount];
 
     public static boolean listcurrentPage=false;
     public static boolean detailscurrentPage=false;

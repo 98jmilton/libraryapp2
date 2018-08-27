@@ -23,13 +23,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class SplashScreen extends AppCompatActivity {
-    public static int p=0;
     static FirebaseDatabase database = FirebaseDatabase.getInstance();
     final static public DatabaseReference BookRef = database.getReference();
 
     private static final int MY_PERMISSIONS_REQUEST_CODE = 123;
-    static int j;
-
+    static int bookCount;
 
     private Context mContext;
     private Activity mActivity;
@@ -47,7 +45,7 @@ public class SplashScreen extends AppCompatActivity {
         BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                j= (int) dataSnapshot.getChildrenCount();
+                bookCount = (int) dataSnapshot.getChildrenCount();
 
             }
             @Override
