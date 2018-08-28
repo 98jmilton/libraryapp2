@@ -143,7 +143,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             {
                 Toast.makeText(SignUp.this, "Password must be at least 6 characters long and contain numbers and letters", Toast.LENGTH_LONG).show();
             }
-
         }
 
         // If the Sign in Here text is clicked

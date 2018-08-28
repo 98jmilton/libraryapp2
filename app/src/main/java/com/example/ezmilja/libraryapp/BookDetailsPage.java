@@ -92,19 +92,15 @@ public class BookDetailsPage extends AppCompatActivity {
                     {
                         ratingEmails = ratedBy.split(",");
 
-                        for (int x=0; x<ratingEmails.length; x++ )
-                        {
-                            if (ratingEmails[x].contains(curUser))
-                            {
-                               String foundRatedUser = (ratingEmails[x]);
-                               theUsersRating = foundRatedUser.substring(curUser.length());
+                        for (String ratingEmail : ratingEmails) {
+                            if (ratingEmail.contains(curUser)) {
+                                theUsersRating = (ratingEmail).substring(curUser.length());
 
-                               hasRated = true;
+                                hasRated = true;
 
                             }
                         }
                     }
-
 
                     if (Rating == null && NumRating == null) {
                         done = "Not yet rated";
@@ -229,9 +225,7 @@ public class BookDetailsPage extends AppCompatActivity {
     }
 
     public void addRating(){
-
         ourRating = String.valueOf(ratingbarValue);
-
         if(hasRated)
         {
             for (int x=0; x<ratingEmails.length; x++ )
@@ -247,11 +241,6 @@ public class BookDetailsPage extends AppCompatActivity {
                     current = x;
                 }
             }
-
-            System.out.println("ourRating: "+ourRating);
-            System.out.println("Rating: "+Rating);
-            System.out.println("theUsersRating: "+theUsersRating);
-            System.out.println("setRating: "+setRating);
 
             float totalRating = Float.valueOf(ourRating) + Float.valueOf(Rating);
             totalRating = totalRating - Float.valueOf(theUsersRating);

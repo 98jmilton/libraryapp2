@@ -36,7 +36,7 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(), "yourfont.ttf");
-        TextView TextView1 = (TextView) findViewById(R.id.TextView1);
+        TextView TextView1 = findViewById(R.id.TextView1);
         TextView1.setTypeface(myTypeFace1);
 
         // Get the application context
@@ -96,7 +96,7 @@ public class SplashScreen extends AppCompatActivity {
                 builder.setNeutralButton("Cancel",null);
                 AlertDialog dialog = builder.create();
                 dialog.show();
-            }else{
+            } else {
                 // Directly request for required permissions, without explanation
                 ActivityCompat.requestPermissions(
                         mActivity,
@@ -108,7 +108,7 @@ public class SplashScreen extends AppCompatActivity {
                         MY_PERMISSIONS_REQUEST_CODE
                 );
             }
-        }else {
+        } else {
             // Do something, when permissions are already granted
             Toast.makeText(mContext,"Permissions already granted",Toast.LENGTH_SHORT).show();
 
@@ -159,7 +159,8 @@ public class SplashScreen extends AppCompatActivity {
                         }
                     };
                     myThread.start();
-                }else
+                }
+                else
                 {
                     // Permissions are denied
                     Toast.makeText(mContext,"Permissions denied.",Toast.LENGTH_SHORT).show();
@@ -179,7 +180,6 @@ public class SplashScreen extends AppCompatActivity {
                     };
                     myThread.start();
                 }
-                return;
             }
         }
     }
