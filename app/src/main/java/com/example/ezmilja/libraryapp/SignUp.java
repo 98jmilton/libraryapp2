@@ -67,8 +67,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private void registerUser(){
 
         //getting email and password from edit texts
-        email = editTextEmail.getText().toString().trim();
-        String password  = editTextPassword.getText().toString().trim();
+        email = editTextEmail.getText().toString().toLowerCase().trim();
+        final String password  = editTextPassword.getText().toString().toLowerCase().trim();
+
+
 
         //checking if email and passwords are empty
         if(TextUtils.isEmpty(email)){
@@ -84,29 +86,31 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         //if the email and password are not empty
         //displaying a progress dialog
 
-        progressDialog.setMessage("Registering Please Wait...");
-        progressDialog.show();
 
-        //creating a new user
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        //checking if success
-                        if(task.isSuccessful())
-                        {
-                            finish();
-                            //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                            sendVerificationEmail();
+
+            progressDialog.setMessage("Registering Please Wait...");
+            progressDialog.show();
+
+            //creating a new user
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            //checking if success
+                            if (task.isSuccessful()) {
+                                finish();
+                                //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                                sendVerificationEmail();
+                            } else
+                                {
+                                //display some message here
+                                Toast.makeText(SignUp.this, "Registration Error account may already exist", Toast.LENGTH_LONG).show();
+                            }
+                            progressDialog.dismiss();
                         }
-                        else
-                            {
-                            //display some message here
-                            Toast.makeText(SignUp.this,"Registration Error",Toast.LENGTH_LONG).show();
-                        }
-                        progressDialog.dismiss();
-                    }
-                });
+                    });
+
+
 
     }
 
@@ -114,20 +118,30 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
 
         // When the Signup button is clicked
-        if(view == buttonSignup){
-            // checks the text from editTextPassword and compares it to ReEditTextPassword
-            if (editTextPassword.getText().toString().trim().equals(ReEditTextPassword.getText().toString().trim())){
-                // Check if the email field ends with "@ericsson.com"
-                if (!editTextEmail.getText().toString().endsWith("@ericsson.com")) {
-                    Toast.makeText(SignUp.this,"Must be an Ericsson Email to sign up",Toast.LENGTH_LONG).show();
+        if(view == buttonSignup)
+        {
+
+            if (editTextPassword.getText().toString().trim().matches("^(?=.*\\d)(?=.*[a-zA-Z]).{6,70}$"))
+            {
+                // checks the text from editTextPassword and compares it to ReEditTextPassword
+                if (editTextPassword.getText().toString().trim().equals(ReEditTextPassword.getText().toString().trim()) ) {
+                    // Check if the email field ends with "@ericsson.com"
+                    if (!editTextEmail.getText().toString().trim().endsWith("@ericsson.com"))
+                    {
+                        Toast.makeText(SignUp.this, "Must be an Ericsson email to sign up", Toast.LENGTH_LONG).show();
+                    } else
+                        {
+                        registerUser();
+                    }
                 }
-                else{
-                    registerUser();
+                else
+                    {
+                    Toast.makeText(SignUp.this, "Passwords do not match!", Toast.LENGTH_LONG).show();
                 }
             }
-            else{
-                Toast.makeText(SignUp.this,"Passwords do not match!",Toast.LENGTH_LONG).show();
-
+            else
+            {
+                Toast.makeText(SignUp.this, "Password must be at least 6 characters long and contain numbers and letters", Toast.LENGTH_LONG).show();
             }
 
         }
@@ -162,11 +176,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                         {
                             // email not sent, so display message and restart the activity or do whatever you wish to do
 
-                            //restart this activity
-                            overridePendingTransition(0, 0);
+                            startActivity(new Intent(SignUp.this, LoginActivity.class));
                             finish();
-                            overridePendingTransition(0, 0);
-                            startActivity(getIntent());
 
                         }
                     }

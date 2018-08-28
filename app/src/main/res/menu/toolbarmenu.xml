@@ -5,8 +5,8 @@
     <item
         android:id="@+id/changepassword_menu"
         android:orderInCategory="100"
+        android:title="Change password"
         app:showAsAction="never"
-        android:title="Forgot password ?"
 
         />
     <item

@@ -125,7 +125,8 @@ public class BookDetailsPage extends AppCompatActivity {
                             bookAuthor.setText("Author: " + Author);
                             bookPublisher.setText("Publisher: " + Publisher);
                             bookDescription.setText("Description: " + Description);
-                            bookRating.setText("User Rating: " + done);
+                            bookRating.setText("Average user rating: " + done);
+                            bookRating.setTextSize(19);
                             bookPages.setText("Page Count:" + Pages);
                             bookGenre.setText("Genre:" + Genre);
                             imageUrl = new URL(imageAddress);

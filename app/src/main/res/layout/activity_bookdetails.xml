@@ -137,7 +137,7 @@
                     android:layout_marginEnd="2dp"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
-                    android:text="User Rating : "
+                    android:text="Average user rating : "
                     android:textColor="@color/colorPrimary"
                     android:textSize="24sp" />
 
