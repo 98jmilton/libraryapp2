@@ -113,8 +113,8 @@ public class BookDetailsPage extends AppCompatActivity {
                             done = "Not yet rated";
                         } else {
                             double maths = Double.valueOf(Rating) / Double.valueOf(NumRating);
-                            maths = Math.round(maths*100)/100;
-                            done = String.valueOf(maths);
+                            double roundedMaths = (double) Math.round(maths * 100) / 100;
+                            done = String.valueOf(roundedMaths);
                         }
                     }
 
@@ -231,7 +231,8 @@ public class BookDetailsPage extends AppCompatActivity {
 
         ourRating = String.valueOf(ratingbarValue);
 
-        if(hasRated){
+        if(hasRated)
+        {
             for (int x=0; x<ratingEmails.length; x++ )
             {
                 if (ratingEmails[x].contains(curUser))
@@ -246,18 +247,23 @@ public class BookDetailsPage extends AppCompatActivity {
                 }
             }
 
-            float totalRating = Math.round(Float.valueOf(ourRating) + Float.valueOf(Rating));
+            System.out.println("ourRating: "+ourRating);
+            System.out.println("Rating: "+Rating);
+            System.out.println("theUsersRating: "+theUsersRating);
+            System.out.println("setRating: "+setRating);
+
+            float totalRating = Float.valueOf(ourRating) + Float.valueOf(Rating);
             totalRating = totalRating - Float.valueOf(theUsersRating);
             setRating = String.valueOf(totalRating);
             ratingEmails[current] = curUser+ourRating;
             for (String ratingEmail : ratingEmails) {
                 ratedBy = ratingEmail+",";
-                combinedRates +=ratedBy;
+                combinedRates += ratedBy;
             }
         }
 
         else {
-            float totalRating = Math.round(Float.valueOf(ourRating) + Float.valueOf(Rating));
+            float totalRating = Float.valueOf(ourRating) + Float.valueOf(Rating);
             setRating = String.valueOf(totalRating);
             NumRating = String.valueOf(Integer.valueOf(NumRating) + 1);
             ratingEmails[current] = curUser+ourRating;
