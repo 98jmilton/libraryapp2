@@ -18,7 +18,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="40sp"
         android:textStyle="bold"
-        tools:text="Contents"
+        tools:text="Main Menu"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:layout_weight="20"/>

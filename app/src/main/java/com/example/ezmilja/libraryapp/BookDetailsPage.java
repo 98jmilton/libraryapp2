@@ -180,6 +180,7 @@ public class BookDetailsPage extends AppCompatActivity {
 
         ratingdialog = new Dialog(BookDetailsPage.this);
         ratingdialog.setContentView(R.layout.rating_dialog);
+        ratingdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));;
         ratingdialog.show();
 
         Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(),"yourfont.ttf");
