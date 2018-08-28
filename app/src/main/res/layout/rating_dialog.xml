@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tbx_title"
+        android:id="@+id/rating_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Please rate this Book"
@@ -25,7 +25,7 @@
         android:weightSum="100"
         >
     <TextView
-        android:id="@+id/tbx_bookname"
+        android:id="@+id/rating_bookname"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:text="Book Name"
@@ -36,7 +36,7 @@
 
         />
     <TextView
-        android:id="@+id/tbx_author"
+        android:id="@+id/rating_author"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:text="Book Author"
@@ -48,14 +48,14 @@
         />
     </LinearLayout>
     <ImageView
-        android:id="@+id/img_bookcover"
+        android:id="@+id/rating_bookcover"
         android:layout_width="64dp"
         android:layout_height="75dp"
         app:srcCompat="@mipmap/ic_launcher"
         android:layout_gravity="center"
         />
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/bookRatingBar"
         style="@android:style/Widget.DeviceDefault.Light.RatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

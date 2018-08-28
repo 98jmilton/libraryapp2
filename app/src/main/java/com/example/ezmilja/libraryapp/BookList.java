@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,9 +41,12 @@ public class BookList extends AppCompatActivity {
     SearchView searchView;
     public  ArrayList<Book> listViewList =new ArrayList<Book>();
     private CustomAdapter customAdapter;
+    int welp = 0;
+    Boolean reload;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+        reload=true;
 
         //Pull books from database
         BookRef.child("/Books/").addValueEventListener(new ValueEventListener() {
@@ -74,11 +76,11 @@ public class BookList extends AppCompatActivity {
                             }
                         }
                         catch (ArrayIndexOutOfBoundsException e){
-                            Log.i("BookList", "e");
                             return;
                         }
                     }
-                                   }
+                    welp++;
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
