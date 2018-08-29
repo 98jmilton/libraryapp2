@@ -156,6 +156,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                     // after email is sent just logout the user and finish this activity
                     FirebaseAuth.getInstance().signOut();
                     startActivity(new Intent(SignUp.this, LoginActivity.class));
+                    Toast.makeText(SignUp.this, "Verification email sent check your email to verify and then sign in", Toast.LENGTH_LONG).show();
+
                     finish();
                 }
                 else
@@ -163,6 +165,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                     // email not sent, so display message and restart the activity or do whatever you wish to do
 
                     startActivity(new Intent(SignUp.this, LoginActivity.class));
+                    Toast.makeText(SignUp.this, "Failed to send verification email", Toast.LENGTH_LONG).show();
+
                     finish();
                 }
             }
