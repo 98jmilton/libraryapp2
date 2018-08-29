@@ -133,6 +133,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // NOTE: don't forget to log out the user.
             Toast.makeText(LoginActivity.this, "User Not Verified", Toast.LENGTH_SHORT).show();
             FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+
 
             //restart this activity
 
