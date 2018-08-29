@@ -11,14 +11,13 @@
     android:weightSum="100">
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="239dp"
+        android:layout_width="wrap_content"
         android:layout_height="51dp"
-        android:text="Contents"
+        android:text="Main Menu"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="40sp"
         android:textStyle="bold"
-        tools:text="Main Menu"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:layout_weight="20"/>
