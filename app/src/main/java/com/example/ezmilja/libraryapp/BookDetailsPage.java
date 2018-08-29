@@ -188,9 +188,6 @@ public class BookDetailsPage extends AppCompatActivity {
         TextView bookName = ratingdialog.findViewById(R.id.rating_bookname);
         bookName.setText(Name);
 
-
-
-
         TextView author = ratingdialog.findViewById(R.id.rating_author);
         author.setText(Author);
         try {

@@ -51,11 +51,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         }
 
         //initializing Textviews and buttons
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        ReEditTextPassword = (EditText) findViewById(R.id.ReEditTextPassword);
-        textViewSignin = (TextView) findViewById(R.id.textViewSignin);
-        buttonSignup = (Button) findViewById(R.id.buttonSignup);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        ReEditTextPassword = findViewById(R.id.ReEditTextPassword);
+        textViewSignin = findViewById(R.id.textViewSignin);
+        buttonSignup = findViewById(R.id.buttonSignup);
 
         progressDialog = new ProgressDialog(this);
 
@@ -70,8 +70,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         email = editTextEmail.getText().toString().toLowerCase().trim();
         final String password  = editTextPassword.getText().toString().toLowerCase().trim();
 
-
-
         //checking if email and passwords are empty
         if(TextUtils.isEmpty(email)){
             Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
@@ -85,33 +83,26 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
         //if the email and password are not empty
         //displaying a progress dialog
+        progressDialog.setMessage("Registering Please Wait...");
+        progressDialog.show();
 
-
-
-            progressDialog.setMessage("Registering Please Wait...");
-            progressDialog.show();
-
-            //creating a new user
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            //checking if success
-                            if (task.isSuccessful()) {
-                                finish();
-                                //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                                sendVerificationEmail();
-                            } else
-                                {
-                                //display some message here
-                                Toast.makeText(SignUp.this, "Registration Error account may already exist", Toast.LENGTH_LONG).show();
-                            }
-                            progressDialog.dismiss();
-                        }
-                    });
-
-
-
+        //creating a new user
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                //checking if success
+                if (task.isSuccessful()) {
+                    finish();
+                    //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    sendVerificationEmail();
+                } else
+                    {
+                    //display some message here
+                    Toast.makeText(SignUp.this, "Registration Error account may already exist", Toast.LENGTH_LONG).show();
+                }
+                progressDialog.dismiss();
+            }
+        });
     }
 
     @Override
@@ -144,42 +135,37 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 Toast.makeText(SignUp.this, "Password must be at least 6 characters long and contain numbers and letters", Toast.LENGTH_LONG).show();
             }
         }
-
         // If the Sign in Here text is clicked
         if(view == textViewSignin){
             //open login activity when user taps on the already registered textview
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-
     }
 
-    private void sendVerificationEmail()
-    {
+    private void sendVerificationEmail() {
         // Gets the current user from Firebase
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        user.sendEmailVerification()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            // email sent
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // email sent
 
-                            // after email is sent just logout the user and finish this activity
-                            FirebaseAuth.getInstance().signOut();
-                            startActivity(new Intent(SignUp.this, LoginActivity.class));
-                            finish();
-                        }
-                        else
-                        {
-                            // email not sent, so display message and restart the activity or do whatever you wish to do
+                    // after email is sent just logout the user and finish this activity
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(SignUp.this, LoginActivity.class));
+                    finish();
+                }
+                else
+                {
+                    // email not sent, so display message and restart the activity or do whatever you wish to do
 
-                            startActivity(new Intent(SignUp.this, LoginActivity.class));
-                            finish();
-
-                        }
-                    }
-                });
+                    startActivity(new Intent(SignUp.this, LoginActivity.class));
+                    finish();
+                }
+            }
+        });
     }
 }

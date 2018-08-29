@@ -38,15 +38,12 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
         // Log.v("tag", rawResult.getText()); // Prints scan results
         // Log.v("tag", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
 
-
-        //MainMenu.tvresult.setText(rawResult.getText());
-        //locatiovTV.setOnClickListener();
-
         try {
-            final Intent intent = new Intent(ScanActivity.this, ContentsActivity.class);
-            intent.putExtra(Constants.SCAN_BAR_TEST_KEY, rawResult.getText());
-            startActivity(intent);
-        } catch (Exception e) {
+            CheckoutActivity.editText.setText(rawResult.getText());
+            onBackPressed();
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 

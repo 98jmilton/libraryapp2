@@ -21,10 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Arrays;
-
 import static com.example.ezmilja.libraryapp.ContentsActivity.currentIsbn;
-import static com.example.ezmilja.libraryapp.ContentsActivity.isbns;
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 import static com.example.ezmilja.libraryapp.SplashScreen.bookCount;
 
@@ -32,7 +29,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private RadioButton radioButton;
     private RadioGroup radioGroup;
     private boolean radioButtonsChecked;
-    private EditText editText;
+    public static EditText editText;
     boolean isIsbn=false;
     boolean existingIsbn=false;
     private String numberOfCopies;
@@ -44,7 +41,7 @@ public class CheckoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
-        editText = findViewById(R.id.dropDownTextView);
+        editText = findViewById(R.id.ISBNTextView);
         if(currentIsbn!=null) editText.setText(currentIsbn);
         createButton();
         isbnInfo();
@@ -93,6 +90,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         TextView title =  dialog.findViewById(R.id.title);
         title.setTypeface(myTypeFace1);
+
         title.setText(currentIsbn);
         Button close = dialog.findViewById(R.id.close);
 
@@ -125,7 +123,7 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                currentIsbn = editText.getText().toString();
+                currentIsbn = editText.getText().toString().trim();
                 int selected_id = radioGroup.getCheckedRadioButtonId();
                 radioButton = findViewById(selected_id);
 
@@ -146,8 +144,22 @@ public class CheckoutActivity extends AppCompatActivity {
                         BookRef.child("/Books/").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                                 numberOfCopies = (String) dataSnapshot.child(currentIsbn).child("NumCopys").getValue();
-                                intNumberOfCopies = Integer.valueOf(numberOfCopies);
+                                try {
+                                    if(numberOfCopies!=null) {
+                                        intNumberOfCopies = Integer.valueOf(numberOfCopies);
+                                        System.out.println("database:   " + intNumberOfCopies);
+                                        radioCheck();
+                                        existingIsbn = false;
+                                        isIsbn = false;
+                                        Intent intent = new Intent(CheckoutActivity.this, ContentsActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } catch (ArrayIndexOutOfBoundsException e){
+                                    e.printStackTrace();
+                                }
                             }
 
                             @Override
@@ -155,11 +167,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
                             }
                         });
-                        radioCheck();
                     }
                 }
-                existingIsbn=false;
-                isIsbn=false;
             }
         });
     }
@@ -169,10 +178,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void isInDataBase() {
-
         for (int d = 0; d < bookCount; d++) {
-            System.out.println("currentISBN: "+currentIsbn);
-            System.out.println("isbns[d]: "+isbnsArray[d]);
             if (isbnsArray[d].equals(currentIsbn)) {
                 d = bookCount;
                 existingIsbn=true;
@@ -183,11 +189,13 @@ public class CheckoutActivity extends AppCompatActivity {
     private void radioCheck(){
         if (radioButton.getText().equals("Check IN")) {
             String in = String.valueOf(intNumberOfCopies + 1);
+            System.out.println("in:   "+in);
             BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(in);
             Toast.makeText(CheckoutActivity.this, "Book Checked IN", Toast.LENGTH_SHORT).show();
         }
         else if (radioButton.getText().equals("Check OUT")){
             String out = String.valueOf(intNumberOfCopies - 1);
+            System.out.println("out:   "+out);
             BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(out);
             Toast.makeText(CheckoutActivity.this, "Book Checked OUT", Toast.LENGTH_SHORT).show();
         }

@@ -61,7 +61,6 @@ public class ContentsActivity extends AppCompatActivity {
         Button btn_check = findViewById(R.id.btn_check);
         btn_check.setTypeface(myTypeFace1);
 
-
         TextView textView2 = findViewById(R.id.textView2);
         textView2.setTypeface(myTypeFace1);
 
@@ -95,8 +94,6 @@ public class ContentsActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 
     @Override
@@ -141,8 +138,6 @@ public class ContentsActivity extends AppCompatActivity {
                 return true;
 
             default:
-
-
                 return super.onOptionsItemSelected(item);
         }
     }
