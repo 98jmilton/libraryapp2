@@ -72,11 +72,21 @@
                         android:layout_weight="50"
                         android:ems="10"
                         android:text="Author: "
-
                         />
 
                     <TextView
-                        android:id="@+id/bookPublisher"
+                    android:id="@+id/bookPublisher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="60"
+                    android:ems="10"
+                    android:text="Publisher: " />
+
+                    <TextView
+                        android:id="@+id/bookAvailable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="2dp"
@@ -84,7 +94,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_weight="60"
                         android:ems="10"
-                        android:text="Publisher: " />
+                        android:text="" />
                 </LinearLayout>
 
 
@@ -150,8 +160,6 @@
                     android:layout_weight="20"
                     android:textAlignment="viewEnd"
                     android:textColor="@android:color/holo_blue_dark"
-
-
                     android:text="Page Count: " />
             </LinearLayout>
 
@@ -183,9 +191,7 @@
                     android:textColor="#ffffff"
 
                     />
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

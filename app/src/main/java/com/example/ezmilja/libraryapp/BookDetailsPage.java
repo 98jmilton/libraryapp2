@@ -33,7 +33,7 @@ import static com.example.ezmilja.libraryapp.ContentsActivity.detailscurrentPage
 import static com.example.ezmilja.libraryapp.SplashScreen.BookRef;
 
 public class BookDetailsPage extends AppCompatActivity {
-    TextView bookISBN,bookName,bookAuthor,bookPublisher,bookDescription,bookRating,bookPages,bookGenre;
+    TextView bookISBN,bookName,bookAuthor,bookPublisher,bookDescription,bookRating,bookPages,bookGenre, textViewCopies;
     private ImageView bookImage;
     String ourRating="0.0";
     Float ratingbarValue;
@@ -41,7 +41,7 @@ public class BookDetailsPage extends AppCompatActivity {
     Dialog ratingdialog;
     FirebaseAuth firebaseAuth;
 
-    private String ISBN, Name, Author, Publisher, Description, Rating, NumRating, Pages, imageAddress, Genre, ratedBy;
+    private String ISBN, Name, Author, Publisher, Description, Rating, NumRating, Pages, imageAddress, Genre, ratedBy,maxCopies = "unknown", availableCopies = "unknown";
     private URL imageUrl;
     private String done;
     String[] ratingEmails;
@@ -70,23 +70,26 @@ public class BookDetailsPage extends AppCompatActivity {
         bookPages= findViewById(R.id.bookPages);
         bookImage= findViewById(R.id.bookImage);
         bookGenre = findViewById(R.id.bookGenre);
+        textViewCopies = findViewById(R.id.bookAvailable);
 
         BookRef.child("/Books/").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (detailscurrentPage) {
 
-                    ISBN         = (String) dataSnapshot.child(currentIsbn).child("ISBN").getValue();
-                    Name         = (String) dataSnapshot.child(currentIsbn).child("BookName").getValue();
-                    Author       = (String) dataSnapshot.child(currentIsbn).child("Author").getValue();
-                    Publisher    = (String) dataSnapshot.child(currentIsbn).child("Publisher").getValue();
-                    Description  = (String) dataSnapshot.child(currentIsbn).child("Description").getValue();
-                    Rating       = (String) dataSnapshot.child(currentIsbn).child("Rating").getValue();
-                    NumRating    = (String) dataSnapshot.child(currentIsbn).child("NumRating").getValue();
-                    Pages        = (String) dataSnapshot.child(currentIsbn).child("Pages").getValue();
-                    imageAddress = (String) dataSnapshot.child(currentIsbn).child("ImageAddress").getValue();
-                    Genre        = (String) dataSnapshot.child(currentIsbn).child("Genre").getValue();
-                    ratedBy      = (String) dataSnapshot.child(currentIsbn).child("RatedBy").getValue();
+                    ISBN            = (String) dataSnapshot.child(currentIsbn).child("ISBN").getValue();
+                    Name            = (String) dataSnapshot.child(currentIsbn).child("BookName").getValue();
+                    Author          = (String) dataSnapshot.child(currentIsbn).child("Author").getValue();
+                    Publisher       = (String) dataSnapshot.child(currentIsbn).child("Publisher").getValue();
+                    Description     = (String) dataSnapshot.child(currentIsbn).child("Description").getValue();
+                    Rating          = (String) dataSnapshot.child(currentIsbn).child("Rating").getValue();
+                    NumRating       = (String) dataSnapshot.child(currentIsbn).child("NumRating").getValue();
+                    Pages           = (String) dataSnapshot.child(currentIsbn).child("Pages").getValue();
+                    imageAddress    = (String) dataSnapshot.child(currentIsbn).child("ImageAddress").getValue();
+                    Genre           = (String) dataSnapshot.child(currentIsbn).child("Genre").getValue();
+                    ratedBy         = (String) dataSnapshot.child(currentIsbn).child("RatedBy").getValue();
+                    availableCopies = (String) dataSnapshot.child(currentIsbn).child("NumCopys").getValue();
+                    maxCopies       = (String) dataSnapshot.child(currentIsbn).child("MaxCopys").getValue();
 
                     if(ratedBy!=null)
                     {
@@ -125,6 +128,7 @@ public class BookDetailsPage extends AppCompatActivity {
                             bookRating.setTextSize(19);
                             bookPages.setText("Page Count:" + Pages);
                             bookGenre.setText("Genre:" + Genre);
+                            textViewCopies.setText(availableCopies+" out of "+maxCopies+" have not been checked out");
                             imageUrl = new URL(imageAddress);
                         }
                     } catch (MalformedURLException e) {
@@ -269,7 +273,6 @@ public class BookDetailsPage extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), BookDetailsPage.class);
                     startActivity(intent);
                     ratingdialog.dismiss();
-
                 }
                 catch (InterruptedException e) {
                     e.printStackTrace();
