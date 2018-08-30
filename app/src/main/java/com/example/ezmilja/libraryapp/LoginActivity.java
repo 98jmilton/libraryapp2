@@ -188,7 +188,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         email_popupText = input.getText().toString();
                         if (!email_popupText.endsWith("@ericsson.com")){
                             Toast.makeText(LoginActivity.this, "Not an Ericsson email", Toast.LENGTH_SHORT).show();
-
                         }
                         else
                             {

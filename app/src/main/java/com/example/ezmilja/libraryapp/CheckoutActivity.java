@@ -189,12 +189,12 @@ public class CheckoutActivity extends AppCompatActivity {
         if (radioButton.getText().equals("Check IN")) {
             String in = String.valueOf(intNumberOfCopies + 1);
             BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(in);
-            Toast.makeText(CheckoutActivity.this, "Book Checked IN", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckoutActivity.this, "Book Checked IN\nThere are now "+in+ " of this book not checked out", Toast.LENGTH_SHORT).show();
         }
         else if (radioButton.getText().equals("Check OUT")){
             String out = String.valueOf(intNumberOfCopies - 1);
             BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(out);
-            Toast.makeText(CheckoutActivity.this, "Book Checked OUT", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckoutActivity.this, "Book Checked OUT\nThere are now "+out+ " of this book not checked out", Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(CheckoutActivity.this, "Book not found", Toast.LENGTH_SHORT).show();
