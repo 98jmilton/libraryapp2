@@ -149,7 +149,6 @@ public class CheckoutActivity extends AppCompatActivity {
                                 try {
                                     if(numberOfCopies!=null) {
                                         intNumberOfCopies = Integer.valueOf(numberOfCopies);
-                                        System.out.println("database:   " + intNumberOfCopies);
                                         radioCheck();
                                         existingIsbn = false;
                                         isIsbn = false;
@@ -189,13 +188,11 @@ public class CheckoutActivity extends AppCompatActivity {
     private void radioCheck(){
         if (radioButton.getText().equals("Check IN")) {
             String in = String.valueOf(intNumberOfCopies + 1);
-            System.out.println("in:   "+in);
             BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(in);
             Toast.makeText(CheckoutActivity.this, "Book Checked IN", Toast.LENGTH_SHORT).show();
         }
         else if (radioButton.getText().equals("Check OUT")){
             String out = String.valueOf(intNumberOfCopies - 1);
-            System.out.println("out:   "+out);
             BookRef.child("/Books/").child(currentIsbn).child("NumCopys").setValue(out);
             Toast.makeText(CheckoutActivity.this, "Book Checked OUT", Toast.LENGTH_SHORT).show();
         }
