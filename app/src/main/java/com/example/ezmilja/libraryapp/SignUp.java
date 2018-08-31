@@ -117,7 +117,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 // checks the text from editTextPassword and compares it to ReEditTextPassword
                 if (editTextPassword.getText().toString().trim().equals(ReEditTextPassword.getText().toString().trim()) ) {
                     // Check if the email field ends with "@ericsson.com"
-                    if (!editTextEmail.getText().toString().trim().endsWith("@ericsson.com"))
+                    if (!editTextEmail.getText().toString().trim().endsWith("@ericsson.com") || editTextEmail.getText().toString().trim().equals("libraryadmn999@gmail.com"))
                     {
                         Toast.makeText(SignUp.this, "Must be an Ericsson email to sign up", Toast.LENGTH_LONG).show();
                     } else
@@ -150,7 +150,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful())
+                {
                     // email sent
 
                     // after email is sent just logout the user and finish this activity
