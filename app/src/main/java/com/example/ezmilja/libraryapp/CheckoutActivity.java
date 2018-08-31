@@ -203,7 +203,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
     //Open Barcode Scanner
     private void scan() {
+        Typeface myTypeFace1 = Typeface.createFromAsset(getAssets(), "yourfont.ttf");
         Button scanButton = findViewById(R.id.scan_button);
+        scanButton.setTypeface(myTypeFace1);
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
