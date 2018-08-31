@@ -117,10 +117,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 // checks the text from editTextPassword and compares it to ReEditTextPassword
                 if (editTextPassword.getText().toString().trim().equals(ReEditTextPassword.getText().toString().trim()) ) {
                     // Check if the email field ends with "@ericsson.com"
-                    if (!editTextEmail.getText().toString().trim().endsWith("@ericsson.com") || editTextEmail.getText().toString().trim().equals("libraryadmn999@gmail.com"))
+                    if (!editTextEmail.getText().toString().trim().endsWith("@ericsson.com") && !editTextEmail.getText().toString().trim().equals("libraryadmn999@gmail.com"))
                     {
                         Toast.makeText(SignUp.this, "Must be an Ericsson email to sign up", Toast.LENGTH_LONG).show();
-                    } else
+                    }
+                    else
                         {
                         registerUser();
                     }
